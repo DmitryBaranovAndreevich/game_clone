@@ -1,0 +1,28 @@
+.container {
+  height: 100vh;
+  width: 100vw;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url("../../assets/images/image/image.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom -230px left -300px;
+}
+
+.title {
+  color: var(--colorTextBase) !important;
+  font-size: 100px !important;
+}
+
+.subtitle {
+  color: var(--colorTextBase) !important;
+  font-size: 40px !important;
+}
+
+.button {
+  width: 100%;
+  max-width: 345px;
+}
