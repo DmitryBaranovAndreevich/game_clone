@@ -1,9 +1,3 @@
-:root {
-  --colorBgBase: #000;
-  --colorTextBase: #fff;
-  --colorPrimary: #1668dc;
-}
-
 @font-face {
   font-family: Michroma;
   src:
@@ -25,11 +19,4 @@ body {
   margin: 0;
   padding: 0;
   border: 0;
-  background-color: var(--colorBgBase);
-  color: var(--colorTextBase);
-}
-
-body * {
-  font-family: Michroma, sans-serif !important;
-  font-weight: 400 !important;
 }
