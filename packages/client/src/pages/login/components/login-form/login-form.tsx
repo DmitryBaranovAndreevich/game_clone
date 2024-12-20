@@ -8,7 +8,7 @@ export const LoginForm = () => {
   }
   return (
     <Flex vertical align={"center"} gap={60}>
-      <Typography.Title>Log in</Typography.Title>
+      <Typography.Title level={3}>Log in</Typography.Title>
       <Form
         layout={"vertical"}
         form={form}
