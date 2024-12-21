@@ -9,11 +9,11 @@ const Login = () => {
       className={styles.root}
       align={"middle"}
       justify={"center"}
-      gutter={[120, 0]}>
-      <Col>
-        <CrazyCrackerIcon />
+      gutter={{ xs: 10, sm: 10, md: 60, lg: 120 }}>
+      <Col xs={0} sm={12} md={12} lg={12}>
+        <CrazyCrackerIcon width={"100%"} />
       </Col>
-      <Col span={8}>
+      <Col xs={24} sm={12} md={8} lg={8}>
         <LoginForm />
       </Col>
     </Row>
