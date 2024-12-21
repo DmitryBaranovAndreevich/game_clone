@@ -15,10 +15,10 @@ export const LoginForm = () => {
         className={styles.form}
         onFinish={onLogin}>
         <Form.Item label={"Login"} name={"login"}>
-          <Input placeholder="input login" />
+          <Input placeholder="input login" className={styles.input} />
         </Form.Item>
         <Form.Item label={"Password"} name={"password"}>
-          <Input placeholder="input password" />
+          <Input placeholder="input password" className={styles.input} />
         </Form.Item>
         <Flex vertical gap={"middle"} className={styles.buttonContainer}>
           <Button type={"primary"} htmlType="submit">

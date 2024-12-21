@@ -1,5 +1,8 @@
 import js from "@eslint/js"
 import globals from "globals"
+import eslintReact from "eslint-plugin-react"
+import eslintReactHooks from "eslint-plugin-react-hooks"
+import eslintReactRefresh from "eslint-plugin-react-refresh"
 import tsLint from "typescript-eslint"
 import prettierPlugin from "eslint-plugin-prettier"
 import eslintConfigPrettier from "eslint-config-prettier"
@@ -9,6 +12,9 @@ export default tsLint.config(
     plugins: {
       "@typescript-eslint": tsLint.plugin,
       prettier: prettierPlugin,
+      "react-hooks": eslintReactHooks,
+      react: eslintReact,
+      "react-refresh": eslintReactRefresh,
     },
   },
   {
