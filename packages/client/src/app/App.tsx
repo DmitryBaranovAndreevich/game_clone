@@ -1,5 +1,12 @@
 import { useEffect } from "react"
 import { AntdConfigProvider } from "./antd-config-provider"
+import { Routes, Route } from "react-router-dom"
+import {
+  LoginPage,
+  NonFoundPage,
+  ServerErrorPage,
+  NavigationPage,
+} from "../pages"
 
 function App() {
   useEffect(() => {
@@ -12,7 +19,16 @@ function App() {
 
     fetchServerData()
   }, [])
-  return <AntdConfigProvider>Dough Matter</AntdConfigProvider>
+  return (
+    <AntdConfigProvider>
+      <Routes>
+        <Route path="/" element={<NavigationPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/server-error" element={<ServerErrorPage />} />
+        <Route path="/*" element={<NonFoundPage />} />
+      </Routes>
+    </AntdConfigProvider>
+  )
 }
 
 export default App
