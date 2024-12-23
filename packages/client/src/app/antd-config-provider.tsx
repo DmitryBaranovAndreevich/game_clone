@@ -12,6 +12,14 @@ const DARK_THEME = {
     colorText: "#ffffff",
     fontSizeHeading2: 100,
     fontSizeHeading3: 40,
+    colorBgBase: "#000",
+  },
+  components: {
+    Table: {
+      borderColor: "#fff",
+      headerBorderRadius: "0",
+      stickyScrollBarBg: "rgba(255, 255, 255, 0.25)"
+    },
   },
 }
 
