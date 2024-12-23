@@ -70,7 +70,7 @@ const Game = () => {
 
   // Управление кораблем
   useEffect(() => {
-    const handleKeyDown = e => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft" && shipPosition.x > 0) {
         setShipPosition(prev => ({ ...prev, x: prev.x - 10 }))
       }
