@@ -1,0 +1,39 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #000;
+  padding: 10px 0;
+  width: 80px;
+  gap: 36px;
+  height: auto;
+}
+
+.icons {
+  font-size: 36px;
+  color: #fff;
+}
+
+.customSwitch {
+  transform: rotate(270deg);
+  transform-origin: center;
+}
+
+:global(.customSwitch .ant-switch) {
+  background: #fff !important;
+  border-color: #ccc !important;
+}
+
+:global(.customSwitch .ant-switch-checked) {
+  background-color: #1890ff !important;
+  border-color: #1890ff !important;
+}
+
+:global(.customSwitch .ant-switch-inner) {
+  background-color: #fff !important;
+}
+
+:global(.customSwitch .ant-switch-checked .ant-switch-inner) {
+  background-color: #fff !important;
+}
