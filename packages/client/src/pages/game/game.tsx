@@ -13,8 +13,8 @@ const Game = () => {
   const [score, setScore] = useState(0)
   const [gameOver, setGameOver] = useState(false)
   const [canvasSize, setCanvasSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: window.innerWidth || 800,
+    height: window.innerHeight || 600,
   })
   const [backgroundOffset, setBackgroundOffset] = useState(0)
 
