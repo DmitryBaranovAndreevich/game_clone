@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { AntdConfigProvider } from "./antd-config-provider"
-import { Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import {
   LoginPage,
   NonFoundPage,
@@ -20,14 +20,16 @@ function App() {
     fetchServerData()
   }, [])
   return (
-    <AntdConfigProvider>
-      <Routes>
-        <Route path="/" element={<NavigationPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/server-error" element={<ServerErrorPage />} />
-        <Route path="/*" element={<NonFoundPage />} />
-      </Routes>
-    </AntdConfigProvider>
+    <BrowserRouter>
+      <AntdConfigProvider>
+        <Routes>
+          <Route path="/" element={<NavigationPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/server-error" element={<ServerErrorPage />} />
+          <Route path="/*" element={<NonFoundPage />} />
+        </Routes>
+      </AntdConfigProvider>
+    </BrowserRouter>
   )
 }
 
