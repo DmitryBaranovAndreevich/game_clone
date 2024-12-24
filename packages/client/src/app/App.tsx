@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import { AntdConfigProvider } from "./antd-config-provider"
+import Game from "../pages/game/game"
 
 function App() {
   useEffect(() => {
@@ -12,7 +13,11 @@ function App() {
 
     fetchServerData()
   }, [])
-  return <AntdConfigProvider>Dough Matter</AntdConfigProvider>
+  return (
+    <AntdConfigProvider>
+      <Game />
+    </AntdConfigProvider>
+  )
 }
 
 export default App
