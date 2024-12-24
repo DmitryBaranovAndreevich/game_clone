@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import { AntdConfigProvider } from "./antd-config-provider"
+import { Profile } from "../pages"
 
 function App() {
   useEffect(() => {
@@ -12,7 +13,7 @@ function App() {
 
     fetchServerData()
   }, [])
-  return <AntdConfigProvider>Dough Matter</AntdConfigProvider>
+  return <AntdConfigProvider><Profile /></AntdConfigProvider>
 }
 
 export default App
