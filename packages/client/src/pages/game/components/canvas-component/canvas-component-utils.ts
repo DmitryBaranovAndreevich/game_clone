@@ -131,6 +131,7 @@ export const drawGame = (state: TGameStore) => {
 
   drawTime(ctx, elapsedTime, canvasSize.width)
   // Конец игры
+
   if (gameOver) {
     ctx.fillText("Game Over", canvasSize.width / 2 - 50, canvasSize.height / 2)
     return

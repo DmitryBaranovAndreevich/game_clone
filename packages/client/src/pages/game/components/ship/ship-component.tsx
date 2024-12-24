@@ -36,6 +36,21 @@ export const ShipComponent = () => {
           shipPosition: { ...prev.shipPosition, x: prev.shipPosition.x + 10 },
         }))
       }
+      if (e.key === "ArrowUp" && shipPosition.y > 0) {
+        setState(prev => ({
+          ...prev,
+          shipPosition: { ...prev.shipPosition, y: prev.shipPosition.y - 10 },
+        }))
+      }
+      if (
+        e.key === "ArrowDown" &&
+        shipPosition.y < canvasSize.height - BULLET_HEIGHT
+      ) {
+        setState(prev => ({
+          ...prev,
+          shipPosition: { ...prev.shipPosition, y: prev.shipPosition.y + 10 },
+        }))
+      }
       if (e.key === " " && !gameOver) {
         fireBullet()
       }

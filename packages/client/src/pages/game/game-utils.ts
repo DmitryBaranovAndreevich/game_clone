@@ -29,7 +29,7 @@ export const INIT_GAME_STATE = {
   },
   gameOver: false,
   elapsedTime: 0,
-  shipPosition: { x: 200, y: 500 },
+  shipPosition: { x: 200, y: 600 },
   bullets: [],
   cookies: [],
   score: 0,
