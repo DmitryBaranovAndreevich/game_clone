@@ -1,10 +1,10 @@
 @font-face {
   font-family: Michroma;
   src:
-      url("./assets/fonts/Michroma-Regular.woff2") format("woff2"),
-      url("./assets/fonts/Michroma-Regular.woff") format("woff"),
-      url("./assets/fonts/Michroma-Regular.otf") format("otf"),
-      url("./assets/fonts/Michroma-Regular.ttf") format("ttf");
+    url("./assets/fonts/Michroma-Regular.woff2") format("woff2"),
+    url("./assets/fonts/Michroma-Regular.woff") format("woff"),
+    url("./assets/fonts/Michroma-Regular.otf") format("otf"),
+    url("./assets/fonts/Michroma-Regular.ttf") format("ttf");
   font-weight: 400;
   font-optical-sizing: auto;
 }
