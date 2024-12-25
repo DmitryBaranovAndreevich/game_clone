@@ -10,7 +10,13 @@ const DARK_THEME = {
     fontFamily: "Michroma, sans-serif",
     fontSizeHeading2: 100,
     fontSizeHeading3: 40,
-    backgroundColor: "#000",
+  },
+  components: {
+    Button: {
+      defaultBg: "#000",
+      defaultActiveBg: "#000",
+      defaultHoverBg: "#000",
+    },
   },
 }
 
