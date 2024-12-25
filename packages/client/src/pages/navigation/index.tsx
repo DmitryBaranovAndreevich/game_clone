@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import { withAuth } from "../../components"
 
 const Navigation = () => {
   return (
@@ -19,4 +20,4 @@ const Navigation = () => {
   )
 }
 
-export default Navigation
+export default withAuth(Navigation)
