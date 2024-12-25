@@ -9,7 +9,7 @@ export const RegisterControls = () => {
         <Button type={"primary"} htmlType={"submit"}>
           Sign up
         </Button>
-        <Button ghost>Sign in</Button>
+        <Button>Sign in</Button>
       </Flex>
     </Flex>
   )
