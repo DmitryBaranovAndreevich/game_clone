@@ -1,9 +1,3 @@
-:root {
-  --colorBgBase: #000;
-  --colorTextBase: #fff;
-  --colorPrimary: #1668dc;
-}
-
 @font-face {
   font-family: Michroma;
   src:
