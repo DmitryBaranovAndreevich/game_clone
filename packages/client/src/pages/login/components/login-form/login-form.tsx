@@ -24,7 +24,7 @@ export const LoginForm = () => {
           <Button type={"primary"} htmlType="submit">
             Sign in
           </Button>
-          <Button ghost>Sign up</Button>
+          <Button>Sign up</Button>
         </Flex>
       </Form>
     </Flex>

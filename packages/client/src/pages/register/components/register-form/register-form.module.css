@@ -2,7 +2,3 @@
   width: 100%;
   max-width: 550px;
 }
-
-.input {
-  --color-text: var(--colorBgBase);
-}

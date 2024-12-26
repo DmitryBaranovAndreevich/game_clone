@@ -6,7 +6,3 @@
 .buttonContainer {
   margin-top: 60px;
 }
-
-.input {
-  --color-text: var(--colorBgBase);
-}

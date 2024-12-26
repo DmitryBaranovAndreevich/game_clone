@@ -19,9 +19,7 @@ const GameOver = () => {
           Best Score <span>100500</span>
         </Flex>
       </Flex>
-      <Button ghost className={styles.button}>
-        New Game
-      </Button>
+      <Button className={styles.button}>New Game</Button>
       <img
         src={sideCrazyCrackerIcon}
         className={styles.sideCrazyCrackerIcon}
