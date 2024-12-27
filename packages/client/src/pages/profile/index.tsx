@@ -2,25 +2,23 @@ import { FC, useState } from "react"
 import {
   Avatar,
   Button,
+  Col,
   Flex,
   Form,
   GetProp,
   Input,
   Layout,
   Modal,
+  Row,
   Upload,
   UploadProps,
 } from "antd"
 import { LoadingOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons"
+import { CrazyCrackerIcon } from "../../assets/images/image/image-black-bg"
 
 const layoutStyle = {
   height: "100vh",
   width: "100vw",
-  // backgroundColor: "#000",
-  // backgroundImage: "url(src/assets/images/image/image.png)",
-  // backgroundRepeat: "no-repeat",
-  // backgroundSize: "contain",
-  // backgroundPosition: "bottom -230px left -300px",
 }
 
 type FormData = {
@@ -106,18 +104,27 @@ const Profile: FC = () => {
     <>
       <Layout>
         <Layout.Content style={layoutStyle} id="leaderboard">
-          <Flex
-            vertical
-            justify="center"
-            align="center"
-            style={{ height: "100%" }}>
-            <Form
-              name="profile"
-              form={form}
-              layout={"vertical"}
-              style={{ width: "100%" }}
-              onFinish={onFinish}>
-              <Flex gap={100} justify="center" align="center">
+          <Form
+            name="profile"
+            form={form}
+            layout={"vertical"}
+            onFinish={onFinish}>
+            <Row
+              align={"middle"}
+              justify={"center"}
+              style={{
+                position: "fixed",
+                top: "0",
+                right: "0",
+                bottom: "0",
+                left: "0",
+                padding: "10px",
+              }}
+              gutter={{ xs: 10, sm: 10, md: 30, lg: 60 }}>
+              <Col xs={0} sm={0} md={6} lg={6}>
+                <CrazyCrackerIcon />
+              </Col>
+              <Col xs={12} sm={12} md={9} lg={9}>
                 <Flex vertical style={{ maxWidth: "350px", width: "100%" }}>
                   <Form.Item label={"Name"} name={"name"}>
                     <Input size="large" placeholder="Name" />
@@ -138,6 +145,8 @@ const Profile: FC = () => {
                     <Input size="large" placeholder="Password" />
                   </Form.Item>
                 </Flex>
+              </Col>
+              <Col xs={12} sm={12} md={9} lg={9}>
                 <Flex
                   vertical
                   align="center"
@@ -175,9 +184,9 @@ const Profile: FC = () => {
                     Log out
                   </Button>
                 </Flex>
-              </Flex>
-            </Form>
-          </Flex>
+              </Col>
+            </Row>
+          </Form>
         </Layout.Content>
       </Layout>
       <Modal
