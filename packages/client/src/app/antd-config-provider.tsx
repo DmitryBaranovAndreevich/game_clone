@@ -11,8 +11,25 @@ const DARK_THEME = {
     fontSizeHeading2: 100,
     fontSizeHeading3: 40,
   },
+  components: {
+    Button: {
+      defaultBg: "#000",
+      defaultActiveBg: "#000",
+      defaultHoverBg: "#000",
+    },
+  },
 }
 
+// const PURPLE_THEME = {
+//   cssVar: { prefix: "" },
+//   algorithm: theme.darkAlgorithm,
+//   token: {
+//     fontFamily: "Michroma, sans-serif",
+//     fontSizeHeading2: 100,
+//     fontSizeHeading3: 40,
+//     colorPrimary: "#8000ff",
+//   },
+// }
 
 export const AntdConfigProvider = ({ children }: { children: ReactNode }) => {
   return (
