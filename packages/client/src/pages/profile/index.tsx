@@ -15,6 +15,7 @@ import {
 } from "antd"
 import { LoadingOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons"
 import { CrazyCrackerIcon } from "../../assets/images/image/image-black-bg"
+import styles from "../register/register.module.css"
 
 const layoutStyle = {
   height: "100vh",
@@ -121,8 +122,8 @@ const Profile: FC = () => {
                 padding: "10px",
               }}
               gutter={{ xs: 10, sm: 10, md: 30, lg: 60 }}>
-              <Col xs={0} sm={0} md={6} lg={6}>
-                <CrazyCrackerIcon />
+              <Col className={styles.iconContainer} xs={0} sm={0} md={6} lg={6}>
+                <CrazyCrackerIcon className={styles.icon} />
               </Col>
               <Col xs={12} sm={12} md={9} lg={9}>
                 <Flex vertical style={{ maxWidth: "350px", width: "100%" }}>
@@ -191,10 +192,11 @@ const Profile: FC = () => {
       </Layout>
       <Modal
         centered
-        title="Basic Modal"
+        title="Upload avatar"
         open={isModalOpen}
         onOk={handleOk}
-        onCancel={handleCancel}>
+        onCancel={handleCancel}
+        width="300px">
         <Upload
           name="avatar"
           listType="picture-circle"
