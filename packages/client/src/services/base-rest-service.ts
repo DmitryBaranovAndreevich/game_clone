@@ -7,11 +7,18 @@ type TRequestType = {
 export class BaseRestService {
   constructor(public baseUrl: string) {}
 
-  private _checkResponse(res: Response) {
+  private async _checkResponse(res: Response) {
     if (res.ok) {
-      return res.json()
+      try {
+        const json = await res.json()
+        return json
+      } catch (e) {
+        console.log(e)
+        return "OK"
+      }
     } else {
-      throw new Error("request error")
+      const error = await res.json()
+      throw new Error(error.reason || "request error")
     }
   }
 
@@ -25,7 +32,9 @@ export class BaseRestService {
     return fetch(url, options)
       .then(this._checkResponse)
       .catch(e => {
-        console.log(e)
+        if (e instanceof Error) {
+          throw e
+        }
       })
   }
 
