@@ -10,11 +10,11 @@ import eslintConfigPrettier from "eslint-config-prettier"
 export default tsLint.config(
   {
     plugins: {
-      "@typescript-eslint": tsLint.plugin,
-      prettier: prettierPlugin,
       "react-hooks": eslintReactHooks,
       react: eslintReact,
       "react-refresh": eslintReactRefresh,
+      "@typescript-eslint": tsLint.plugin,
+      prettier: prettierPlugin,
     },
   },
   {
@@ -38,6 +38,8 @@ export default tsLint.config(
     files: ["**/*.ts", "**/*.tsx"],
     rules: {
       ...eslintConfigPrettier.rules,
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
       "prefer-const": "error",
       curly: "error",
       "@typescript-eslint/no-empty-object-type": "off",
