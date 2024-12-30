@@ -1,15 +1,13 @@
-import { ConfigProvider, App } from "antd"
+import { ConfigProvider, App, theme } from "antd"
 import enEn from "antd/es/locale/en_US"
 import { type ReactNode } from "react"
 import styles from "./app.module.css"
 
 const DARK_THEME = {
   cssVar: { prefix: "" },
+  algorithm: theme.darkAlgorithm,
   token: {
     fontFamily: "Michroma, sans-serif",
-    formLabelColor: "#ffffff",
-    colorTextHeading: "#ffffff",
-    colorText: "#ffffff",
     fontSizeHeading2: 100,
     fontSizeHeading3: 40,
     colorBgBase: "#000",
@@ -18,10 +16,28 @@ const DARK_THEME = {
     Table: {
       borderColor: "#fff",
       headerBorderRadius: "0",
-      stickyScrollBarBg: "rgba(255, 255, 255, 0.25)"
+      stickyScrollBarBg: "rgba(255, 255, 255, 0.25)",
+    },
+  },
+  components: {
+    Button: {
+      defaultBg: "#000",
+      defaultActiveBg: "#000",
+      defaultHoverBg: "#000",
     },
   },
 }
+
+// const PURPLE_THEME = {
+//   cssVar: { prefix: "" },
+//   algorithm: theme.darkAlgorithm,
+//   token: {
+//     fontFamily: "Michroma, sans-serif",
+//     fontSizeHeading2: 100,
+//     fontSizeHeading3: 40,
+//     colorPrimary: "#8000ff",
+//   },
+// }
 
 export const AntdConfigProvider = ({ children }: { children: ReactNode }) => {
   return (
