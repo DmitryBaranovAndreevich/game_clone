@@ -1,10 +1,36 @@
-import { Button, Flex, Form, Input, Typography } from "antd"
+import { App, Button, Flex, Form, Input, Typography } from "antd"
+import { loginApiInstance } from "../../login-api"
+import { useRedirect } from "./useRedirect"
+import { generatePath, useNavigate } from "react-router-dom"
 import styles from "./login-form.module.css"
 
+const REGISTER_PAGE = "/register"
+
 export const LoginForm = () => {
+  const { notification } = App.useApp()
+  const navigateTo = useNavigate()
+  const redirect = useRedirect()
   const [form] = Form.useForm<{ password: string; login: string }>()
-  const onLogin = (value: { password: string; login: string }) => {
-    console.log(value)
+  const onLogin = async (value: { password: string; login: string }) => {
+    try {
+      const response = await loginApiInstance.login(value)
+      if (response) {
+        redirect()
+      }
+    } catch (e) {
+      if (e instanceof Error && e.message === "User already in system") {
+        redirect()
+        return
+      }
+
+      if (e instanceof Error) {
+        notification.error({ message: e.message, placement: "bottomRight" })
+      }
+    }
+  }
+
+  const onSignUpClick = () => {
+    navigateTo(generatePath(REGISTER_PAGE))
   }
   return (
     <Flex vertical align={"center"} gap={60}>
@@ -15,16 +41,20 @@ export const LoginForm = () => {
         className={styles.form}
         onFinish={onLogin}>
         <Form.Item label={"Login"} name={"login"}>
-          <Input placeholder="input login" className={styles.input} />
+          <Input placeholder={"input login"} className={styles.input} />
         </Form.Item>
         <Form.Item label={"Password"} name={"password"}>
-          <Input placeholder="input password" className={styles.input} />
+          <Input
+            placeholder={"input password"}
+            className={styles.input}
+            type={"password"}
+          />
         </Form.Item>
         <Flex vertical gap={"middle"} className={styles.buttonContainer}>
-          <Button type={"primary"} htmlType="submit">
+          <Button type={"primary"} htmlType={"submit"}>
             Sign in
           </Button>
-          <Button>Sign up</Button>
+          <Button onClick={onSignUpClick}>Sign up</Button>
         </Flex>
       </Form>
     </Flex>

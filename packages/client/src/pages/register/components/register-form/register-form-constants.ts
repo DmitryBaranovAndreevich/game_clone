@@ -1,9 +1,9 @@
 export const REGISTER_FOR_FIELDS = [
-  { label: "Email", value: "email" },
-  { label: "Login", value: "login" },
-  { label: "Name", value: "first_name" },
-  { label: "Lastname", value: "second_name" },
-  { label: "Phone", value: "phone" },
-  { label: "Password", value: "password" },
-  { label: "Confirm password", value: "confirmPassword" },
+  { label: "Email", value: "email", type: "text" },
+  { label: "Login", value: "login", type: "text" },
+  { label: "Name", value: "first_name", type: "text" },
+  { label: "Lastname", value: "second_name", type: "text" },
+  { label: "Phone", value: "phone", type: "text" },
+  { label: "Password", value: "password", type: "password" },
+  { label: "Confirm password", value: "confirmPassword", type: "password" },
 ] as const
