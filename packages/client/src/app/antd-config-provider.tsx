@@ -11,19 +11,24 @@ const DARK_THEME = {
     fontSizeHeading2: 100,
     fontSizeHeading3: 40,
     colorBgBase: "#000",
+    colorLink: "#fff",
   },
   components: {
     Table: {
-      borderColor: "#fff",
-      headerBorderRadius: "0",
+      headerBorderRadius: 0,
       stickyScrollBarBg: "rgba(255, 255, 255, 0.25)",
     },
-  },
-  components: {
     Button: {
       defaultBg: "#000",
       defaultActiveBg: "#000",
       defaultHoverBg: "#000",
+    },
+    Switch: {
+      handleBg: "#fff",
+    },
+    Layout: {
+      bodyBg: "#000",
+      siderBg: "#000",
     },
   },
 }
@@ -32,9 +37,7 @@ const DARK_THEME = {
 //   cssVar: { prefix: "" },
 //   algorithm: theme.darkAlgorithm,
 //   token: {
-//     fontFamily: "Michroma, sans-serif",
-//     fontSizeHeading2: 100,
-//     fontSizeHeading3: 40,
+//
 //     colorPrimary: "#8000ff",
 //   },
 // }

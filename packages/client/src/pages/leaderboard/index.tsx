@@ -1,5 +1,6 @@
 import { FC } from "react"
 import { Flex, Image, Layout, Table, TableProps } from "antd"
+import Sidebar from "../../components/sidebar"
 
 const layoutStyle = {
   height: "100vh",
@@ -150,8 +151,8 @@ const data: DataType[] = [
 
 const Leaderboard: FC = () => {
   return (
-    <Layout>
-      <Layout.Content style={layoutStyle} id="leaderboard">
+    <Layout style={layoutStyle}>
+      <Layout.Content id="leaderboard" style={{ marginLeft: "80px" }}>
         <Flex vertical align="center" style={{ height: "100%" }}>
           <Image
             src="./src/assets/images/logo/image-logo.png"
@@ -168,6 +169,7 @@ const Leaderboard: FC = () => {
           />
         </Flex>
       </Layout.Content>
+      <Sidebar />
     </Layout>
   )
 }
