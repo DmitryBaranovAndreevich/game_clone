@@ -14,6 +14,10 @@ const layoutStyle = {
   width: "100vw",
 }
 
+const handleBack = () => {
+  window.history.back()
+}
+
 const ErrorPage: FC<TComponentProps> = ({ id, title, subtitle }) => {
   return (
     <Layout>
@@ -43,7 +47,11 @@ const ErrorPage: FC<TComponentProps> = ({ id, title, subtitle }) => {
             }}>
             <Typography.Title level={2}>{title}</Typography.Title>
             <Typography.Title level={3}>{subtitle}</Typography.Title>
-            <Button style={{ width: "100%", maxWidth: "200px" }}>Back</Button>
+            <Button
+              style={{ width: "100%", maxWidth: "200px" }}
+              onClick={handleBack}>
+              Back
+            </Button>
           </Flex>
         </Row>
       </Layout.Content>

@@ -9,6 +9,14 @@ const Navigation = () => {
           <Link to="/login">Login</Link>
         </li>
         <li>
+          {" "}
+          <Link to="/signup">Signup</Link>
+        </li>
+        <li>
+          {" "}
+          <Link to="/leaderboard">Leaderboard</Link>
+        </li>
+        <li>
           <Link to="/server-error">Server error</Link>
         </li>
         <li>
