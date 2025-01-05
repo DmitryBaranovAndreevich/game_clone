@@ -1,23 +1,39 @@
-import { Col, Form, Row } from "antd"
+import { App, Col, Form, Row } from "antd"
 import { CrazyCrackerIcon } from "../../assets/images/image/image-black-bg"
 import { RegisterControls, RegisterForm } from "./components"
+import { TRegisterRequestParams } from "./register-types"
+import { RegisterAPI } from "./register-api"
+import { setCookie } from "../../utils"
+import { generatePath, useNavigate } from "react-router-dom"
 import styles from "./register.module.css"
 
-type TRegisterForm = Record<
-  | "email"
-  | "login"
-  | "first_name"
-  | "second_name"
-  | "phone"
-  | "password"
-  | "confirmPassword",
-  string
->
+type TRegisterForm = TRegisterRequestParams & { confirmPassword: string }
+const registerApi = new RegisterAPI()
 
 const Register = () => {
+  const { notification } = App.useApp()
+  const navigateTo = useNavigate()
   const [form] = Form.useForm<TRegisterForm>()
-  const onRegister = (value: TRegisterForm) => {
-    console.log(value)
+  const onRegister = async (value: TRegisterForm) => {
+    try {
+      const { password, confirmPassword, ...rest } = value
+      if (password !== confirmPassword) {
+        notification.error({
+          message: "Passwords don't match",
+          placement: "bottomRight",
+        })
+        return
+      }
+      const registerResponse = await registerApi.create({ password, ...rest })
+      if (registerResponse) {
+        setCookie("login", "true", { expires: 1200 })
+        navigateTo(generatePath("/"))
+      }
+    } catch (e) {
+      if (e instanceof Error) {
+        notification.error({ message: e.message, placement: "bottomRight" })
+      }
+    }
   }
   return (
     <Form layout={"vertical"} form={form} onFinish={onRegister}>
