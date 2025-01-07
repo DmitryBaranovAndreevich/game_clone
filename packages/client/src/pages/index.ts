@@ -1,3 +1,4 @@
+import Leaderboard from "./leaderboard"
 import NonFoundPage from "./non-found"
 import Profile from "./profile"
 import ServerErrorPage from "./server-error"
@@ -7,6 +8,7 @@ import GameOver from "./game-over"
 import NavigationPage from "./navigation"
 
 export {
+  Leaderboard,
   NonFoundPage,
   Profile,
   ServerErrorPage,

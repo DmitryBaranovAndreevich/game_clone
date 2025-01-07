@@ -1,9 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import NavigationPage from "../pages/navigation"
-import LoginPage from "../pages/login"
-import ServerErrorPage from "../pages/server-error"
-import NonFoundPage from "../pages/non-found"
-import RegisterPage from "../pages/register"
+import {
+  Leaderboard,
+  LoginPage,
+  NavigationPage,
+  NonFoundPage,
+  RegisterPage,
+  ServerErrorPage,
+} from "../pages"
 
 const AppRoutes = () => {
   return (
@@ -12,6 +15,7 @@ const AppRoutes = () => {
         <Route path="/" element={<NavigationPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/server-error" element={<ServerErrorPage />} />
         <Route path="/*" element={<NonFoundPage />} />
       </Routes>
