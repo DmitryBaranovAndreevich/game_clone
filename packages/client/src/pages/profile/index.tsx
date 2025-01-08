@@ -1,5 +1,6 @@
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import {
+  App,
   Avatar,
   Button,
   Col,
@@ -16,58 +17,125 @@ import {
 import { LoadingOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons"
 import { CrazyCrackerIcon } from "../../assets/images/image/image-black-bg"
 import styles from "../register/register.module.css"
+import { getCookie, setCookie } from "../../utils"
+import { generatePath, useLocation, useNavigate } from "react-router-dom"
+import {
+  TUpdatePasswordRequest,
+  TUpdateProfileRequest,
+  TUser,
+  UserApi,
+} from "../../services/api/user-api"
+import { AuthApi } from "../../services/api/auth-api"
+import { BASE_URL } from "../../constants"
+import Sidebar from "../../components/sidebar"
 
 const layoutStyle = {
   height: "100vh",
   width: "100vw",
+  padding: "50px 0",
+  overflow: "hidden",
 }
 
-type FormData = {
-  name: string
-  lastname: string
-  nickname: string
-  email: string
-  phone: string
-  password: string
-}
+const isNotEmpty = (value: string) => value.trim().length > 0
 
 const Profile: FC = () => {
-  // const [fields, setFields] = useState<FormData>({
-  //   name: "Name",
-  //   lastname: "Lastname",
-  //   nickname: "Nickname",
-  //   email: "Email",
-  //   phone: "Phone",
-  //   password: "Password"
-  // });
+  const { notification } = App.useApp()
+  const navigateTo = useNavigate()
+  const location = useLocation()
+  const isLogin = getCookie("login")
+  const userApi = new UserApi()
 
-  const [form] = Form.useForm<FormData>()
-  form.setFieldsValue({
-    name: "Name",
-    lastname: "Lastname",
-    nickname: "Nickname",
-    email: "Email",
-    phone: "Phone",
-    password: "Password",
+  const [user, setUser] = useState<TUser | null>(null)
+  const [updateProfileForm] = Form.useForm<TUpdateProfileRequest>()
+  const [updatePasswordForm] = Form.useForm<TUpdatePasswordRequest>()
+
+  useEffect(() => {
+    if (!isLogin) {
+      navigateTo(generatePath("/login"), {
+        state: { from: location },
+      })
+    } else {
+      try {
+        userApi.getUser().then(response => {
+          const userData = response as TUser
+          if (userData) {
+            setUser(userData)
+          }
+        })
+      } catch (e) {
+        if (e instanceof Error) {
+          notification.error({ message: e.message, placement: "bottomRight" })
+        }
+      }
+    }
+  }, [isLogin])
+
+  updateProfileForm.setFieldsValue({
+    first_name: user?.first_name || "",
+    second_name: user?.second_name || "",
+    display_name: user?.display_name || "",
+    login: user?.login || "",
+    email: user?.email || "",
+    phone: user?.phone || "",
+  })
+  updatePasswordForm.setFieldsValue({
+    oldPassword: "",
+    newPassword: "",
   })
 
-  const onFinish = (values: FormData) => {
-    console.log(values)
+  const updateProfileHandler = (values: TUpdateProfileRequest) => {
+    if (Object.values(values).every(isNotEmpty)) {
+      try {
+        userApi.updateProfile(values).then(() => {
+          userApi.getUser().then(response => {
+            const userData = response as TUser
+            if (userData) {
+              setUser(userData)
+            }
+          })
+        })
+      } catch (e) {
+        if (e instanceof Error) {
+          notification.error({ message: e.message, placement: "bottomRight" })
+        }
+      }
+    }
+  }
+  const updateProfileCancelHandler = () => {
+    updateProfileForm.setFieldsValue({
+      first_name: user?.first_name || "",
+      second_name: user?.second_name || "",
+      display_name: user?.display_name || "",
+      login: user?.login || "",
+      email: user?.email || "",
+      phone: user?.phone || "",
+    })
   }
 
-  const [isModalOpen, setIsModalOpen] = useState(false)
-
-  const showModal = () => {
-    setIsModalOpen(true)
+  const updatePasswordHandler = (values: TUpdatePasswordRequest) => {
+    if (Object.values(values).every(isNotEmpty)) {
+      try {
+        userApi.updatePassword(values).then(() => {
+          setIsPasswordModalOpen(false)
+        })
+      } catch (e) {
+        if (e instanceof Error) {
+          notification.error({ message: e.message, placement: "bottomRight" })
+        }
+      }
+    }
   }
 
-  const handleOk = () => {
-    setIsModalOpen(false)
+  const updatePasswordCancelHandler = () => {
+    updatePasswordForm.setFieldsValue({
+      oldPassword: "",
+      newPassword: "",
+    })
+    setIsPasswordModalOpen(false)
   }
 
-  const handleCancel = () => {
-    setIsModalOpen(false)
-  }
+  const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false)
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
 
   const [loading, setLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState<string>()
@@ -80,16 +148,22 @@ const Profile: FC = () => {
     reader.readAsDataURL(img)
   }
 
-  const handleChange: UploadProps["onChange"] = info => {
+  const uploadAvatarHandler: UploadProps["onChange"] = info => {
     if (info.file.status === "uploading") {
       setLoading(true)
       return
     }
     if (info.file.status === "done") {
-      // Get this url from response in real world.
       getBase64(info.file.originFileObj as FileType, url => {
         setLoading(false)
         setImageUrl(url)
+
+        userApi.getUser().then(response => {
+          const userData = response as TUser
+          if (userData) {
+            setUser(userData)
+          }
+        })
       })
     }
   }
@@ -101,15 +175,30 @@ const Profile: FC = () => {
     </button>
   )
 
+  const logoutHandler = () => {
+    try {
+      new AuthApi().logout().then(response => {
+        if (response) {
+          setCookie("login", "true", { expires: -1 })
+          navigateTo(generatePath("/"))
+        }
+      })
+    } catch (e) {
+      if (e instanceof Error) {
+        notification.error({ message: e.message, placement: "bottomRight" })
+      }
+    }
+  }
+
   return (
     <>
       <Layout>
-        <Layout.Content style={layoutStyle} id="leaderboard">
+        <Layout.Content style={layoutStyle} id="profile">
           <Form
-            name="profile"
-            form={form}
+            name="updateProfileForm"
+            form={updateProfileForm}
             layout={"vertical"}
-            onFinish={onFinish}>
+            onFinish={updateProfileHandler}>
             <Row
               align={"middle"}
               justify={"center"}
@@ -126,40 +215,101 @@ const Profile: FC = () => {
                 <CrazyCrackerIcon className={styles.icon} />
               </Col>
               <Col xs={12} sm={12} md={9} lg={9}>
-                <Flex vertical style={{ maxWidth: "350px", width: "100%" }}>
-                  <Form.Item label={"Name"} name={"name"}>
-                    <Input size="large" placeholder="Name" />
-                  </Form.Item>
-                  <Form.Item label={"Lastname"} name={"lastname"}>
-                    <Input size="large" placeholder="Lastname" />
-                  </Form.Item>
-                  <Form.Item label={"Nickname"} name={"nickname"}>
-                    <Input size="large" placeholder="Nickname" />
-                  </Form.Item>
-                  <Form.Item label={"Email"} name={"email"}>
-                    <Input size="large" placeholder="Email" />
-                  </Form.Item>
-                  <Form.Item label={"Phone"} name={"phone"}>
-                    <Input size="large" placeholder="Phone" />
-                  </Form.Item>
-                  <Form.Item label={"Password"} name={"password"}>
-                    <Input size="large" placeholder="Password" />
-                  </Form.Item>
-                </Flex>
-              </Col>
-              <Col xs={12} sm={12} md={9} lg={9}>
                 <Flex
                   vertical
-                  align="center"
                   style={{ maxWidth: "350px", width: "100%" }}
                   gap="large">
-                  <Avatar
-                    size={150}
-                    icon={<UserOutlined />}
-                    style={{ border: "1px solid #fff" }}
-                    onClick={showModal}
-                  />
+                  <Form.Item
+                    style={{ margin: "0" }}
+                    rules={[{ pattern: /[A-ZА-ЯЁ]{1}[a-zа-яё-]/, message: "" }]}
+                    label={"Name"}
+                    key={"first_name"}
+                    name={"first_name"}>
+                    <Input
+                      disabled
+                      size="large"
+                      type="text"
+                      placeholder="Name"
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    style={{ margin: "0" }}
+                    rules={[{ pattern: /[A-ZА-ЯЁ]{1}[a-zа-яё-]/, message: "" }]}
+                    label={"Lastname"}
+                    key={"second_name"}
+                    name={"second_name"}>
+                    <Input
+                      disabled
+                      size="large"
+                      type="text"
+                      placeholder="Lastname"
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    style={{ margin: "0" }}
+                    rules={[{ pattern: /[A-ZА-ЯЁ]{1}[a-zа-яё-]/, message: "" }]}
+                    label={"Display name"}
+                    key={"display_name"}
+                    name={"display_name"}>
+                    <Input
+                      disabled
+                      size="large"
+                      type="text"
+                      placeholder="Display name"
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    style={{ margin: "0" }}
+                    rules={[
+                      {
+                        pattern: /(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}/,
+                        message: "",
+                      },
+                    ]}
+                    label={"Login"}
+                    key={"login"}
+                    name={"login"}>
+                    <Input
+                      disabled
+                      size="large"
+                      type="text"
+                      placeholder="Login"
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    style={{ margin: "0" }}
+                    rules={[
+                      {
+                        pattern:
+                          /[a-zA-Z0-9_-]{1,}@{1}[a-zA-Z]{1,}[.]{1}[a-zA-Z]{1,}/,
+                        message: "",
+                      },
+                    ]}
+                    label={"Email"}
+                    key={"email"}
+                    name={"email"}>
+                    <Input
+                      disabled
+                      size="large"
+                      type="text"
+                      placeholder="Email"
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    style={{ margin: "0" }}
+                    rules={[{ pattern: /[+]{0,1}[0-9]{10,15}/, message: "" }]}
+                    label={"Phone"}
+                    key={"phone"}
+                    name={"phone"}>
+                    <Input
+                      disabled
+                      size="large"
+                      type="text"
+                      placeholder="Phone"
+                    />
+                  </Form.Item>
                   <Button
+                    disabled
                     size="large"
                     type={"primary"}
                     htmlType="submit"
@@ -167,20 +317,49 @@ const Profile: FC = () => {
                     Save
                   </Button>
                   <Button
+                    disabled
                     size="large"
                     htmlType="button"
-                    onClick={() => {
-                      console.log("Cancel")
-                    }}
+                    onClick={updateProfileCancelHandler}
                     style={{ maxWidth: "350px", width: "100%" }}>
                     Cancel
                   </Button>
+                </Flex>
+              </Col>
+              <Col xs={12} sm={12} md={9} lg={9}>
+                <Flex
+                  vertical
+                  align="center"
+                  style={{
+                    maxWidth: "350px",
+                    width: "100%",
+                    paddingRight: "80px",
+                  }}
+                  gap="large">
+                  <Avatar
+                    size={150}
+                    icon={<UserOutlined />}
+                    style={{ border: "1px solid #fff", cursor: "pointer" }}
+                    onClick={() => {
+                      setIsAvatarModalOpen(true)
+                    }}
+                    src={
+                      user?.avatar ? `${BASE_URL}/resources${user.avatar}` : ""
+                    }
+                  />
                   <Button
                     size="large"
                     htmlType="button"
                     onClick={() => {
-                      console.log("Log out")
+                      setIsPasswordModalOpen(true)
                     }}
+                    style={{ maxWidth: "350px", width: "100%" }}>
+                    Change password
+                  </Button>
+                  <Button
+                    size="large"
+                    htmlType="button"
+                    onClick={logoutHandler}
                     style={{ maxWidth: "350px", width: "100%" }}>
                     Log out
                   </Button>
@@ -189,27 +368,106 @@ const Profile: FC = () => {
             </Row>
           </Form>
         </Layout.Content>
+        <Sidebar />
       </Layout>
       <Modal
         centered
         title="Upload avatar"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        open={isAvatarModalOpen}
+        onOk={() => {
+          setIsAvatarModalOpen(false)
+        }}
+        onCancel={() => {
+          setIsAvatarModalOpen(false)
+        }}
+        closeIcon={null}
         width="300px">
         <Upload
           name="avatar"
           listType="picture-circle"
           className="avatar-uploader"
           showUploadList={false}
-          action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-          onChange={handleChange}>
+          method="put"
+          withCredentials
+          action="https://ya-praktikum.tech/api/v2/user/profile/avatar"
+          onChange={uploadAvatarHandler}>
           {imageUrl ? (
-            <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
+            <img
+              src={imageUrl}
+              alt="avatar"
+              style={{ width: "100%", borderRadius: "50%" }}
+            />
           ) : (
             uploadButton
           )}
         </Upload>
+      </Modal>
+      <Modal
+        centered
+        title="Change password"
+        footer={null}
+        open={isPasswordModalOpen}
+        closeIcon={null}
+        width="350px">
+        <Form
+          name="updatePasswordForm"
+          form={updatePasswordForm}
+          layout={"vertical"}
+          onFinish={updatePasswordHandler}>
+          <Flex
+            vertical
+            style={{ maxWidth: "350px", width: "100%" }}
+            gap="small">
+            <Form.Item
+              rules={[
+                {
+                  pattern: /(?=.*[0-9])(?=.*[A-Z])[0-9a-zA-Z]{8,40}/,
+                  message: "",
+                },
+              ]}
+              style={{ margin: "0" }}
+              label={"Old password"}
+              key={"oldPassword"}
+              name={"oldPassword"}>
+              <Input.Password
+                size="large"
+                type="password"
+                placeholder="Old password"
+              />
+            </Form.Item>
+            <Form.Item
+              rules={[
+                {
+                  pattern: /(?=.*[0-9])(?=.*[A-Z])[0-9a-zA-Z]{8,40}/,
+                  message: "",
+                },
+              ]}
+              style={{ margin: "0" }}
+              label={"New password"}
+              key={"newPassword"}
+              name={"newPassword"}>
+              <Input.Password
+                size="large"
+                type="password"
+                placeholder="New password"
+              />
+            </Form.Item>
+            <Button
+              size="large"
+              type={"primary"}
+              htmlType="submit"
+              style={{ maxWidth: "350px", width: "100%" }}>
+              Save
+            </Button>
+            <Button
+              size="large"
+              htmlType="button"
+              onClick={updatePasswordCancelHandler}
+              style={{ maxWidth: "350px", width: "100%" }}>
+              Cancel
+            </Button>
+          </Flex>
+        </Form>
       </Modal>
     </>
   )

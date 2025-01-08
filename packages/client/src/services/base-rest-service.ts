@@ -2,6 +2,7 @@ type TRequestType = {
   url: string
   data?: Record<string, string> | FormData
   headers?: Record<string, string>
+  credentials?: RequestCredentials
 }
 
 export class BaseRestService {
@@ -38,7 +39,12 @@ export class BaseRestService {
       })
   }
 
-  public get<T>({ url, data = {}, headers = {} }: TRequestType): Promise<T> {
+  public get<T>({
+    url,
+    data = {},
+    headers = {},
+    credentials = "include",
+  }: TRequestType): Promise<T> {
     const fullUrl = new URL(`${this.baseUrl}${url}`)
     fullUrl.search =
       data instanceof FormData
@@ -47,11 +53,17 @@ export class BaseRestService {
     const options = {
       method: "GET",
       headers,
+      credentials,
     }
     return this._fetchData<T>({ url: fullUrl, options })
   }
 
-  public post<T>({ url, data = {}, headers = {} }: TRequestType): Promise<T> {
+  public post<T>({
+    url,
+    data = {},
+    headers = {},
+    credentials = "include",
+  }: TRequestType): Promise<T> {
     const fullUrl = new URL(`${this.baseUrl}${url}`)
     const body = data instanceof FormData ? data : JSON.stringify(data)
     const fullHeaders =
@@ -64,6 +76,31 @@ export class BaseRestService {
     const options = {
       method: "POST",
       headers: fullHeaders,
+      credentials,
+      body,
+    }
+    return this._fetchData<T>({ url: fullUrl, options })
+  }
+
+  public put<T>({
+    url,
+    data = {},
+    headers = {},
+    credentials = "include",
+  }: TRequestType): Promise<T> {
+    const fullUrl = new URL(`${this.baseUrl}${url}`)
+    const body = data instanceof FormData ? data : JSON.stringify(data)
+    const fullHeaders =
+      data instanceof FormData
+        ? headers
+        : {
+            ...headers,
+            "content-type": "application/json",
+          }
+    const options = {
+      method: "PUT",
+      headers: fullHeaders,
+      credentials,
       body,
     }
     return this._fetchData<T>({ url: fullUrl, options })

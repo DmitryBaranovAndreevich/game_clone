@@ -19,6 +19,10 @@ const Navigation = () => {
         </li>
         <li>
           {" "}
+          <Link to="/profile">Profile</Link>
+        </li>
+        <li>
+          {" "}
           <Link to="/server-error">Server error</Link>
         </li>
         <li>
