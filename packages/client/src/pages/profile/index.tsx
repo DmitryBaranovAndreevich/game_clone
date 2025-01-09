@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react"
-import { Layout, Modal } from "antd"
+import { Flex, Layout, Modal } from "antd"
 import { getCookie } from "../../utils"
 import { generatePath, useLocation, useNavigate } from "react-router-dom"
 import { TUser, UserApi } from "../../services/api/user-api"
@@ -72,7 +72,9 @@ const Profile: FC = () => {
         }}
         closeIcon={null}
         width="300px">
-        <UploadAvatar setUser={setUser} />
+        <Flex align="center" justify="center">
+          <UploadAvatar setUser={setUser} />
+        </Flex>
       </Modal>
       <Modal
         centered

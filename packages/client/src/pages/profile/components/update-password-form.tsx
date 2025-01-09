@@ -48,12 +48,12 @@ const UpdatePasswordForm: FC<TComponentProps> = ({
       onFinish={updatePasswordHandler}>
       <Flex vertical style={{ maxWidth: "350px", width: "100%" }} gap="small">
         <Form.Item
-          rules={[
-            {
-              pattern: /(?=.*[0-9])(?=.*[A-Z])[0-9a-zA-Z]{8,40}/,
-              message: "",
-            },
-          ]}
+          //   rules={[
+          //     {
+          //       pattern: /(?=.*[0-9])(?=.*[A-Z])[0-9a-zA-Z]{8,40}/,
+          //       message: "",
+          //     },
+          //   ]}
           style={{ margin: "0" }}
           label={"Old password"}
           key={"oldPassword"}
@@ -65,12 +65,12 @@ const UpdatePasswordForm: FC<TComponentProps> = ({
           />
         </Form.Item>
         <Form.Item
-          rules={[
-            {
-              pattern: /(?=.*[0-9])(?=.*[A-Z])[0-9a-zA-Z]{8,40}/,
-              message: "",
-            },
-          ]}
+          //   rules={[
+          //     {
+          //       pattern: /(?=.*[0-9])(?=.*[A-Z])[0-9a-zA-Z]{8,40}/,
+          //       message: "",
+          //     },
+          //   ]}
           style={{ margin: "0" }}
           label={"New password"}
           key={"newPassword"}
