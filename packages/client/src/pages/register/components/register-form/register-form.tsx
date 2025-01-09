@@ -11,6 +11,7 @@ export const RegisterForm = () => {
             <Input
               placeholder={el.label.toLocaleLowerCase()}
               className={styles.input}
+              type={el.type}
             />
           </Form.Item>
         )

@@ -1,5 +1,7 @@
 import { FC } from "react"
-import { Button, Flex, Layout, Typography } from "antd"
+import { Button, Col, Flex, Layout, Row, Typography } from "antd"
+import { CrazyCrackerIcon } from "../../assets/images/image/image-black-bg"
+import styles from "../../pages/register/register.module.css"
 
 type TComponentProps = {
   id: string
@@ -10,25 +12,48 @@ type TComponentProps = {
 const layoutStyle = {
   height: "100vh",
   width: "100vw",
-  backgroundImage: "url(src/assets/images/image/image.png)",
-  backgroundRepeat: "no-repeat",
-  backgroundSize: "contain",
-  backgroundPosition: "bottom -230px left -300px",
+}
+
+const handleBack = () => {
+  window.history.back()
 }
 
 const ErrorPage: FC<TComponentProps> = ({ id, title, subtitle }) => {
   return (
     <Layout>
       <Layout.Content style={layoutStyle} id={id}>
-        <Flex
-          vertical
-          align="center"
-          justify="center"
-          style={{ height: "100%" }}>
-          <Typography.Title level={2}>{title}</Typography.Title>
-          <Typography.Title level={3}>{subtitle}</Typography.Title>
-          <Button style={{ width: "100%", maxWidth: "200px" }}>Back</Button>
-        </Flex>
+        <Row
+          style={{
+            position: "fixed",
+            top: "0",
+            right: "0",
+            bottom: "0",
+            left: "0",
+          }}>
+          <Col xs={0} sm={0} md={6} lg={6}>
+            <CrazyCrackerIcon className={styles.icon} />
+          </Col>
+          <Col xs={24} sm={24} md={18} lg={18} />
+          <Flex
+            vertical
+            align="center"
+            justify="center"
+            style={{
+              position: "absolute",
+              top: "0",
+              right: "0",
+              bottom: "0",
+              left: "0",
+            }}>
+            <Typography.Title level={2}>{title}</Typography.Title>
+            <Typography.Title level={3}>{subtitle}</Typography.Title>
+            <Button
+              style={{ width: "100%", maxWidth: "200px" }}
+              onClick={handleBack}>
+              Back
+            </Button>
+          </Flex>
+        </Row>
       </Layout.Content>
     </Layout>
   )
