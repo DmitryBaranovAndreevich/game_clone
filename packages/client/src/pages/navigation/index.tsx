@@ -12,6 +12,9 @@ const Navigation = () => {
           <Link to="/server-error">Server error</Link>
         </li>
         <li>
+          <Link to="/forum">Forum</Link>
+        </li>
+        <li>
           <Link to="/*">Non Found*</Link>
         </li>
       </ul>

@@ -3,6 +3,15 @@ import ServerErrorPage from "./server-error"
 import LoginPage from "./login"
 import RegisterPage from "./register"
 import GameOver from "./game-over"
+import ForumPage from "./forum"
 import NavigationPage from "./navigation"
 
-export { NonFoundPage, ServerErrorPage, LoginPage, RegisterPage, GameOver, NavigationPage }
+export {
+  NonFoundPage,
+  ServerErrorPage,
+  LoginPage,
+  RegisterPage,
+  GameOver,
+  NavigationPage,
+  ForumPage,
+}
