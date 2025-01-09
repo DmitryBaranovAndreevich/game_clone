@@ -1,15 +1,21 @@
 import { FC, useState } from "react"
-import { GetProp, Upload, UploadProps } from "antd"
+import { Flex, GetProp, Modal, Upload, UploadProps } from "antd"
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
 import { TUser, UserApi } from "../../../services/api/user-api"
 
 type TComponentProps = {
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>
+  isAvatarModalOpen: boolean
+  setIsAvatarModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const UploadAvatar: FC<TComponentProps> = ({ setUser }) => {
-  const userApi = new UserApi()
+const userApi = new UserApi()
 
+const UploadAvatarModal: FC<TComponentProps> = ({
+  setUser,
+  isAvatarModalOpen,
+  setIsAvatarModalOpen,
+}) => {
   const [loading, setLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState<string>()
 
@@ -32,9 +38,9 @@ const UploadAvatar: FC<TComponentProps> = ({ setUser }) => {
         setImageUrl(url)
 
         userApi.getUser().then(response => {
-          const userData = response as TUser
+          const userData = response
           if (userData) {
-            setUser(userData)
+            setUser(userData as TUser)
           }
         })
       })
@@ -49,26 +55,41 @@ const UploadAvatar: FC<TComponentProps> = ({ setUser }) => {
   )
 
   return (
-    <Upload
-      name="avatar"
-      listType="picture-circle"
-      className="avatar-uploader"
-      showUploadList={false}
-      method="put"
-      withCredentials
-      action="https://ya-praktikum.tech/api/v2/user/profile/avatar"
-      onChange={uploadAvatarHandler}>
-      {imageUrl ? (
-        <img
-          src={imageUrl}
-          alt="avatar"
-          style={{ width: "100%", borderRadius: "50%" }}
-        />
-      ) : (
-        uploadButton
-      )}
-    </Upload>
+    <Modal
+      centered
+      title="Upload avatar"
+      open={isAvatarModalOpen}
+      onOk={() => {
+        setIsAvatarModalOpen(false)
+      }}
+      onCancel={() => {
+        setIsAvatarModalOpen(false)
+      }}
+      closeIcon={null}
+      width="300px">
+      <Flex align="center" justify="center">
+        <Upload
+          name="avatar"
+          listType="picture-circle"
+          className="avatar-uploader"
+          showUploadList={false}
+          method="put"
+          withCredentials
+          action="https://ya-praktikum.tech/api/v2/user/profile/avatar"
+          onChange={uploadAvatarHandler}>
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt="avatar"
+              style={{ width: "100%", borderRadius: "50%" }}
+            />
+          ) : (
+            uploadButton
+          )}
+        </Upload>
+      </Flex>
+    </Modal>
   )
 }
 
-export default UploadAvatar
+export default UploadAvatarModal

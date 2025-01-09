@@ -21,6 +21,8 @@ type TComponentProps = {
   setIsAvatarModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   setIsPasswordModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
+const userApi = new UserApi()
+const authApi = new AuthApi()
 
 const UpdateProfileForm: FC<TComponentProps> = ({
   user,
@@ -30,11 +32,8 @@ const UpdateProfileForm: FC<TComponentProps> = ({
 }) => {
   const { notification } = App.useApp()
   const navigateTo = useNavigate()
-
-  const userApi = new UserApi()
-  const authApi = new AuthApi()
-
   const [updateProfileForm] = Form.useForm<TUpdateProfileRequest>()
+
   useEffect(() => {
     updateProfileForm.setFieldsValue({
       first_name: user?.first_name || "",
@@ -51,12 +50,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
       try {
         const response = await userApi.updateProfile(values)
         if (response) {
-          userApi.getUser().then(response => {
-            const userData = response as TUser
-            if (userData) {
-              setUser(userData)
-            }
-          })
+          setUser(response as TUser)
         }
       } catch (e) {
         if (e instanceof Error) {
@@ -66,14 +60,14 @@ const UpdateProfileForm: FC<TComponentProps> = ({
     }
   }
   const updateProfileCancelHandler = () => {
-    updateProfileForm.setFieldsValue({
-      first_name: user?.first_name || "",
-      second_name: user?.second_name || "",
-      display_name: user?.display_name || "",
-      login: user?.login || "",
-      email: user?.email || "",
-      phone: user?.phone || "",
-    })
+    updateProfileForm.resetFields([
+      "first_name",
+      "second_name",
+      "display_name",
+      "login",
+      "email",
+      "phone",
+    ])
   }
 
   const logoutHandler = () => {
@@ -118,6 +112,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
             style={{ maxWidth: "350px", width: "100%" }}
             gap="large">
             <Form.Item
+              initialValue={user?.first_name || ""}
               style={{ margin: "0" }}
               rules={[{ pattern: /[A-ZА-ЯЁ]{1}[a-zа-яё-]/, message: "" }]}
               label={"Name"}
@@ -126,6 +121,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
               <Input disabled size="large" type="text" placeholder="Name" />
             </Form.Item>
             <Form.Item
+              initialValue={user?.second_name || ""}
               style={{ margin: "0" }}
               rules={[{ pattern: /[A-ZА-ЯЁ]{1}[a-zа-яё-]/, message: "" }]}
               label={"Lastname"}
@@ -134,6 +130,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
               <Input disabled size="large" type="text" placeholder="Lastname" />
             </Form.Item>
             <Form.Item
+              initialValue={user?.display_name || ""}
               style={{ margin: "0" }}
               rules={[{ pattern: /[A-ZА-ЯЁ]{1}[a-zа-яё-]/, message: "" }]}
               label={"Display name"}
@@ -147,12 +144,10 @@ const UpdateProfileForm: FC<TComponentProps> = ({
               />
             </Form.Item>
             <Form.Item
+              initialValue={user?.login || ""}
               style={{ margin: "0" }}
               rules={[
-                {
-                  pattern: /(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}/,
-                  message: "",
-                },
+                { pattern: /(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}/, message: "" },
               ]}
               label={"Login"}
               key={"login"}
@@ -160,6 +155,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
               <Input disabled size="large" type="text" placeholder="Login" />
             </Form.Item>
             <Form.Item
+              initialValue={user?.email || ""}
               style={{ margin: "0" }}
               rules={[
                 {
@@ -174,6 +170,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
               <Input disabled size="large" type="text" placeholder="Email" />
             </Form.Item>
             <Form.Item
+              initialValue={user?.phone || ""}
               style={{ margin: "0" }}
               rules={[{ pattern: /[+]{0,1}[0-9]{10,15}/, message: "" }]}
               label={"Phone"}
