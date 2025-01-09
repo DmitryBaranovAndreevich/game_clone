@@ -32,12 +32,6 @@ export class UserApi {
   getUser() {
     return apiInstance.get({ url: "/auth/user" })
   }
-  getAvatar(src: string) {
-    return apiInstance.get({ url: `swagger/resources${src}` })
-  }
-  updateAvatar() {
-    return apiInstance.put({ url: "/user/profile/avatar" })
-  }
   updateProfile(data: TUpdateProfileRequest) {
     return apiInstance.put({ url: "/user/profile", data: data })
   }
