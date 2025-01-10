@@ -6,6 +6,7 @@ import {
 } from "@ant-design/icons"
 import { Flex, Layout, Switch } from "antd"
 import { Link } from "react-router-dom"
+import { withAuth } from "../withAuth"
 
 const layoutStyle = {
   margin: "0",
@@ -51,4 +52,4 @@ const Sidebar = () => {
   )
 }
 
-export default Sidebar
+export default withAuth(Sidebar)
