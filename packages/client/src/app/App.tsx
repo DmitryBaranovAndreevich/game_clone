@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { AntdConfigProvider } from "./antd-config-provider"
-import Game from "../pages/game/game"
+import AppRoutes from "./app-routes"
 
 function App() {
   useEffect(() => {
@@ -15,7 +15,7 @@ function App() {
   }, [])
   return (
     <AntdConfigProvider>
-      <Game />
+      <AppRoutes />
     </AntdConfigProvider>
   )
 }
