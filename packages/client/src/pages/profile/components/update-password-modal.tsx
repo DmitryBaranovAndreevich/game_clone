@@ -1,6 +1,7 @@
 import { Button, Flex, Form, Input, Modal, notification } from "antd"
 import { FC } from "react"
 import { TUpdatePasswordRequest, UserApi } from "../../../services/api/user-api"
+import { getFormRules } from "../../../components"
 
 const isNotEmpty = (value: string) => value.trim().length > 0
 
@@ -15,6 +16,7 @@ const UpdatePasswordModal: FC<TComponentProps> = ({
   setIsPasswordModalOpen,
 }) => {
   const [updatePasswordForm] = Form.useForm<TUpdatePasswordRequest>()
+  const { passwordFormRules, requiredFieldRule } = getFormRules()
 
   const updatePasswordHandler = async (values: TUpdatePasswordRequest) => {
     if (Object.values(values).every(isNotEmpty)) {
@@ -54,12 +56,7 @@ const UpdatePasswordModal: FC<TComponentProps> = ({
         onFinish={updatePasswordHandler}>
         <Flex vertical style={{ maxWidth: "350px", width: "100%" }} gap="small">
           <Form.Item
-            //   rules={[
-            //     {
-            //       pattern: /(?=.*[0-9])(?=.*[A-Z])[0-9a-zA-Z]{8,40}/,
-            //       message: "",
-            //     },
-            //   ]}
+            rules={[passwordFormRules, requiredFieldRule]}
             initialValue={""}
             style={{ margin: "0" }}
             label={"Old password"}
@@ -72,12 +69,7 @@ const UpdatePasswordModal: FC<TComponentProps> = ({
             />
           </Form.Item>
           <Form.Item
-            //   rules={[
-            //     {
-            //       pattern: /(?=.*[0-9])(?=.*[A-Z])[0-9a-zA-Z]{8,40}/,
-            //       message: "",
-            //     },
-            //   ]}
+            rules={[passwordFormRules, requiredFieldRule]}
             initialValue={""}
             style={{ margin: "0" }}
             label={"New password"}

@@ -3,10 +3,13 @@ import { loginApiInstance } from "../../login-api"
 import { useRedirect } from "./useRedirect"
 import { generatePath, useNavigate } from "react-router-dom"
 import styles from "./login-form.module.css"
+import { getFormRules } from "../../../../components"
 
 const REGISTER_PAGE = "/register"
 
 export const LoginForm = () => {
+  const { passwordFormRules, requiredFieldRule, userLoginFormRules } =
+    getFormRules()
   const { notification } = App.useApp()
   const navigateTo = useNavigate()
   const redirect = useRedirect()
@@ -40,10 +43,16 @@ export const LoginForm = () => {
         form={form}
         className={styles.form}
         onFinish={onLogin}>
-        <Form.Item label={"Login"} name={"login"}>
+        <Form.Item
+          label={"Login"}
+          name={"login"}
+          rules={[requiredFieldRule, userLoginFormRules]}>
           <Input placeholder={"input login"} className={styles.input} />
         </Form.Item>
-        <Form.Item label={"Password"} name={"password"}>
+        <Form.Item
+          label={"Password"}
+          name={"password"}
+          rules={[passwordFormRules, requiredFieldRule]}>
           <Input
             placeholder={"input password"}
             className={styles.input}

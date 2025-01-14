@@ -1,6 +1,7 @@
 import { Col, Row } from "antd"
 import { CrazyCrackerIcon } from "../../assets/images/image/image-black-bg"
 import { LoginForm } from "./components"
+import { onlyWithOutAuth } from "../../components"
 import styles from "./login.module.css"
 
 const Login = () => {
@@ -20,4 +21,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default onlyWithOutAuth(Login)
