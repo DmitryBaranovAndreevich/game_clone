@@ -6,6 +6,7 @@ import styles from "./login-form.module.css"
 import { UserApi } from "../../../../services/api/user-api"
 import { useDispatch } from "react-redux"
 import userSlice from "../../../../store/slices/user"
+import store from "../../../../store"
 
 const REGISTER_PAGE = "/register"
 const userApi = new UserApi()
@@ -38,6 +39,22 @@ export const LoginForm = () => {
       }
     } catch (e) {
       if (e instanceof Error && e.message === "User already in system") {
+        const { user } = store.getState()
+        if (user === null) {
+          try {
+            userApi.getUser().then(response => {
+              const userData = response
+              if (userData) {
+                dispatch(actions.setUser(userData))
+              }
+            })
+          } catch (e) {
+            if (e instanceof Error) {
+              console.log(e.message)
+            }
+          }
+        }
+
         redirect()
         return
       }
