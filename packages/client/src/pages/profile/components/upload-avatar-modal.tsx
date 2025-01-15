@@ -1,21 +1,24 @@
 import { FC, useState } from "react"
 import { Flex, GetProp, Modal, Upload, UploadProps } from "antd"
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
-import { TUser, UserApi } from "../../../services/api/user-api"
+import { UserApi } from "../../../services/api/user-api"
+import { useDispatch } from "react-redux"
+import userSlice from "../../../store/slices/user"
 
 type TComponentProps = {
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>
   isAvatarModalOpen: boolean
   setIsAvatarModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const userApi = new UserApi()
+const { actions } = userSlice
 
 const UploadAvatarModal: FC<TComponentProps> = ({
-  setUser,
   isAvatarModalOpen,
   setIsAvatarModalOpen,
 }) => {
+  const dispatch = useDispatch()
+
   const [loading, setLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState<string>()
 
@@ -37,12 +40,18 @@ const UploadAvatarModal: FC<TComponentProps> = ({
         setLoading(false)
         setImageUrl(url)
 
-        userApi.getUser().then(response => {
-          const userData = response
-          if (userData) {
-            setUser(userData as TUser)
+        try {
+          userApi.getUser().then(response => {
+            const userData = response
+            if (userData) {
+              dispatch(actions.setUser(userData))
+            }
+          })
+        } catch (e) {
+          if (e instanceof Error) {
+            console.log(e.message)
           }
-        })
+        }
       })
     }
   }

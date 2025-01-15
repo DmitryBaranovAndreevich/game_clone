@@ -2,35 +2,33 @@ import { FC, useEffect } from "react"
 import { generatePath, useNavigate } from "react-router-dom"
 import { App, Avatar, Button, Col, Flex, Form, Input, Row } from "antd"
 import { UserOutlined } from "@ant-design/icons"
-import {
-  TUpdateProfileRequest,
-  TUser,
-  UserApi,
-} from "../../../services/api/user-api"
+import { TUpdateProfileRequest, UserApi } from "../../../services/api/user-api"
 import { AuthApi } from "../../../services/api/auth-api"
 import { setCookie } from "../../../utils"
 import { CrazyCrackerIcon } from "../../../assets/images/image/image-black-bg"
 import { BASE_URL } from "../../../constants"
 import styles from "../../register/register.module.css"
+import store from "../../../store"
+import { useDispatch } from "react-redux"
+import userSlice from "../../../store/slices/user"
 
 const isNotEmpty = (value: string) => value.trim().length > 0
 
 type TComponentProps = {
-  user: TUser | null
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>
   setIsAvatarModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   setIsPasswordModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 const userApi = new UserApi()
 const authApi = new AuthApi()
+const { actions } = userSlice
 
 const UpdateProfileForm: FC<TComponentProps> = ({
-  user,
-  setUser,
   setIsAvatarModalOpen,
   setIsPasswordModalOpen,
 }) => {
+  const { user } = store.getState()
   const { notification } = App.useApp()
+  const dispatch = useDispatch()
   const navigateTo = useNavigate()
   const [updateProfileForm] = Form.useForm<TUpdateProfileRequest>()
 
@@ -50,7 +48,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
       try {
         const response = await userApi.updateProfile(values)
         if (response) {
-          setUser(response as TUser)
+          dispatch(actions.setUser(response))
         }
       } catch (e) {
         if (e instanceof Error) {
@@ -74,6 +72,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
     try {
       authApi.logout().then(response => {
         if (response) {
+          dispatch(actions.deleteUser())
           setCookie("login", "true", { expires: -1 })
           navigateTo(generatePath("/"))
         }

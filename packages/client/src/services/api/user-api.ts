@@ -29,10 +29,10 @@ export type TUpdatePasswordRequest = {
 const apiInstance = new BaseRestService(BASE_URL)
 
 export class UserApi {
-  getUser() {
+  getUser(): Promise<TUser | null> {
     return apiInstance.get({ url: "/auth/user" })
   }
-  updateProfile(data: TUpdateProfileRequest) {
+  updateProfile(data: TUpdateProfileRequest): Promise<TUser | null> {
     return apiInstance.put({ url: "/user/profile", data: data })
   }
   updatePassword(data: TUpdatePasswordRequest) {

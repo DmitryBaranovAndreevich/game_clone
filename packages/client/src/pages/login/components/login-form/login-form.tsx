@@ -3,10 +3,16 @@ import { loginApiInstance } from "../../login-api"
 import { useRedirect } from "./useRedirect"
 import { generatePath, useNavigate } from "react-router-dom"
 import styles from "./login-form.module.css"
+import { UserApi } from "../../../../services/api/user-api"
+import { useDispatch } from "react-redux"
+import userSlice from "../../../../store/slices/user"
 
 const REGISTER_PAGE = "/register"
+const userApi = new UserApi()
+const { actions } = userSlice
 
 export const LoginForm = () => {
+  const dispatch = useDispatch()
   const { notification } = App.useApp()
   const navigateTo = useNavigate()
   const redirect = useRedirect()
@@ -15,6 +21,19 @@ export const LoginForm = () => {
     try {
       const response = await loginApiInstance.login(value)
       if (response) {
+        try {
+          userApi.getUser().then(response => {
+            const userData = response
+            if (userData) {
+              dispatch(actions.setUser(userData))
+            }
+          })
+        } catch (e) {
+          if (e instanceof Error) {
+            console.log(e.message)
+          }
+        }
+
         redirect()
       }
     } catch (e) {
