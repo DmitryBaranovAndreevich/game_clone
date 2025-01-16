@@ -8,9 +8,9 @@ import { setCookie } from "../../../utils"
 import { CrazyCrackerIcon } from "../../../assets/images/image/image-black-bg"
 import { BASE_URL } from "../../../constants"
 import styles from "../../register/register.module.css"
-import store from "../../../store"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import userSlice from "../../../store/slices/user"
+import { TState } from "../../../store"
 
 const isNotEmpty = (value: string) => value.trim().length > 0
 
@@ -20,13 +20,13 @@ type TComponentProps = {
 }
 const userApi = new UserApi()
 const authApi = new AuthApi()
-const { actions } = userSlice
+const { actions: USER } = userSlice
 
 const UpdateProfileForm: FC<TComponentProps> = ({
   setIsAvatarModalOpen,
   setIsPasswordModalOpen,
 }) => {
-  const { user } = store.getState()
+  const { item: user } = useSelector((state: TState) => state.user)
   const { notification } = App.useApp()
   const dispatch = useDispatch()
   const navigateTo = useNavigate()
@@ -48,7 +48,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
       try {
         const response = await userApi.updateProfile(values)
         if (response) {
-          dispatch(actions.setUser(response))
+          dispatch(USER.SET_USER_ITEM(response))
         }
       } catch (e) {
         if (e instanceof Error) {
@@ -72,7 +72,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
     try {
       authApi.logout().then(response => {
         if (response) {
-          dispatch(actions.deleteUser())
+          dispatch(USER.INIT_STATE())
           setCookie("login", "true", { expires: -1 })
           navigateTo(generatePath("/"))
         }

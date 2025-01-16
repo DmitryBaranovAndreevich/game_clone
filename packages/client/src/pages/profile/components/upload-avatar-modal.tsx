@@ -11,7 +11,7 @@ type TComponentProps = {
 }
 
 const userApi = new UserApi()
-const { actions } = userSlice
+const { actions: USER } = userSlice
 
 const UploadAvatarModal: FC<TComponentProps> = ({
   isAvatarModalOpen,
@@ -44,7 +44,7 @@ const UploadAvatarModal: FC<TComponentProps> = ({
           userApi.getUser().then(response => {
             const userData = response
             if (userData) {
-              dispatch(actions.setUser(userData))
+              dispatch(USER.SET_USER_ITEM(userData))
             }
           })
         } catch (e) {

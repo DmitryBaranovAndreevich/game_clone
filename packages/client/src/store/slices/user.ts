@@ -1,16 +1,38 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { TUser } from "../../services/api/user-api"
 
-type TUserState = TUser | null
+type TLoadStatus = "loading" | "success" | "failed"
 
-const initialState = null satisfies TUserState as TUserState
+export type TUserState = {
+  item: TUser | null
+  status: TLoadStatus | "init"
+}
+
+const initialState: TUserState = {
+  item: null,
+  status: "init",
+}
 
 const userSlice = createSlice({
-  name: "user",
+  name: "USER",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<TUser>) => (state = action.payload),
-    deleteUser: () => null,
+    INIT_STATE: state => {
+      state.item = null
+      state.status = "init"
+    },
+    LOADING: state => {
+      state.status = "loading"
+    },
+    SUCCESS: state => {
+      state.status = "success"
+    },
+    FAILED: state => {
+      state.status = "failed"
+    },
+    SET_USER_ITEM: (state, action: PayloadAction<TUser>) => {
+      state.item = action.payload
+    },
   },
 })
 

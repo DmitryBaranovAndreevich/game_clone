@@ -13,7 +13,7 @@ import userSlice from "../../store/slices/user"
 type TRegisterForm = TRegisterRequestParams & { confirmPassword: string }
 const registerApi = new RegisterAPI()
 const userApi = new UserApi()
-const { actions } = userSlice
+const { actions: USER } = userSlice
 
 const Register = () => {
   const dispatch = useDispatch()
@@ -33,13 +33,18 @@ const Register = () => {
       const registerResponse = await registerApi.create({ password, ...rest })
       if (registerResponse) {
         try {
+          dispatch(USER.LOADING())
+
           userApi.getUser().then(response => {
             const userData = response
             if (userData) {
-              dispatch(actions.setUser(userData))
+              dispatch(USER.SUCCESS())
+              dispatch(USER.SET_USER_ITEM(userData))
             }
           })
         } catch (e) {
+          dispatch(USER.FAILED())
+
           if (e instanceof Error) {
             console.log(e.message)
           }

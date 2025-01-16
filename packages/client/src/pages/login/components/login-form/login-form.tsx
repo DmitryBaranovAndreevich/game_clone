@@ -10,7 +10,7 @@ import store from "../../../../store"
 
 const REGISTER_PAGE = "/register"
 const userApi = new UserApi()
-const { actions } = userSlice
+const { actions: USER } = userSlice
 
 export const LoginForm = () => {
   const dispatch = useDispatch()
@@ -23,13 +23,18 @@ export const LoginForm = () => {
       const response = await loginApiInstance.login(value)
       if (response) {
         try {
+          dispatch(USER.LOADING())
+
           userApi.getUser().then(response => {
             const userData = response
             if (userData) {
-              dispatch(actions.setUser(userData))
+              dispatch(USER.SUCCESS())
+              dispatch(USER.SET_USER_ITEM(userData))
             }
           })
         } catch (e) {
+          dispatch(USER.FAILED())
+
           if (e instanceof Error) {
             console.log(e.message)
           }
@@ -42,13 +47,18 @@ export const LoginForm = () => {
         const { user } = store.getState()
         if (user === null) {
           try {
+            dispatch(USER.LOADING())
+
             userApi.getUser().then(response => {
               const userData = response
               if (userData) {
-                dispatch(actions.setUser(userData))
+                dispatch(USER.SUCCESS())
+                dispatch(USER.SET_USER_ITEM(userData))
               }
             })
           } catch (e) {
+            dispatch(USER.FAILED())
+
             if (e instanceof Error) {
               console.log(e.message)
             }
