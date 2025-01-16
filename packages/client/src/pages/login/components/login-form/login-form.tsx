@@ -5,9 +5,9 @@ import { generatePath, useNavigate } from "react-router-dom"
 import styles from "./login-form.module.css"
 import { getFormRules } from "../../../../components"
 import { UserApi } from "../../../../services/api/user-api"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import userSlice from "../../../../store/slices/user"
-import store from "../../../../store"
+import { TState } from "../../../../store"
 
 const REGISTER_PAGE = "/register"
 const userApi = new UserApi()
@@ -17,6 +17,7 @@ export const LoginForm = () => {
   const { passwordFormRules, requiredFieldRule, userLoginFormRules } =
     getFormRules()
   const dispatch = useDispatch()
+  const { item: user } = useSelector((state: TState) => state.user)
   const { notification } = App.useApp()
   const navigateTo = useNavigate()
   const redirect = useRedirect()
@@ -47,7 +48,6 @@ export const LoginForm = () => {
       }
     } catch (e) {
       if (e instanceof Error && e.message === "User already in system") {
-        const { user } = store.getState()
         if (user === null) {
           try {
             dispatch(USER.LOADING())

@@ -80,7 +80,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
     try {
       authApi.logout().then(response => {
         if (response) {
-          dispatch(USER.INIT_STATE())
+          dispatch(USER.SET_INIT_STATE())
           setCookie("login", "true", { expires: -1 })
           navigateTo(generatePath("/"))
         }

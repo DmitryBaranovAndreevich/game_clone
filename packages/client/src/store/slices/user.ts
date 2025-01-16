@@ -17,10 +17,6 @@ const userSlice = createSlice({
   name: "USER",
   initialState,
   reducers: {
-    INIT_STATE: state => {
-      state.item = null
-      state.status = "init"
-    },
     LOADING: state => {
       state.status = "loading"
     },
@@ -32,6 +28,10 @@ const userSlice = createSlice({
     },
     SET_USER_ITEM: (state, action: PayloadAction<TUser>) => {
       state.item = action.payload
+    },
+    SET_INIT_STATE: state => {
+      state.item = null
+      state.status = "init"
     },
   },
 })
