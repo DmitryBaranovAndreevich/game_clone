@@ -6,7 +6,7 @@ import {
 } from "@ant-design/icons"
 import { Flex, Layout, Switch } from "antd"
 import { Link } from "react-router-dom"
-import { withAuth } from "../withAuth"
+import { withAuth } from "../auth"
 
 const layoutStyle = {
   margin: "0",
