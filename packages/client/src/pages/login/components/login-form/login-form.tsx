@@ -3,6 +3,7 @@ import { loginApiInstance } from "../../login-api"
 import { useRedirect } from "./useRedirect"
 import { generatePath, useNavigate } from "react-router-dom"
 import styles from "./login-form.module.css"
+import { getFormRules } from "../../../../components"
 import { UserApi } from "../../../../services/api/user-api"
 import { useDispatch } from "react-redux"
 import userSlice from "../../../../store/slices/user"
@@ -13,6 +14,8 @@ const userApi = new UserApi()
 const { actions: USER } = userSlice
 
 export const LoginForm = () => {
+  const { passwordFormRules, requiredFieldRule, userLoginFormRules } =
+    getFormRules()
   const dispatch = useDispatch()
   const { notification } = App.useApp()
   const navigateTo = useNavigate()
@@ -86,10 +89,16 @@ export const LoginForm = () => {
         form={form}
         className={styles.form}
         onFinish={onLogin}>
-        <Form.Item label={"Login"} name={"login"}>
+        <Form.Item
+          label={"Login"}
+          name={"login"}
+          rules={[requiredFieldRule, userLoginFormRules]}>
           <Input placeholder={"input login"} className={styles.input} />
         </Form.Item>
-        <Form.Item label={"Password"} name={"password"}>
+        <Form.Item
+          label={"Password"}
+          name={"password"}
+          rules={[passwordFormRules, requiredFieldRule]}>
           <Input
             placeholder={"input password"}
             className={styles.input}

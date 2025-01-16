@@ -25,7 +25,7 @@ const Profile: FC = () => {
         state: { from: location },
       })
     }
-  }, [isLogin])
+  }, [isLogin, location, navigateTo])
 
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false)
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)

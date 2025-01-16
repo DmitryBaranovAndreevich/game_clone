@@ -7,6 +7,7 @@ import { AuthApi } from "../../../services/api/auth-api"
 import { setCookie } from "../../../utils"
 import { CrazyCrackerIcon } from "../../../assets/images/image/image-black-bg"
 import { BASE_URL } from "../../../constants"
+import { getFormRules } from "../../../components"
 import styles from "../../register/register.module.css"
 import { useDispatch, useSelector } from "react-redux"
 import userSlice from "../../../store/slices/user"
@@ -26,6 +27,13 @@ const UpdateProfileForm: FC<TComponentProps> = ({
   setIsAvatarModalOpen,
   setIsPasswordModalOpen,
 }) => {
+  const {
+    userNameFormRules,
+    requiredFieldRule,
+    userLoginFormRules,
+    emailFormRule,
+    phoneFormRule,
+  } = getFormRules()
   const { item: user } = useSelector((state: TState) => state.user)
   const { notification } = App.useApp()
   const dispatch = useDispatch()
@@ -41,7 +49,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
       email: user?.email || "",
       phone: user?.phone || "",
     })
-  }, [user])
+  }, [updateProfileForm, user])
 
   const updateProfileHandler = async (values: TUpdateProfileRequest) => {
     if (Object.values(values).every(isNotEmpty)) {
@@ -113,7 +121,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
             <Form.Item
               initialValue={user?.first_name || ""}
               style={{ margin: "0" }}
-              rules={[{ pattern: /[A-ZА-ЯЁ]{1}[a-zа-яё-]/, message: "" }]}
+              rules={[userNameFormRules, requiredFieldRule]}
               label={"Name"}
               key={"first_name"}
               name={"first_name"}>
@@ -122,7 +130,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
             <Form.Item
               initialValue={user?.second_name || ""}
               style={{ margin: "0" }}
-              rules={[{ pattern: /[A-ZА-ЯЁ]{1}[a-zа-яё-]/, message: "" }]}
+              rules={[userNameFormRules, requiredFieldRule]}
               label={"Lastname"}
               key={"second_name"}
               name={"second_name"}>
@@ -131,7 +139,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
             <Form.Item
               initialValue={user?.display_name || ""}
               style={{ margin: "0" }}
-              rules={[{ pattern: /[A-ZА-ЯЁ]{1}[a-zа-яё-]/, message: "" }]}
+              rules={[userNameFormRules, requiredFieldRule]}
               label={"Display name"}
               key={"display_name"}
               name={"display_name"}>
@@ -145,9 +153,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
             <Form.Item
               initialValue={user?.login || ""}
               style={{ margin: "0" }}
-              rules={[
-                { pattern: /(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}/, message: "" },
-              ]}
+              rules={[requiredFieldRule, userLoginFormRules]}
               label={"Login"}
               key={"login"}
               name={"login"}>
@@ -156,13 +162,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
             <Form.Item
               initialValue={user?.email || ""}
               style={{ margin: "0" }}
-              rules={[
-                {
-                  pattern:
-                    /[a-zA-Z0-9_-]{1,}@{1}[a-zA-Z]{1,}[.]{1}[a-zA-Z]{1,}/,
-                  message: "",
-                },
-              ]}
+              rules={[requiredFieldRule, emailFormRule]}
               label={"Email"}
               key={"email"}
               name={"email"}>
@@ -171,7 +171,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
             <Form.Item
               initialValue={user?.phone || ""}
               style={{ margin: "0" }}
-              rules={[{ pattern: /[+]{0,1}[0-9]{10,15}/, message: "" }]}
+              rules={[phoneFormRule, requiredFieldRule]}
               label={"Phone"}
               key={"phone"}
               name={"phone"}>
