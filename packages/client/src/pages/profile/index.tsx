@@ -1,11 +1,10 @@
-import { FC, useEffect, useState } from "react"
+import { FC, useState } from "react"
 import { Layout } from "antd"
-import { getCookie } from "../../utils"
-import { generatePath, useLocation, useNavigate } from "react-router-dom"
 import Sidebar from "../../components/sidebar"
 import UpdateProfileForm from "./components/update-profile-form"
 import UpdatePasswordModal from "./components/update-password-modal"
 import UploadAvatarModal from "./components/upload-avatar-modal"
+import { withAuth } from "../../components"
 
 const layoutStyle = {
   height: "100vh",
@@ -15,18 +14,6 @@ const layoutStyle = {
 }
 
 const Profile: FC = () => {
-  const navigateTo = useNavigate()
-  const location = useLocation()
-  const isLogin = getCookie("login")
-
-  useEffect(() => {
-    if (!isLogin) {
-      navigateTo(generatePath("/login"), {
-        state: { from: location },
-      })
-    }
-  }, [isLogin, location, navigateTo])
-
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false)
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
 
@@ -53,4 +40,4 @@ const Profile: FC = () => {
   )
 }
 
-export default Profile
+export default withAuth(Profile)

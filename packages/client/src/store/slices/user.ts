@@ -1,39 +1,84 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { TUser } from "../../services/api/user-api"
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { TUser, UserApi } from "../../services/api/user-api"
 
-type TLoadStatus = "loading" | "success" | "failed"
+const fetchUserInfo = createAsyncThunk("user/fetchUserInfo", async () => {
+  const userApi = new UserApi()
+
+  try {
+    const response = await userApi.getUser()
+    return response
+  } catch (e) {
+    if (e instanceof Error) {
+      console.log(e.message)
+    }
+  }
+})
+
+type TLoadStatus = "pending" | "success" | "error"
 
 export type TUserState = {
-  item: TUser | null
+  info: TUser | null
   status: TLoadStatus | "init"
 }
 
-const initialState: TUserState = {
-  item: null,
+const initialState = {
+  info: null,
   status: "init",
-}
+} satisfies TUserState as TUserState
 
 const userSlice = createSlice({
-  name: "USER",
+  name: "user",
   initialState,
   reducers: {
-    LOADING: state => {
-      state.status = "loading"
+    setUserStatusPending: state => {
+      state.status = "pending"
     },
-    SUCCESS: state => {
+    setUserStatusSuccess: state => {
       state.status = "success"
     },
-    FAILED: state => {
-      state.status = "failed"
+    setUserStatusError: state => {
+      state.status = "error"
     },
-    SET_USER_ITEM: (state, action: PayloadAction<TUser>) => {
-      state.item = action.payload
+    setUserInfo: (state, action: PayloadAction<TUser>) => {
+      state.info = action.payload
     },
-    SET_INIT_STATE: state => {
-      state.item = null
+    setInitState: state => {
+      state.info = null
       state.status = "init"
     },
   },
+  extraReducers: builder => {
+    builder
+      .addCase(fetchUserInfo.pending, state => {
+        state.status = "pending"
+      })
+      .addCase(fetchUserInfo.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.info = action.payload
+        }
+        state.status = "success"
+      })
+      .addCase(fetchUserInfo.rejected, state => {
+        state.status = "error"
+      })
+  },
 })
 
-export default userSlice
+const { actions, reducer: userReducer } = userSlice
+const {
+  setUserStatusPending,
+  setUserStatusSuccess,
+  setUserStatusError,
+  setUserInfo,
+  setInitState,
+} = actions
+
+export {
+  setUserStatusPending,
+  setUserStatusSuccess,
+  setUserStatusError,
+  setUserInfo,
+  setInitState,
+  fetchUserInfo,
+}
+export default userReducer

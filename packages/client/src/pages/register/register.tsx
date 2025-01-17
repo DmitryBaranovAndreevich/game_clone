@@ -7,17 +7,14 @@ import { setCookie } from "../../utils"
 import { generatePath, useNavigate } from "react-router-dom"
 import { onlyWithOutAuth } from "../../components"
 import styles from "./register.module.css"
-import { useDispatch } from "react-redux"
-import { UserApi } from "../../services/api/user-api"
-import userSlice from "../../store/slices/user"
+import { useAppDispatch } from "../../store"
+import { fetchUserInfo } from "../../store/slices/user"
 
 type TRegisterForm = TRegisterRequestParams & { confirmPassword: string }
 const registerApi = new RegisterAPI()
-const userApi = new UserApi()
-const { actions: USER } = userSlice
 
 const Register = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const { notification } = App.useApp()
   const navigateTo = useNavigate()
   const [form] = Form.useForm<TRegisterForm>()
@@ -33,23 +30,7 @@ const Register = () => {
       }
       const registerResponse = await registerApi.create({ password, ...rest })
       if (registerResponse) {
-        try {
-          dispatch(USER.LOADING())
-
-          userApi.getUser().then(response => {
-            const userData = response
-            if (userData) {
-              dispatch(USER.SUCCESS())
-              dispatch(USER.SET_USER_ITEM(userData))
-            }
-          })
-        } catch (e) {
-          dispatch(USER.FAILED())
-
-          if (e instanceof Error) {
-            console.log(e.message)
-          }
-        }
+        dispatch(fetchUserInfo())
 
         setCookie("login", "true", { expires: 1200 })
         navigateTo(generatePath("/"))

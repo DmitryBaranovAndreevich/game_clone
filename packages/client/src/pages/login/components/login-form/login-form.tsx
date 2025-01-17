@@ -4,20 +4,16 @@ import { useRedirect } from "./useRedirect"
 import { generatePath, useNavigate } from "react-router-dom"
 import styles from "./login-form.module.css"
 import { getFormRules } from "../../../../components"
-import { UserApi } from "../../../../services/api/user-api"
-import { useDispatch, useSelector } from "react-redux"
-import userSlice from "../../../../store/slices/user"
-import { TState } from "../../../../store"
+import { fetchUserInfo } from "../../../../store/slices/user"
+import { useAppDispatch, useAppSelector } from "../../../../store"
 
 const REGISTER_PAGE = "/register"
-const userApi = new UserApi()
-const { actions: USER } = userSlice
 
 export const LoginForm = () => {
+  const dispatch = useAppDispatch()
   const { passwordFormRules, requiredFieldRule, userLoginFormRules } =
     getFormRules()
-  const dispatch = useDispatch()
-  const { item: user } = useSelector((state: TState) => state.user)
+  const { info: userInfo } = useAppSelector(state => state.user)
   const { notification } = App.useApp()
   const navigateTo = useNavigate()
   const redirect = useRedirect()
@@ -26,46 +22,14 @@ export const LoginForm = () => {
     try {
       const response = await loginApiInstance.login(value)
       if (response) {
-        try {
-          dispatch(USER.LOADING())
-
-          userApi.getUser().then(response => {
-            const userData = response
-            if (userData) {
-              dispatch(USER.SUCCESS())
-              dispatch(USER.SET_USER_ITEM(userData))
-            }
-          })
-        } catch (e) {
-          dispatch(USER.FAILED())
-
-          if (e instanceof Error) {
-            console.log(e.message)
-          }
-        }
+        dispatch(fetchUserInfo())
 
         redirect()
       }
     } catch (e) {
       if (e instanceof Error && e.message === "User already in system") {
-        if (user === null) {
-          try {
-            dispatch(USER.LOADING())
-
-            userApi.getUser().then(response => {
-              const userData = response
-              if (userData) {
-                dispatch(USER.SUCCESS())
-                dispatch(USER.SET_USER_ITEM(userData))
-              }
-            })
-          } catch (e) {
-            dispatch(USER.FAILED())
-
-            if (e instanceof Error) {
-              console.log(e.message)
-            }
-          }
+        if (userInfo === null) {
+          dispatch(fetchUserInfo())
         }
 
         redirect()
