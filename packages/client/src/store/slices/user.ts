@@ -64,14 +64,13 @@ const userSlice = createSlice({
   },
 })
 
-const { actions, reducer: userReducer } = userSlice
 const {
   setUserStatusPending,
   setUserStatusSuccess,
   setUserStatusError,
   setUserInfo,
   setInitState,
-} = actions
+} = userSlice.actions
 
 export {
   setUserStatusPending,
@@ -81,4 +80,4 @@ export {
   setInitState,
   fetchUserInfo,
 }
-export default userReducer
+export default userSlice.reducer
