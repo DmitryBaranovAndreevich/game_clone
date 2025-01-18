@@ -1,8 +1,9 @@
-import { Typography, Flex, List } from "antd"
+import { Typography, Flex, List, Button } from "antd"
 import styles from "./forum.module.css"
-import TopicItem from "./components/topic-item"
+import Topic from "../../components/topic"
+import { Link } from "react-router-dom"
 
-const items = [
+const topics = [
   { theme: "Theme 1", replies: 222 },
   { theme: "Theme 2", replies: 233 },
   { theme: "Theme 3", replies: 344 },
@@ -14,7 +15,7 @@ const items = [
 
 const Forum = () => {
   return (
-    <Flex vertical align={"center"} gap={24} className={styles.scorePage}>
+    <Flex vertical align={"center"} gap={24} className={styles.forumPage}>
       <Typography.Title level={3}>Forum</Typography.Title>
 
       <Flex className={styles.headers} justify="space-between">
@@ -25,14 +26,20 @@ const Forum = () => {
       <List
         grid={{ gutter: 16, column: 1 }}
         className={styles.list}
-        dataSource={items}
-        renderItem={item => (
+        dataSource={topics}
+        renderItem={topic => (
           <List.Item>
-            <TopicItem item={item} />
+            <Link to="/forum/:TopicId">
+              <Topic topic={topic} />
+            </Link>
           </List.Item>
         )}
       />
-      <Flex className={styles.headers}>Add topic</Flex>
+      <Flex className={styles.headers}>
+        <Link to="/create-topic">
+          <Button>Add topic</Button>
+        </Link>
+      </Flex>
     </Flex>
   )
 }

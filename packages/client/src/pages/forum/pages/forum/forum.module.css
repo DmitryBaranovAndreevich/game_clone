@@ -1,24 +1,12 @@
-.scorePage {
+.forumPage {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
 }
 
 .headers {
-  width: 50%;
+  width: 60%;
   padding: 0 28px;
-}
-
-.score {
-  width: 50%;
-  font-size: 25px;
-}
-
-.sideCrazyCrackerIcon {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  object-fit: contain;
 }
 
 .button {
@@ -27,7 +15,7 @@
 }
 
 .list {
-  width: 50%;
+  width: 60%;
   overflow-y: auto;
   scrollbar-width: none; /* For Firefox */
   -ms-overflow-style: none; /* For Internet Explorer and Edge */

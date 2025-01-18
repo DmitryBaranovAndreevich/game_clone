@@ -1,0 +1,17 @@
+.avatar {
+  margin-right: 24px;
+}
+
+.post {
+  border: 1px solid white;
+}
+
+.scrollContainer {
+  max-height: 70vh;
+  overflow-y: auto;
+  width: 60%;
+}
+
+.bottomActions {
+  width: 60%;
+}
