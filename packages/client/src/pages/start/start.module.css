@@ -1,0 +1,33 @@
+.mainLayout {
+  height: 100vh;
+  background: #000;
+}
+
+.layout {
+  flex-direction: row;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-left: 80px;
+  background: #000;
+}
+
+.image {
+  max-width: 100%;
+  margin-bottom: 23px;
+}
+
+.customText {
+  color: #fff !important;
+  font-size: 20px !important;
+  border: none !important;
+  font-weight: 400 !important;
+  text-align: center !important;
+  font-family: "Michroma", sans-serif !important;
+  background: transparent !important;
+  cursor: pointer !important;
+}

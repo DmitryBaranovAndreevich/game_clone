@@ -5,6 +5,7 @@ import { TRegisterRequestParams } from "./register-types"
 import { RegisterAPI } from "./register-api"
 import { setCookie } from "../../utils"
 import { generatePath, useNavigate } from "react-router-dom"
+import { onlyWithOutAuth } from "../../components"
 import styles from "./register.module.css"
 
 type TRegisterForm = TRegisterRequestParams & { confirmPassword: string }
@@ -56,4 +57,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default onlyWithOutAuth(Register)

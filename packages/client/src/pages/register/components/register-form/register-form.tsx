@@ -7,7 +7,11 @@ export const RegisterForm = () => {
     <div className={styles.form}>
       {REGISTER_FOR_FIELDS.map(el => {
         return (
-          <Form.Item label={el.label} name={el.value} key={el.value}>
+          <Form.Item
+            label={el.label}
+            name={el.value}
+            key={el.value}
+            rules={el.rules}>
             <Input
               placeholder={el.label.toLocaleLowerCase()}
               className={styles.input}

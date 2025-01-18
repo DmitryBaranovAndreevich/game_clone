@@ -2,10 +2,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import {
   Leaderboard,
   LoginPage,
-  NavigationPage,
   NonFoundPage,
+  Profile,
   RegisterPage,
   ServerErrorPage,
+  StartPage,
   ForumPage,
   TopicPage,
   CreateTopicPage,
@@ -15,10 +16,11 @@ const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<NavigationPage />} />
+        <Route path="/" element={<StartPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/forum" element={<ForumPage />} />
         <Route path="/forum/:TopicId" element={<TopicPage />} />
         <Route path="/create-topic" element={<CreateTopicPage />} />
