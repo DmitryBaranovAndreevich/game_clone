@@ -51,8 +51,8 @@ const TopicPage = () => {
         align={"center"}
         gap={24}
         className={styles.scrollContainer}>
-        {messages.map(message => (
-          <PostMessage message={message} />
+        {messages.map((message, index) => (
+          <PostMessage key={index} message={message} />
         ))}
       </Flex>
       <Flex className={styles.bottomActions}>
