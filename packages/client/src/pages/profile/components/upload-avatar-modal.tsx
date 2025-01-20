@@ -1,21 +1,20 @@
 import { FC, useState } from "react"
 import { Flex, GetProp, Modal, Upload, UploadProps } from "antd"
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
-import { TUser, UserApi } from "../../../services/api/user-api"
+import { fetchUserInfo } from "../../../store/slices/user"
+import { useAppDispatch } from "../../../store"
 
 type TComponentProps = {
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>
   isAvatarModalOpen: boolean
   setIsAvatarModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const userApi = new UserApi()
-
 const UploadAvatarModal: FC<TComponentProps> = ({
-  setUser,
   isAvatarModalOpen,
   setIsAvatarModalOpen,
 }) => {
+  const dispatch = useAppDispatch()
+
   const [loading, setLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState<string>()
 
@@ -37,12 +36,7 @@ const UploadAvatarModal: FC<TComponentProps> = ({
         setLoading(false)
         setImageUrl(url)
 
-        userApi.getUser().then(response => {
-          const userData = response
-          if (userData) {
-            setUser(userData as TUser)
-          }
-        })
+        dispatch(fetchUserInfo())
       })
     }
   }

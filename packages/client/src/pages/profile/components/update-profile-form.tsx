@@ -2,23 +2,17 @@ import { FC, useEffect } from "react"
 import { generatePath, useNavigate } from "react-router-dom"
 import { App, Avatar, Button, Col, Flex, Form, Input, Row } from "antd"
 import { UserOutlined } from "@ant-design/icons"
-import {
-  TUpdateProfileRequest,
-  TUser,
-  UserApi,
-} from "../../../services/api/user-api"
+import { TUpdateProfileRequest, UserApi } from "../../../services/api/user-api"
 import { AuthApi } from "../../../services/api/auth-api"
 import { setCookie } from "../../../utils"
 import { CrazyCrackerIcon } from "../../../assets/images/image/image-black-bg"
 import { BASE_URL } from "../../../constants"
 import { getFormRules } from "../../../components"
 import styles from "../../register/register.module.css"
-
-const isNotEmpty = (value: string) => value.trim().length > 0
+import { setInitState, setUserInfo } from "../../../store/slices/user"
+import { useAppDispatch, useAppSelector } from "../../../store"
 
 type TComponentProps = {
-  user: TUser | null
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>
   setIsAvatarModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   setIsPasswordModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -26,8 +20,6 @@ const userApi = new UserApi()
 const authApi = new AuthApi()
 
 const UpdateProfileForm: FC<TComponentProps> = ({
-  user,
-  setUser,
   setIsAvatarModalOpen,
   setIsPasswordModalOpen,
 }) => {
@@ -38,32 +30,32 @@ const UpdateProfileForm: FC<TComponentProps> = ({
     emailFormRule,
     phoneFormRule,
   } = getFormRules()
+  const { info: userInfo } = useAppSelector(state => state.user)
   const { notification } = App.useApp()
+  const dispatch = useAppDispatch()
   const navigateTo = useNavigate()
   const [updateProfileForm] = Form.useForm<TUpdateProfileRequest>()
 
   useEffect(() => {
     updateProfileForm.setFieldsValue({
-      first_name: user?.first_name || "",
-      second_name: user?.second_name || "",
-      display_name: user?.display_name || "",
-      login: user?.login || "",
-      email: user?.email || "",
-      phone: user?.phone || "",
+      first_name: userInfo?.first_name || "",
+      second_name: userInfo?.second_name || "",
+      display_name: userInfo?.display_name || "",
+      login: userInfo?.login || "",
+      email: userInfo?.email || "",
+      phone: userInfo?.phone || "",
     })
-  }, [updateProfileForm, user])
+  }, [updateProfileForm, userInfo])
 
   const updateProfileHandler = async (values: TUpdateProfileRequest) => {
-    if (Object.values(values).every(isNotEmpty)) {
-      try {
-        const response = await userApi.updateProfile(values)
-        if (response) {
-          setUser(response as TUser)
-        }
-      } catch (e) {
-        if (e instanceof Error) {
-          notification.error({ message: e.message, placement: "bottomRight" })
-        }
+    try {
+      const response = await userApi.updateProfile(values)
+      if (response) {
+        dispatch(setUserInfo(response))
+      }
+    } catch (e) {
+      if (e instanceof Error) {
+        notification.error({ message: e.message, placement: "bottomRight" })
       }
     }
   }
@@ -82,6 +74,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
     try {
       authApi.logout().then(response => {
         if (response) {
+          dispatch(setInitState())
           setCookie("login", "true", { expires: -1 })
           navigateTo(generatePath("/"))
         }
@@ -120,7 +113,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
             style={{ maxWidth: "350px", width: "100%" }}
             gap="large">
             <Form.Item
-              initialValue={user?.first_name || ""}
+              initialValue={userInfo?.first_name || ""}
               style={{ margin: "0" }}
               rules={[userNameFormRules, requiredFieldRule]}
               label={"Name"}
@@ -129,7 +122,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
               <Input disabled size="large" type="text" placeholder="Name" />
             </Form.Item>
             <Form.Item
-              initialValue={user?.second_name || ""}
+              initialValue={userInfo?.second_name || ""}
               style={{ margin: "0" }}
               rules={[userNameFormRules, requiredFieldRule]}
               label={"Lastname"}
@@ -138,7 +131,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
               <Input disabled size="large" type="text" placeholder="Lastname" />
             </Form.Item>
             <Form.Item
-              initialValue={user?.display_name || ""}
+              initialValue={userInfo?.display_name || ""}
               style={{ margin: "0" }}
               rules={[userNameFormRules, requiredFieldRule]}
               label={"Display name"}
@@ -152,7 +145,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
               />
             </Form.Item>
             <Form.Item
-              initialValue={user?.login || ""}
+              initialValue={userInfo?.login || ""}
               style={{ margin: "0" }}
               rules={[requiredFieldRule, userLoginFormRules]}
               label={"Login"}
@@ -161,7 +154,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
               <Input disabled size="large" type="text" placeholder="Login" />
             </Form.Item>
             <Form.Item
-              initialValue={user?.email || ""}
+              initialValue={userInfo?.email || ""}
               style={{ margin: "0" }}
               rules={[requiredFieldRule, emailFormRule]}
               label={"Email"}
@@ -170,7 +163,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
               <Input disabled size="large" type="text" placeholder="Email" />
             </Form.Item>
             <Form.Item
-              initialValue={user?.phone || ""}
+              initialValue={userInfo?.phone || ""}
               style={{ margin: "0" }}
               rules={[phoneFormRule, requiredFieldRule]}
               label={"Phone"}
@@ -213,7 +206,11 @@ const UpdateProfileForm: FC<TComponentProps> = ({
               onClick={() => {
                 setIsAvatarModalOpen(true)
               }}
-              src={user?.avatar ? `${BASE_URL}/resources${user.avatar}` : null}
+              src={
+                userInfo?.avatar
+                  ? `${BASE_URL}/resources${userInfo.avatar}`
+                  : null
+              }
             />
             <Button
               size="large"

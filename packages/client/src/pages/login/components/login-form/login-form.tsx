@@ -4,12 +4,16 @@ import { useRedirect } from "./useRedirect"
 import { generatePath, useNavigate } from "react-router-dom"
 import styles from "./login-form.module.css"
 import { getFormRules } from "../../../../components"
+import { fetchUserInfo } from "../../../../store/slices/user"
+import { useAppDispatch, useAppSelector } from "../../../../store"
 
 const REGISTER_PAGE = "/register"
 
 export const LoginForm = () => {
+  const dispatch = useAppDispatch()
   const { passwordFormRules, requiredFieldRule, userLoginFormRules } =
     getFormRules()
+  const { info: userInfo } = useAppSelector(state => state.user)
   const { notification } = App.useApp()
   const navigateTo = useNavigate()
   const redirect = useRedirect()
@@ -18,10 +22,16 @@ export const LoginForm = () => {
     try {
       const response = await loginApiInstance.login(value)
       if (response) {
+        dispatch(fetchUserInfo())
+
         redirect()
       }
     } catch (e) {
       if (e instanceof Error && e.message === "User already in system") {
+        if (userInfo === null) {
+          dispatch(fetchUserInfo())
+        }
+
         redirect()
         return
       }

@@ -3,8 +3,6 @@ import { FC } from "react"
 import { TUpdatePasswordRequest, UserApi } from "../../../services/api/user-api"
 import { getFormRules } from "../../../components"
 
-const isNotEmpty = (value: string) => value.trim().length > 0
-
 type TComponentProps = {
   isPasswordModalOpen: boolean
   setIsPasswordModalOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -19,17 +17,15 @@ const UpdatePasswordModal: FC<TComponentProps> = ({
   const { passwordFormRules, requiredFieldRule } = getFormRules()
 
   const updatePasswordHandler = async (values: TUpdatePasswordRequest) => {
-    if (Object.values(values).every(isNotEmpty)) {
-      try {
-        const response = await userApi.updatePassword(values)
-        if (response) {
-          updatePasswordForm.resetFields(["oldPassword", "newPassword"])
-          setIsPasswordModalOpen(false)
-        }
-      } catch (e) {
-        if (e instanceof Error) {
-          notification.error({ message: e.message, placement: "bottomRight" })
-        }
+    try {
+      const response = await userApi.updatePassword(values)
+      if (response) {
+        updatePasswordForm.resetFields(["oldPassword", "newPassword"])
+        setIsPasswordModalOpen(false)
+      }
+    } catch (e) {
+      if (e instanceof Error) {
+        notification.error({ message: e.message, placement: "bottomRight" })
       }
     }
   }

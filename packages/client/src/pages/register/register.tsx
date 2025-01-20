@@ -7,11 +7,14 @@ import { setCookie } from "../../utils"
 import { generatePath, useNavigate } from "react-router-dom"
 import { onlyWithOutAuth } from "../../components"
 import styles from "./register.module.css"
+import { useAppDispatch } from "../../store"
+import { fetchUserInfo } from "../../store/slices/user"
 
 type TRegisterForm = TRegisterRequestParams & { confirmPassword: string }
 const registerApi = new RegisterAPI()
 
 const Register = () => {
+  const dispatch = useAppDispatch()
   const { notification } = App.useApp()
   const navigateTo = useNavigate()
   const [form] = Form.useForm<TRegisterForm>()
@@ -27,6 +30,8 @@ const Register = () => {
       }
       const registerResponse = await registerApi.create({ password, ...rest })
       if (registerResponse) {
+        dispatch(fetchUserInfo())
+
         setCookie("login", "true", { expires: 1200 })
         navigateTo(generatePath("/"))
       }
