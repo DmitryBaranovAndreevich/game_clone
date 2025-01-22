@@ -1,0 +1,22 @@
+.avatar {
+  margin-right: 24px;
+}
+
+.topic {
+  border: 1px solid white;
+}
+
+.scrollContainer {
+  max-height: 80vh;
+  overflow-y: auto;
+  width: 60%;
+}
+
+.bottomActions {
+  width: 60%;
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
