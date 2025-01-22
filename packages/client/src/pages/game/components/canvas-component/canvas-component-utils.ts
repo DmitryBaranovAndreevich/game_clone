@@ -112,8 +112,7 @@ const drawTime = (
   ctx.fillText(`Time: ${formatTime(elapsedTime)}`, canvasWidth - 350, 80)
 }
 
-// const drawFullscreenBtn = (ctx: CanvasRenderingContext2D,   canvasWidth: number, canvasHeight: number
-// ) => {
+// const drawFullscreenBtn = (ctx: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number) => {
 //   ctx.beginPath();
 
 //   ctx.fillRect(canvasWidth - 59, canvasHeight / 2 - 18, 10, 3)

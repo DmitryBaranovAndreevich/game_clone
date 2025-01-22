@@ -14,7 +14,6 @@ export const fullscreenBtn = (canvasSize: {
 export const fullscreenHandler = (
   e: MouseEvent,
   canvasSize: { width: number; height: number },
-  canvas,
 ) => {
   const pos = {
     x: e.clientX,
@@ -25,7 +24,7 @@ export const fullscreenHandler = (
 
   const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
-      canvas.requestFullscreen().then(
+      document.documentElement.requestFullscreen().then(
         () => {},
         e => {
           console.log(e)
@@ -36,11 +35,16 @@ export const fullscreenHandler = (
     }
   }
 
-  function isIntersect(point, btn) {
-    // Координаты углов квадрата
-    const { x: btnX, y: btnY, size } = btn
+  function isIntersect(
+    point: { x: number; y: number },
+    btnArea: {
+      x: number
+      y: number
+      size: number
+    },
+  ) {
+    const { x: btnX, y: btnY, size } = btnArea
 
-    // Проверяем, находится ли точка внутри границ квадрата
     return (
       point.x >= btnX &&
       point.x <= btnX + size &&

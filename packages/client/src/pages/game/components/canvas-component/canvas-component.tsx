@@ -19,14 +19,12 @@ export const CanvasComponent = () => {
   } = state
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  // // Навешивание слушателя клик на кнопку Fullscreen
+  // // // Навешивание слушателя клик на кнопку Fullscreen
   // useEffect(() => {
-  //   if (canvasRef.current) {
-  //     canvasRef.current.addEventListener("click", (e) => {
-  //       fullscreenHandler(e, canvasSize, canvasRef.current)
-  //     })
-  //     return () => canvasRef.current?.removeEventListener("click", () => {fullscreenHandler})
-  //   }
+  //   const cb = (e: MouseEvent) => {fullscreenHandler(e, canvasSize)}
+
+  //   canvasRef.current?.addEventListener("click", cb)
+  //   return () => canvasRef.current?.removeEventListener("click", cb)
   // }, [canvasRef.current, canvasSize])
 
   // Обновление размеров холста при изменении размера окна
