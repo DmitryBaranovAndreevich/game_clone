@@ -8,6 +8,7 @@ import {
   ShipComponent,
   Timer,
 } from "./components"
+import { Sidebar } from "./components/sidebar"
 
 const Game = () => {
   const [state, setState] = useState<TGameStore>(INIT_GAME_STATE)
@@ -20,6 +21,7 @@ const Game = () => {
       <Bullet />
       <Cracker />
       <Score />
+      <Sidebar />
     </GameContext.Provider>
   )
 }
