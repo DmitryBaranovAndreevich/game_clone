@@ -130,7 +130,6 @@ export const drawGame = (state: TGameStore) => {
   drawScore(ctx, score)
 
   drawTime(ctx, elapsedTime, canvasSize.width)
-
   // Конец игры
 
   if (gameOver) {

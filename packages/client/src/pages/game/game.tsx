@@ -9,7 +9,6 @@ import {
   Timer,
 } from "./components"
 import { Sidebar } from "./components/sidebar"
-// import { FullscreenBtn } from "./components/fullScreenBtn"
 
 const Game = () => {
   const [state, setState] = useState<TGameStore>(INIT_GAME_STATE)
