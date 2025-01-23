@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react"
 import { useGameContextContext } from "../../useGameContext"
 import { drawGame } from "./canvas-component-utils"
 import { COOKIE_SIZE, SHIP_HEIGHT } from "../../game-constants"
-// import { fullscreenHandler } from "../fullScreenBtn/fullScreenBtn"
 
 let id: number | undefined
 
@@ -18,14 +17,6 @@ export const CanvasComponent = () => {
     score,
   } = state
   const canvasRef = useRef<HTMLCanvasElement>(null)
-
-  // // // Навешивание слушателя клик на кнопку Fullscreen
-  // useEffect(() => {
-  //   const cb = (e: MouseEvent) => {fullscreenHandler(e, canvasSize)}
-
-  //   canvasRef.current?.addEventListener("click", cb)
-  //   return () => canvasRef.current?.removeEventListener("click", cb)
-  // }, [canvasRef.current, canvasSize])
 
   // Обновление размеров холста при изменении размера окна
   useEffect(() => {

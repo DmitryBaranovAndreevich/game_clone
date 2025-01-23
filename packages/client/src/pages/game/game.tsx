@@ -23,7 +23,6 @@ const Game = () => {
       <Cracker />
       <Score />
       <Sidebar />
-      {/* <FullscreenBtn /> */}
     </GameContext.Provider>
   )
 }

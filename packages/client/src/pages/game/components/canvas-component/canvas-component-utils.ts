@@ -112,25 +112,6 @@ const drawTime = (
   ctx.fillText(`Time: ${formatTime(elapsedTime)}`, canvasWidth - 350, 80)
 }
 
-// const drawFullscreenBtn = (ctx: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number) => {
-//   ctx.beginPath();
-
-//   ctx.fillRect(canvasWidth - 59, canvasHeight / 2 - 18, 10, 3)
-//   ctx.fillRect(canvasWidth - 59, canvasHeight / 2 - 18, 3, 10)
-
-//   ctx.fillRect(canvasWidth - 38, canvasHeight / 2 - 18, 10, 3)
-//   ctx.fillRect(canvasWidth - 31, canvasHeight / 2 - 18, 3, 10)
-
-//   ctx.fillRect(canvasWidth - 59, canvasHeight / 2 + 9, 10, 3)
-//   ctx.fillRect(canvasWidth - 59, canvasHeight / 2 + 2, 3, 10)
-
-//   ctx.fillRect(canvasWidth - 38, canvasHeight / 2 + 9, 10, 3)
-//   ctx.fillRect(canvasWidth - 31, canvasHeight / 2 + 2, 3, 10)
-
-//   ctx.fillStyle = "white"
-//   ctx.fill()
-// }
-
 export const drawGame = (state: TGameStore) => {
   const { ctx: canvas, canvasSize, elapsedTime, gameOver, score } = state
   const ctx = canvas?.getContext("2d")
@@ -150,7 +131,6 @@ export const drawGame = (state: TGameStore) => {
 
   drawTime(ctx, elapsedTime, canvasSize.width)
 
-  // drawFullscreenBtn(ctx, canvasSize.width, canvasSize.height)
   // Конец игры
 
   if (gameOver) {
