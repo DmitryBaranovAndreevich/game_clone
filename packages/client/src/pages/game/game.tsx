@@ -9,6 +9,7 @@ import {
   Timer,
 } from "./components"
 import { Sidebar } from "./components/sidebar"
+import { PauseButton } from "./components/pauseButton"
 
 const Game = () => {
   const [state, setState] = useState<TGameStore>(INIT_GAME_STATE)
@@ -21,6 +22,7 @@ const Game = () => {
       <Bullet />
       <Cracker />
       <Score />
+      <PauseButton />
       <Sidebar />
     </GameContext.Provider>
   )

@@ -82,10 +82,11 @@ const drawBullet = (
 
 const drawCracker = (
   ctx: CanvasRenderingContext2D,
-  cookies: { x: number; y: number }[],
+  cookies: { x: number; y: number; health: number }[],
 ) => {
-  ctx.fillStyle = "brown"
   cookies.forEach(cookie => {
+    // Рисуем печеньку
+    ctx.fillStyle = "brown" // Устанавливаем цвет для печеньки перед её рисованием
     ctx.beginPath()
     ctx.arc(
       cookie.x + COOKIE_SIZE / 2,
@@ -95,13 +96,47 @@ const drawCracker = (
       Math.PI * 2,
     )
     ctx.fill()
+
+    // Рисуем здоровье печеньки
+    ctx.fillStyle = "white" // Устанавливаем цвет для текста здоровья
+    ctx.font = "16px Arial"
+    ctx.textAlign = "center"
+    ctx.textBaseline = "middle"
+    ctx.fillText(
+      `${cookie.health}`, // Текущее здоровье
+      cookie.x + COOKIE_SIZE / 2, // Центр печеньки по X
+      cookie.y + COOKIE_SIZE / 2, // Центр печеньки по Y
+    )
+    ctx.restore() // Восстанавливаем состояние контекста
   })
 }
 
-const drawScore = (ctx: CanvasRenderingContext2D, score: number) => {
+const drawScore = (
+  ctx: CanvasRenderingContext2D,
+  score: number,
+  requiredScore: number,
+) => {
+  ctx.save() // Сохраняем состояние контекста
   ctx.fillStyle = "white"
-  ctx.font = "40px Michroma "
-  ctx.fillText(`Score: ${score}`, 45, 80)
+  ctx.font = "40px Michroma"
+  ctx.textAlign = "left" // Явно задаём выравнивание текста
+  ctx.textBaseline = "top" // Явно задаём базовую линию текста
+  ctx.fillText(`Score: ${score} / ${requiredScore}`, 45, 30)
+  ctx.restore() // Восстанавливаем состояние контекста
+}
+
+const drawLevel = (
+  ctx: CanvasRenderingContext2D,
+  level: number,
+  canvasWidth: number,
+) => {
+  ctx.save()
+  ctx.fillStyle = "white"
+  ctx.font = "40px Michroma"
+  ctx.textAlign = "center"
+  ctx.textBaseline = "top"
+  ctx.fillText(`Level: ${level}`, canvasWidth / 2, 30)
+  ctx.restore()
 }
 
 const drawTime = (
@@ -109,7 +144,13 @@ const drawTime = (
   elapsedTime: number,
   canvasWidth: number,
 ) => {
-  ctx.fillText(`Time: ${formatTime(elapsedTime)}`, canvasWidth - 350, 80)
+  ctx.save()
+  ctx.fillStyle = "white"
+  ctx.font = "40px Michroma"
+  ctx.textAlign = "right"
+  ctx.textBaseline = "top"
+  ctx.fillText(`Time: ${formatTime(elapsedTime)}`, canvasWidth - 50, 30)
+  ctx.restore()
 }
 
 export const drawGame = (state: TGameStore) => {
@@ -127,7 +168,9 @@ export const drawGame = (state: TGameStore) => {
 
   drawCracker(ctx, state.cookies)
 
-  drawScore(ctx, score)
+  drawLevel(ctx, state.currentLevel, canvasSize.width)
+
+  drawScore(ctx, score, state.requiredHits)
 
   drawTime(ctx, elapsedTime, canvasSize.width)
   // Конец игры

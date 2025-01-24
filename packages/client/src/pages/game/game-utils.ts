@@ -9,10 +9,15 @@ export type TGameStore = {
   }
   canvasSize: { width: number; height: number }
   gameOver: boolean
+  initialTime: number
+  currentLevel: number
+  showTime: boolean
+  isPaused: boolean
   elapsedTime: number
+  requiredHits: number
   shipPosition: { x: number; y: number }
   bullets: { x: number; y: number }[]
-  cookies: { x: number; y: number }[]
+  cookies: { x: number; y: number; health: number }[]
   score: number
 }
 
@@ -27,6 +32,11 @@ export const INIT_GAME_STATE = {
     width: window.innerWidth || 800,
     height: window.innerHeight || 600,
   },
+  initialTime: 0,
+  currentLevel: 1,
+  requiredHits: 5,
+  isPaused: false,
+  showTime: false,
   gameOver: false,
   elapsedTime: 0,
   shipPosition: { x: 200, y: 600 },

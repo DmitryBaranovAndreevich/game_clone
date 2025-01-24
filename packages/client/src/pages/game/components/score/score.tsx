@@ -4,19 +4,23 @@ import { BULLET_HEIGHT, BULLET_WIDTH, COOKIE_SIZE } from "../../game-constants"
 
 export const Score = () => {
   const { state, setState } = useGameContextContext()
-  const { gameOver, cookies, bullets } = state
+  const { gameOver, isPaused, cookies, bullets } = state
+
   // Проверка на столкновение пуль с печеньками
   useEffect(() => {
-    if (gameOver) {
+    if (gameOver || isPaused) {
       return
     }
 
     let isChange = false
 
-    const newCookies = [...cookies]
-    let newBullets = [...bullets]
-    newBullets = newBullets.filter(bullet => {
-      const hitIndex = newCookies.findIndex(
+    const updatedCookies = [...cookies] // Копия массива печенек
+    let updatedBullets = [...bullets] // Копия массива пуль
+
+    // Фильтруем пули, обрабатывая их столкновения с печеньками
+    updatedBullets = updatedBullets.filter(bullet => {
+      // Найти индекс печеньки, с которой пересеклась пуля
+      const hitIndex = updatedCookies.findIndex(
         cookie =>
           bullet.x < cookie.x + COOKIE_SIZE &&
           bullet.x + BULLET_WIDTH > cookie.x &&
@@ -26,15 +30,29 @@ export const Score = () => {
 
       if (hitIndex !== -1) {
         isChange = true
-        setState(prev => ({ ...prev, score: prev.score + 1 }))
-        newCookies.splice(hitIndex, 1) // Удаляем печеньку
+
+        // Уменьшаем здоровье печеньки
+        updatedCookies[hitIndex].health -= 1
+
+        // Если здоровье <= 0, удаляем печеньку
+        if (updatedCookies[hitIndex].health <= 0) {
+          updatedCookies.splice(hitIndex, 1)
+          setState(prev => ({ ...prev, score: prev.score + 1 })) // Увеличиваем счёт
+        }
+
         return false // Удаляем пулю
       }
-      return true
+      return true // Пуля остаётся
     })
+
     if (isChange) {
-      setState(prev => ({ ...prev, cookies: newCookies, bullets: newBullets }))
+      setState(prev => ({
+        ...prev,
+        cookies: updatedCookies,
+        bullets: updatedBullets,
+      }))
     }
-  }, [bullets, cookies, gameOver])
+  }, [bullets, cookies, gameOver, isPaused, setState])
+
   return null
 }

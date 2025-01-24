@@ -1,28 +1,38 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { useGameContextContext } from "../../useGameContext"
 
 export const Bullet = () => {
   const { state, setState } = useGameContextContext()
-  const { gameOver, timers } = state
+  const { gameOver, isPaused } = state
+
+  // Используем useRef для управления интервалом
+  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+
   useEffect(() => {
-    if (gameOver) {
+    if (gameOver || isPaused) {
       return
     }
 
-    timers.bulletInterval = setInterval(() => {
+    // Обновление положения снарядов
+    const updateBullets = () => {
       setState(prev => ({
         ...prev,
         bullets: prev.bullets
-          .map(bullet => ({ ...bullet, y: bullet.y - 5 }))
-          .filter(bullet => bullet.y > 0),
+          .map(bullet => ({ ...bullet, y: bullet.y - 5 })) // Двигаем снаряды вверх
+          .filter(bullet => bullet.y > 0), // Убираем снаряды за пределами экрана
       }))
-    }, 20)
+    }
 
+    // Запуск интервала
+    intervalRef.current = setInterval(updateBullets, 20)
+
+    // Очистка интервала при размонтировании или окончании игры
     return () => {
-      if (timers.bulletInterval) {
-        clearInterval(timers.bulletInterval)
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+        intervalRef.current = null
       }
     }
-  }, [gameOver])
+  }, [gameOver, isPaused, setState])
   return null
 }
