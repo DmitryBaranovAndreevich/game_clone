@@ -7,6 +7,7 @@ import {
   Score,
   ShipComponent,
   Timer,
+  Star,
 } from "./components"
 
 const Game = () => {
@@ -15,6 +16,7 @@ const Game = () => {
   return (
     <GameContext.Provider value={{ state, setState }}>
       <CanvasComponent />
+      <Star />
       <Timer />
       <ShipComponent />
       <Bullet />

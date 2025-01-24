@@ -6,28 +6,28 @@ import {
   SHIP_WIDTH,
 } from "../../game-constants"
 import { TGameStore } from "../../game-utils"
-
-export const STAR_COUNT = 500
+import rocket from "../../../../assets/images/image/rocket.png"
+import cracker from "../../../../assets/images/image/cracker.png"
+import bullet from "../../../../assets/images/image/bullet.png"
 
 function drawStar(
   ctx: CanvasRenderingContext2D | null | undefined,
-  x: number,
-  y: number,
-  size: number,
-  brightness: number,
+  stars: { x: number; y: number; size: number; brightness: number }[],
 ) {
   if (!ctx) {
     return
   }
-  ctx.beginPath()
-  ctx.arc(x, y, size, 0, Math.PI * 2)
-  ctx.fillStyle = `rgba(255, 255, 255, ${brightness})`
-  ctx.fill()
+  stars.forEach(star => {
+    ctx.beginPath()
+    ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2)
+    ctx.fillStyle = `rgba(255, 255, 255, ${star.brightness})`
+    ctx.fill()
+  })
 }
 
 export function generateStarrySky(
   canvas: HTMLCanvasElement | null,
-  starCount: number,
+  stars: { x: number; y: number; size: number; brightness: number }[],
   isGameOver = false,
 ) {
   if (!canvas || isGameOver) {
@@ -41,14 +41,7 @@ export function generateStarrySky(
   }
 
   ctx.clearRect(0, 0, canvas.width, canvas.height)
-  for (let i = 0; i < starCount; i++) {
-    const x = Math.random() * canvas.width
-    const y = Math.random() * canvas.height
-    const size = Math.random() * 2 + 0.5 // Размер звезды от 0.5 до 2.5
-    const brightness = Math.random() * 0.8 + 0.2 // Яркость от 0.2 до 1
-
-    drawStar(ctx, x, y, size, brightness)
-  }
+  drawStar(ctx, stars)
 }
 
 const formatTime = (time: number) => {
@@ -61,22 +54,33 @@ const drawShip = (
   ctx: CanvasRenderingContext2D,
   shipPosition: { x: number; y: number },
 ) => {
-  ctx.fillStyle = "white"
-  ctx.beginPath()
-  ctx.moveTo(shipPosition.x + SHIP_WIDTH / 2, shipPosition.y) // Верхушка треугольника
-  ctx.lineTo(shipPosition.x, shipPosition.y + SHIP_HEIGHT) // Левая нижняя точка
-  ctx.lineTo(shipPosition.x + SHIP_WIDTH, shipPosition.y + SHIP_HEIGHT) // Правая нижняя точка
-  ctx.closePath()
-  ctx.fill()
+  const shipImage = new Image()
+  shipImage.src = rocket
+
+  ctx.drawImage(
+    shipImage,
+    shipPosition.x,
+    shipPosition.y - 20,
+    SHIP_WIDTH,
+    SHIP_HEIGHT,
+  )
 }
 
 const drawBullet = (
   ctx: CanvasRenderingContext2D,
   bullets: { x: number; y: number }[],
 ) => {
-  ctx.fillStyle = "red"
+  const bulletImage = new Image()
+  bulletImage.src = bullet
+
   bullets.forEach(bullet => {
-    ctx.fillRect(bullet.x, bullet.y, BULLET_WIDTH, BULLET_HEIGHT)
+    ctx.drawImage(
+      bulletImage,
+      bullet.x - 15,
+      bullet.y - 10,
+      BULLET_WIDTH + 30,
+      BULLET_HEIGHT + 30,
+    )
   })
 }
 
@@ -84,17 +88,17 @@ const drawCracker = (
   ctx: CanvasRenderingContext2D,
   cookies: { x: number; y: number }[],
 ) => {
-  ctx.fillStyle = "brown"
+  const crackerImage = new Image()
+  crackerImage.src = cracker
+
   cookies.forEach(cookie => {
-    ctx.beginPath()
-    ctx.arc(
-      cookie.x + COOKIE_SIZE / 2,
-      cookie.y + COOKIE_SIZE / 2,
-      COOKIE_SIZE / 2,
-      0,
-      Math.PI * 2,
+    ctx.drawImage(
+      crackerImage,
+      cookie.x - 15,
+      cookie.y - 25,
+      COOKIE_SIZE + 30,
+      COOKIE_SIZE + 50,
     )
-    ctx.fill()
   })
 }
 
@@ -119,7 +123,7 @@ export const drawGame = (state: TGameStore) => {
     return
   }
 
-  generateStarrySky(state.ctx, STAR_COUNT, gameOver)
+  generateStarrySky(state.ctx, state.stars, gameOver)
 
   drawShip(ctx, state.shipPosition)
 
