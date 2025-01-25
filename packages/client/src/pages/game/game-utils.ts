@@ -6,6 +6,8 @@ export type TGameStore = {
     bulletInterval: NodeJS.Timeout | null
     cookieGenerationInterval: NodeJS.Timeout | null
     cookieMovementInterval: NodeJS.Timeout | null
+    starGenerationInterval: NodeJS.Timeout | null
+    starMovementInterval: NodeJS.Timeout | null
   }
   canvasSize: { width: number; height: number }
   gameOver: boolean
@@ -17,6 +19,7 @@ export type TGameStore = {
   requiredHits: number
   shipPosition: { x: number; y: number }
   bullets: { x: number; y: number }[]
+  stars: { x: number; y: number; size: number; brightness: number }[]
   cookies: { x: number; y: number; health: number }[]
   score: number
 }
@@ -27,6 +30,8 @@ export const INIT_GAME_STATE = {
     bulletInterval: null,
     cookieGenerationInterval: null,
     cookieMovementInterval: null,
+    starGenerationInterval: null,
+    starMovementInterval: null,
   },
   canvasSize: {
     width: window.innerWidth || 800,
@@ -42,6 +47,7 @@ export const INIT_GAME_STATE = {
   shipPosition: { x: 200, y: 600 },
   bullets: [],
   cookies: [],
+  stars: [],
   score: 0,
 }
 

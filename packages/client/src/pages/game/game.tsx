@@ -7,6 +7,7 @@ import {
   Score,
   ShipComponent,
   Timer,
+  Star,
 } from "./components"
 import { Sidebar } from "./components/sidebar"
 import { withAuth } from "../../components"
@@ -17,6 +18,7 @@ const Game = () => {
   return (
     <GameContext.Provider value={{ state, setState }}>
       <CanvasComponent />
+      <Star />
       <Timer />
       <ShipComponent />
       <Bullet />
