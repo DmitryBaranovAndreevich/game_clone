@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from "react"
 import { Flex } from "antd"
 import { FullscreenOutlined, FullscreenExitOutlined } from "@ant-design/icons"
+import { PauseButton } from "../pauseButton"
 
 const sidebarStyle = {
   backgroundColor: "transparent",
@@ -56,6 +57,8 @@ export const Sidebar: FC = () => {
       ) : (
         <FullscreenOutlined style={iconStyle} onClick={toggleFullScreen} />
       )}
+
+      <PauseButton />
     </Flex>
   )
 }
