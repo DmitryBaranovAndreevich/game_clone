@@ -4,19 +4,21 @@ import { COOKIE_SIZE } from "../../game-constants"
 
 export const Cracker = () => {
   const { state, setState } = useGameContextContext()
-  const { gameOver, canvasSize, timers } = state
+  const { gameOver, isPaused, canvasSize, timers } = state
 
   // Генерация печенек
   useEffect(() => {
-    if (gameOver) {
+    if (gameOver || isPaused) {
       return
     }
 
     timers.cookieGenerationInterval = setInterval(() => {
       const x = Math.random() * (canvasSize.width - COOKIE_SIZE)
+      const health = Math.floor(Math.random() * 3) + 1
+
       setState(prev => ({
         ...prev,
-        cookies: [...prev.cookies, { x, y: -COOKIE_SIZE }],
+        cookies: [...prev.cookies, { x, y: -COOKIE_SIZE, health }],
       }))
     }, 2000)
 
@@ -25,11 +27,11 @@ export const Cracker = () => {
         clearInterval(timers.cookieGenerationInterval)
       }
     }
-  }, [gameOver, canvasSize.width])
+  }, [gameOver, isPaused, canvasSize.width])
 
   // Движение печенек
   useEffect(() => {
-    if (gameOver) {
+    if (gameOver || isPaused) {
       return
     }
 
@@ -47,6 +49,6 @@ export const Cracker = () => {
         clearInterval(timers.cookieMovementInterval)
       }
     }
-  }, [gameOver, canvasSize.height])
+  }, [gameOver, isPaused, canvasSize.height])
   return null
 }
