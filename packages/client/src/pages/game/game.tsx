@@ -9,7 +9,7 @@ import {
   Timer,
 } from "./components"
 import { Sidebar } from "./components/sidebar"
-import { onlyWithOutAuth } from "../../components"
+import { withAuth } from "../../components"
 
 const Game = () => {
   const [state, setState] = useState<TGameStore>(INIT_GAME_STATE)
@@ -27,4 +27,4 @@ const Game = () => {
   )
 }
 
-export default onlyWithOutAuth(Game)
+export default withAuth(Game)
