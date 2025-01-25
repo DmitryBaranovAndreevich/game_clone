@@ -9,6 +9,7 @@ import {
   Timer,
 } from "./components"
 import { Sidebar } from "./components/sidebar"
+import { withAuth } from "../../components"
 
 const Game = () => {
   const [state, setState] = useState<TGameStore>(INIT_GAME_STATE)
@@ -26,4 +27,4 @@ const Game = () => {
   )
 }
 
-export default Game
+export default withAuth(Game)

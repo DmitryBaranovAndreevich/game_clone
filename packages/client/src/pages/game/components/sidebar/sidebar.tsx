@@ -1,6 +1,7 @@
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { Flex } from "antd"
 import { FullscreenOutlined, FullscreenExitOutlined } from "@ant-design/icons"
+import { PauseButton } from "../pauseButton"
 
 const sidebarStyle = {
   backgroundColor: "transparent",
@@ -23,21 +24,31 @@ export const Sidebar: FC = () => {
     Boolean(document.fullscreenElement),
   )
 
-  const toggleFullScreen = () => {
-    if (!isFullscreen) {
-      document.documentElement.requestFullscreen().then(
-        () => {
-          setFullScreen(true)
-        },
-        e => {
-          console.log(e)
-        },
-      )
-    } else if (isFullscreen && document.exitFullscreen) {
-      document.exitFullscreen()
-      setFullScreen(false)
+  // Функция переключения полноэкранного режима
+  const toggleFullScreen = async () => {
+    try {
+      if (!isFullscreen) {
+        await document.documentElement.requestFullscreen()
+      } else if (document.exitFullscreen) {
+        await document.exitFullscreen()
+      }
+      setFullScreen(!isFullscreen)
+    } catch (e) {
+      console.error("Error toggling fullscreen mode:", e)
     }
   }
+
+  // Слежение за изменением полноэкранного режима
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setFullScreen(Boolean(document.fullscreenElement))
+    }
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange)
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange)
+    }
+  }, [])
 
   return (
     <Flex style={sidebarStyle} vertical align="center" justify="center">
@@ -46,6 +57,8 @@ export const Sidebar: FC = () => {
       ) : (
         <FullscreenOutlined style={iconStyle} onClick={toggleFullScreen} />
       )}
+
+      <PauseButton />
     </Flex>
   )
 }
