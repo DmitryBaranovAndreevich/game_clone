@@ -1,9 +1,9 @@
-import { FC, useEffect, useState } from "react"
+import { CSSProperties, FC, useEffect, useState } from "react"
 import { Flex } from "antd"
 import { FullscreenOutlined, FullscreenExitOutlined } from "@ant-design/icons"
 import { PauseButton } from "../pauseButton"
 
-const sidebarStyle = {
+const sidebarStyle: CSSProperties = {
   backgroundColor: "transparent",
   padding: "10px 0",
   width: "80px",

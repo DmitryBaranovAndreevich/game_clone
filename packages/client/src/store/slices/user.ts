@@ -1,15 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { TUser, UserApi } from "../../services/api/user-api"
 
-const fetchUserInfo = createAsyncThunk("user/fetchUserInfo", async () => {
-  const userApi = new UserApi()
+const userApi = new UserApi()
 
+const fetchUserInfo = createAsyncThunk("user/fetchUserInfo", async () => {
   try {
     const response = await userApi.getUser()
     return response
   } catch (e) {
     if (e instanceof Error) {
-      console.log(e.message)
+      throw e
     }
   }
 })

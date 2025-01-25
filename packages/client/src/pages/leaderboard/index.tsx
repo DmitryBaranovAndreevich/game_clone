@@ -1,6 +1,7 @@
 import { FC } from "react"
 import { Flex, Image, Layout, Table, TableProps } from "antd"
 import Sidebar from "../../components/sidebar"
+import { withAuth } from "../../components"
 
 const layoutStyle = {
   height: "100vh",
@@ -174,4 +175,4 @@ const Leaderboard: FC = () => {
   )
 }
 
-export default Leaderboard
+export default withAuth(Leaderboard)
