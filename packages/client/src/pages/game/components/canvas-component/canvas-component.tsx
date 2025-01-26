@@ -68,58 +68,40 @@ export const CanvasComponent = () => {
 
   useEffect(() => {
     // Проверка столкновения с первой печенькой
-    state.cookies.forEach((cookie, index) => {
+    state.cookies.forEach(cookie => {
       const distance = Math.sqrt(
         (state.shipPosition.x - (cookie.x + COOKIE_SIZE / 2)) ** 2 +
           (state.shipPosition.y - (cookie.y + COOKIE_SIZE / 2)) ** 2,
       )
 
       if (distance < COOKIE_SIZE / 2 + SHIP_WIDTH / 2) {
-        // Устанавливаем gameOver при столкновении с первой печенькой
-        setState(prev => {
-          const updatedCookies = [...prev.cookies]
-          updatedCookies.splice(index, 1) // Удаляем печеньку из массива
+        const circleX = cookie.x
+        const circleY = cookie.y
+        const circleRadius = COOKIE_SIZE
 
-          return {
-            ...prev,
-            cookies: updatedCookies,
-            cookiesHit: prev.score + 1, // Увеличиваем счётчик попаданий
-            gameOver: true, // Останавливаем игру при столкновении
-          }
-        })
+        // Вершины треугольника
+        const A = { x: shipPosition.x, y: shipPosition.y }
+        const B = {
+          x: shipPosition.x - SHIP_WIDTH / 2,
+          y: shipPosition.y + SHIP_HEIGHT,
+        }
+        const C = {
+          x: shipPosition.x + SHIP_WIDTH / 2,
+          y: shipPosition.y + SHIP_HEIGHT,
+        }
+
+        // Проверка пересечения сторон треугольника с кругом
+        const intersects =
+          doesCircleIntersectLine(circleX, circleY, circleRadius, A, B) ||
+          doesCircleIntersectLine(circleX, circleY, circleRadius, B, C) ||
+          doesCircleIntersectLine(circleX, circleY, circleRadius, C, A)
+
+        if (intersects) {
+          setState(prev => ({ ...prev, gameOver: true }))
+        }
       }
     })
   }, [state.cookies, state.shipPosition])
-
-  // Проверка на конец игры (столкновение с печенькой)
-  useEffect(() => {
-    cookies.forEach(cookie => {
-      const circleX = cookie.x
-      const circleY = cookie.y
-      const circleRadius = COOKIE_SIZE
-
-      // Вершины треугольника
-      const A = { x: shipPosition.x, y: shipPosition.y }
-      const B = {
-        x: shipPosition.x - SHIP_WIDTH / 2,
-        y: shipPosition.y + SHIP_HEIGHT,
-      }
-      const C = {
-        x: shipPosition.x + SHIP_WIDTH / 2,
-        y: shipPosition.y + SHIP_HEIGHT,
-      }
-
-      // Проверка пересечения сторон треугольника с кругом
-      const intersects =
-        doesCircleIntersectLine(circleX, circleY, circleRadius, A, B) ||
-        doesCircleIntersectLine(circleX, circleY, circleRadius, B, C) ||
-        doesCircleIntersectLine(circleX, circleY, circleRadius, C, A)
-
-      if (intersects) {
-        setState(prev => ({ ...prev, gameOver: true }))
-      }
-    })
-  }, [cookies, shipPosition])
 
   /**
    * Проверяет, пересекает ли круг отрезок.
