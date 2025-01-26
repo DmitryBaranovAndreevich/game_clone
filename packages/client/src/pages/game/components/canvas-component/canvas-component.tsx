@@ -67,6 +67,7 @@ export const CanvasComponent = () => {
   }, [state.score, state.requiredHits])
 
   useEffect(() => {
+    // Проверка столкновения с первой печенькой
     state.cookies.forEach((cookie, index) => {
       const distance = Math.sqrt(
         (state.shipPosition.x - (cookie.x + COOKIE_SIZE / 2)) ** 2 +
@@ -74,7 +75,7 @@ export const CanvasComponent = () => {
       )
 
       if (distance < COOKIE_SIZE / 2 + SHIP_WIDTH / 2) {
-        // Удаляем печеньку и увеличиваем счётчик попаданий
+        // Устанавливаем gameOver при столкновении с первой печенькой
         setState(prev => {
           const updatedCookies = [...prev.cookies]
           updatedCookies.splice(index, 1) // Удаляем печеньку из массива
@@ -83,6 +84,7 @@ export const CanvasComponent = () => {
             ...prev,
             cookies: updatedCookies,
             cookiesHit: prev.score + 1, // Увеличиваем счётчик попаданий
+            gameOver: true, // Останавливаем игру при столкновении
           }
         })
       }
