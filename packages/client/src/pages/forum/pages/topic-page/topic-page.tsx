@@ -1,6 +1,7 @@
 import { Typography, Flex, Button, Input } from "antd"
 import PostMessage from "../../components/topic-message"
 import styles from "./topic-page.module.css"
+import { withAuth } from "../../../../components"
 
 let messages = [
   {
@@ -63,4 +64,4 @@ const TopicPage = () => {
   )
 }
 
-export default TopicPage
+export default withAuth(TopicPage)

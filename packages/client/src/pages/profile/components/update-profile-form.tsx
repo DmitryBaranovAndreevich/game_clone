@@ -4,7 +4,6 @@ import { App, Avatar, Button, Col, Flex, Form, Input, Row } from "antd"
 import { UserOutlined } from "@ant-design/icons"
 import { TUpdateProfileRequest, UserApi } from "../../../services/api/user-api"
 import { AuthApi } from "../../../services/api/auth-api"
-import { setCookie } from "../../../utils"
 import { CrazyCrackerIcon } from "../../../assets/images/image/image-black-bg"
 import { BASE_URL } from "../../../constants"
 import { getFormRules } from "../../../components"
@@ -75,7 +74,6 @@ const UpdateProfileForm: FC<TComponentProps> = ({
       authApi.logout().then(response => {
         if (response) {
           dispatch(setInitState())
-          setCookie("login", "true", { expires: -1 })
           navigateTo(generatePath("/"))
         }
       })
