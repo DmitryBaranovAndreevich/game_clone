@@ -23,6 +23,7 @@ const imageStyle = {
 }
 
 interface DataType {
+  key: string
   id: string
   place: number
   name: string
@@ -58,90 +59,105 @@ const columns: TableProps<DataType>["columns"] = [
 
 const data: DataType[] = [
   {
+    key: "1",
     id: "1",
     place: 1,
     name: "John Brown",
     score: 90090,
   },
   {
+    key: "2",
     id: "2",
     place: 2,
     name: "Jim Green",
     score: 90009,
   },
   {
+    key: "3",
     id: "3",
     place: 3,
     name: "Joe Black",
     score: 90000,
   },
   {
+    key: "4",
     id: "4",
     place: 4,
     name: "Joe Black",
     score: 9999,
   },
   {
+    key: "5",
     id: "5",
     place: 5,
     name: "John Brown",
     score: 9099,
   },
   {
+    key: "6",
     id: "6",
     place: 6,
     name: "Jim Green",
     score: 9090,
   },
   {
+    key: "7",
     id: "7",
     place: 7,
     name: "Joe Black",
     score: 9009,
   },
   {
+    key: "8",
     id: "8",
     place: 8,
     name: "John Brown",
     score: 9000,
   },
   {
+    key: "9",
     id: "9",
     place: 9,
     name: "Jim Green",
     score: 999,
   },
   {
+    key: "10",
     id: "10",
     place: 10,
     name: "Joe Black",
     score: 990,
   },
   {
+    key: "11",
     id: "11",
     place: 11,
     name: "John Brown",
     score: 909,
   },
   {
+    key: "12",
     id: "12",
     place: 12,
     name: "Jim Green",
     score: 900,
   },
   {
+    key: "13",
     id: "13",
     place: 13,
     name: "Joe Black",
     score: 99,
   },
   {
+    key: "14",
     id: "14",
     place: 14,
     name: "John Brown",
     score: 90,
   },
   {
+    key: "15",
     id: "15",
     place: 15,
     name: "Jim Green",
