@@ -1,3 +1,24 @@
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.5;
+  }
+  40% {
+    opacity: 0.75;
+  }
+  60% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.75;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
 .mainLayout {
   height: 100vh;
   background: #000;
@@ -30,4 +51,5 @@
   font-family: "Michroma", sans-serif !important;
   background: transparent !important;
   cursor: pointer !important;
+  animation: blink 1.5s linear infinite;
 }

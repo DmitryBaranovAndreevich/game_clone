@@ -12,6 +12,7 @@ import {
 } from "./components"
 import { Sidebar } from "./components/sidebar"
 import { withAuth } from "../../components"
+import { PauseModal } from "./components/pauseModal"
 
 const Game = () => {
   const [state, setState] = useState<TGameStore>(INIT_GAME_STATE)
@@ -26,6 +27,7 @@ const Game = () => {
       <Cracker />
       <Score />
       <Sidebar />
+      <PauseModal />
       <GameOver />
     </GameContext.Provider>
   )

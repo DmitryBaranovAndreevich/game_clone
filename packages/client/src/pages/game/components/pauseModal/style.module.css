@@ -1,0 +1,26 @@
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.5;
+  }
+  40% {
+    opacity: 0.75;
+  }
+  60% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.75;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+.customText {
+  font-size: 20px !important;
+  text-align: center !important;
+  animation: blink 1.5s linear infinite;
+}
