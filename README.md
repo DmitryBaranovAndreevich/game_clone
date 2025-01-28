@@ -60,3 +60,5 @@
 `docker compose up {sevice_name}`, например `docker compose up server`
 
 ## [Документация](docs/README.md)
+
+## [Видео](https://disk.yandex.ru/i/KLyYik_f16CtpQ)
