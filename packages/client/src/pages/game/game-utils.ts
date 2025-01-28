@@ -22,6 +22,7 @@ export type TGameStore = {
   stars: { x: number; y: number; size: number; brightness: number }[]
   cookies: { x: number; y: number; health: number }[]
   score: number
+  isModalGameOverOpen: boolean
 }
 
 export const INIT_GAME_STATE = {
@@ -49,6 +50,7 @@ export const INIT_GAME_STATE = {
   cookies: [],
   stars: [],
   score: 0,
+  isModalGameOverOpen: false,
 }
 
 export const GameContext = createContext<{

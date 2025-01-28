@@ -3,6 +3,7 @@ import styles from "./forum.module.css"
 import Topic from "../../components/topic"
 import { Link } from "react-router-dom"
 import Sidebar from "../../../../components/sidebar"
+import { withAuth } from "../../../../components"
 
 const topics = [
   { theme: "Theme 1", replies: 222 },
@@ -51,4 +52,4 @@ const Forum = () => {
   )
 }
 
-export default Forum
+export default withAuth(Forum)

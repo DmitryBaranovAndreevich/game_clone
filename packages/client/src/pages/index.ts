@@ -4,7 +4,6 @@ import Profile from "./profile"
 import ServerErrorPage from "./server-error"
 import LoginPage from "./login"
 import RegisterPage from "./register"
-import GameOver from "./game-over"
 import { ForumPage, CreateTopicPage, TopicPage } from "./forum"
 import NavigationPage from "./navigation"
 import StartPage from "./start"
@@ -16,7 +15,6 @@ export {
   ServerErrorPage,
   LoginPage,
   RegisterPage,
-  GameOver,
   NavigationPage,
   StartPage,
   ForumPage,

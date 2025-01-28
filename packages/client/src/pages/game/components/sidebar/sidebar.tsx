@@ -1,9 +1,9 @@
-import { FC } from "react"
+import { CSSProperties, FC, useEffect, useState } from "react"
 import { Flex } from "antd"
 import { PauseButton } from "../pauseButton"
 import { FullscreenButton } from "../fullScreenButton"
 
-const sidebarStyle = {
+const sidebarStyle: CSSProperties = {
   backgroundColor: "transparent",
   padding: "10px 0",
   width: "80px",

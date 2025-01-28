@@ -3,6 +3,7 @@ import styles from "./start.module.css"
 import Sidebar from "../../components/sidebar"
 import { CrazyCrackerIcon } from "../../assets/images/image/image-black-bg"
 import { generatePath, useNavigate } from "react-router-dom"
+import { withAuth } from "../../components"
 
 const { Content } = Layout
 
@@ -30,4 +31,4 @@ const Start = () => {
   )
 }
 
-export default Start
+export default withAuth(Start)

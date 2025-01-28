@@ -3,18 +3,14 @@ import { CrazyCrackerIcon } from "../../assets/images/image/image-black-bg"
 import { RegisterControls, RegisterForm } from "./components"
 import { TRegisterRequestParams } from "./register-types"
 import { RegisterAPI } from "./register-api"
-import { setCookie } from "../../utils"
 import { generatePath, useNavigate } from "react-router-dom"
 import { onlyWithOutAuth } from "../../components"
 import styles from "./register.module.css"
-import { useAppDispatch } from "../../store"
-import { fetchUserInfo } from "../../store/slices/user"
 
 type TRegisterForm = TRegisterRequestParams & { confirmPassword: string }
 const registerApi = new RegisterAPI()
 
 const Register = () => {
-  const dispatch = useAppDispatch()
   const { notification } = App.useApp()
   const navigateTo = useNavigate()
   const [form] = Form.useForm<TRegisterForm>()
@@ -30,9 +26,6 @@ const Register = () => {
       }
       const registerResponse = await registerApi.create({ password, ...rest })
       if (registerResponse) {
-        dispatch(fetchUserInfo())
-
-        setCookie("login", "true", { expires: 1200 })
         navigateTo(generatePath("/"))
       }
     } catch (e) {

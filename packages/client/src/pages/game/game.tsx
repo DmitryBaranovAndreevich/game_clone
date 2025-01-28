@@ -8,6 +8,7 @@ import {
   ShipComponent,
   Timer,
   Star,
+  GameOver,
 } from "./components"
 import { Sidebar } from "./components/sidebar"
 import { withAuth } from "../../components"
@@ -27,6 +28,7 @@ const Game = () => {
       <Score />
       <Sidebar />
       <PauseModal />
+      <GameOver />
     </GameContext.Provider>
   )
 }
