@@ -99,19 +99,18 @@ const drawCracker = (
       COOKIE_SIZE + 30,
       COOKIE_SIZE + 50,
     )
-    
-    // Рисуем здоровье печеньки
+
+    // Рисуем здоровье печеньки в правом верхнем углу
     ctx.fillStyle = "white" // Устанавливаем цвет для текста здоровья
     ctx.font = "16px Arial"
-    ctx.textAlign = "center"
-    ctx.textBaseline = "middle"
+    ctx.textAlign = "right" // Выравнивание текста по правому краю
+    ctx.textBaseline = "top" // Вертикальное выравнивание текста по верхнему краю
     ctx.fillText(
       `${cookie.health}`, // Текущее здоровье
-      cookie.x + COOKIE_SIZE / 2, // Центр печеньки по X
-      cookie.y + COOKIE_SIZE / 2, // Центр печеньки по Y
+      cookie.x + COOKIE_SIZE / 2 + COOKIE_SIZE / 2, // X-координата для правого верхнего угла
+      cookie.y - 25, // Y-координата для верхней части печеньки
     )
     ctx.restore() // Восстанавливаем состояние контекста
-
   })
 }
 
