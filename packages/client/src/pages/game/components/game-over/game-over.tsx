@@ -41,6 +41,7 @@ export const GameOver = () => {
       cookies: INIT_GAME_STATE.cookies,
       stars: INIT_GAME_STATE.stars,
       score: INIT_GAME_STATE.score,
+      levelScore: INIT_GAME_STATE.levelScore,
       isModalGameOverOpen: INIT_GAME_STATE.isModalGameOverOpen,
     }))
   }

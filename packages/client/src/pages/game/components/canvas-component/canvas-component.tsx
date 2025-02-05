@@ -55,16 +55,16 @@ export const CanvasComponent = () => {
   }, [gameOver, canvasSize, elapsedTime, shipPosition, bullets, cookies, score])
 
   useEffect(() => {
-    if (state.score >= state.requiredHits) {
+    if (state.levelScore >= state.requiredHits) {
       // Условия завершения уровня
       setState(prev => ({
         ...prev,
-        score: 0, // Сбрасываем счётчик попаданий
+        levelScore: 0, // Сбрасываем счётчик попаданий
         currentLevel: prev.currentLevel + 1, // Увеличиваем уровень
         requiredHits: prev.requiredHits + 5, // Увеличиваем необходимое количество попаданий
       }))
     }
-  }, [state.score, state.requiredHits])
+  }, [state.levelScore, state.requiredHits])
 
   useEffect(() => {
     // Проверка столкновения с первой печенькой
