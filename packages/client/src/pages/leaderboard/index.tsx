@@ -1,7 +1,8 @@
-import { FC } from "react"
+import { FC, useEffect, useState } from "react"
 import { Flex, Image, Layout, Table, TableProps } from "antd"
 import Sidebar from "../../components/sidebar"
 import { withAuth } from "../../components"
+import { LeaderboardApi } from "../../services/api/leaderboard-api"
 
 const layoutStyle = {
   height: "100vh",
@@ -23,15 +24,23 @@ const imageStyle = {
   marginBottom: "100px",
 }
 
-interface DataType {
+export type TLeaderboardItem = {
+  data: {
+    score: number
+    name: string
+    id: number
+  }
+}
+
+export type TFormatedLeaderboardItem = {
   key: string
-  id: string
+  id: number
   place: number
   name: string
   score: number
 }
 
-const columns: TableProps<DataType>["columns"] = [
+const columns: TableProps<TFormatedLeaderboardItem>["columns"] = [
   {
     title: "Place",
     dataIndex: "place",
@@ -58,115 +67,45 @@ const columns: TableProps<DataType>["columns"] = [
   },
 ]
 
-const data: DataType[] = [
-  {
-    key: "1",
-    id: "1",
-    place: 1,
-    name: "John Brown",
-    score: 90090,
-  },
-  {
-    key: "2",
-    id: "2",
-    place: 2,
-    name: "Jim Green",
-    score: 90009,
-  },
-  {
-    key: "3",
-    id: "3",
-    place: 3,
-    name: "Joe Black",
-    score: 90000,
-  },
-  {
-    key: "4",
-    id: "4",
-    place: 4,
-    name: "Joe Black",
-    score: 9999,
-  },
-  {
-    key: "5",
-    id: "5",
-    place: 5,
-    name: "John Brown",
-    score: 9099,
-  },
-  {
-    key: "6",
-    id: "6",
-    place: 6,
-    name: "Jim Green",
-    score: 9090,
-  },
-  {
-    key: "7",
-    id: "7",
-    place: 7,
-    name: "Joe Black",
-    score: 9009,
-  },
-  {
-    key: "8",
-    id: "8",
-    place: 8,
-    name: "John Brown",
-    score: 9000,
-  },
-  {
-    key: "9",
-    id: "9",
-    place: 9,
-    name: "Jim Green",
-    score: 999,
-  },
-  {
-    key: "10",
-    id: "10",
-    place: 10,
-    name: "Joe Black",
-    score: 990,
-  },
-  {
-    key: "11",
-    id: "11",
-    place: 11,
-    name: "John Brown",
-    score: 909,
-  },
-  {
-    key: "12",
-    id: "12",
-    place: 12,
-    name: "Jim Green",
-    score: 900,
-  },
-  {
-    key: "13",
-    id: "13",
-    place: 13,
-    name: "Joe Black",
-    score: 99,
-  },
-  {
-    key: "14",
-    id: "14",
-    place: 14,
-    name: "John Brown",
-    score: 90,
-  },
-  {
-    key: "15",
-    id: "15",
-    place: 15,
-    name: "Jim Green",
-    score: 9,
-  },
-]
+const formateData = (data: TLeaderboardItem[]): TFormatedLeaderboardItem[] => {
+  const formatedData = data.map((item, index): TFormatedLeaderboardItem => {
+    const { id, name, score } = item.data
+
+    return {
+      key: `${name}_${id}`,
+      id,
+      place: index + 1,
+      name,
+      score,
+    }
+  })
+
+  return formatedData
+}
+
+const leaderboardApi = new LeaderboardApi()
 
 const Leaderboard: FC = () => {
+  const [leaderboardData, setLeaderboardData] = useState<
+    TFormatedLeaderboardItem[] | []
+  >([])
+
+  const getLeaderboard = async () => {
+    try {
+      const response = await leaderboardApi.getTeam()
+
+      if (response) {
+        setLeaderboardData(formateData(response))
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  useEffect(() => {
+    getLeaderboard()
+  }, [])
+
   return (
     <Layout style={layoutStyle}>
       <Layout.Content id="leaderboard" style={{ marginLeft: "80px" }}>
@@ -176,9 +115,9 @@ const Leaderboard: FC = () => {
             style={imageStyle}
             preview={false}
           />
-          <Table<DataType>
+          <Table<TFormatedLeaderboardItem>
             columns={columns}
-            dataSource={data}
+            dataSource={leaderboardData}
             pagination={false}
             scroll={{ y: 350 }}
             showSorterTooltip={{ target: "sorter-icon" }}
