@@ -64,11 +64,7 @@ export class BaseRestService {
     headers = {},
     credentials = "include",
   }: Omit<TRequestType, "data"> & {
-    data?:
-      | Record<string, string>
-      | Record<string, number>
-      | Record<string, unknown>
-      | FormData
+    data?: Record<string, unknown> | FormData
   }): Promise<T> {
     const fullUrl = new URL(`${this.baseUrl}${url}`)
     const body = data instanceof FormData ? data : JSON.stringify(data)

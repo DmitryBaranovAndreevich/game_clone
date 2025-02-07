@@ -104,8 +104,11 @@ const Leaderboard: FC = () => {
   const [leaderboardData, setLeaderboardData] = useState<
     TFormatedLeaderboardItem[] | []
   >([])
+  const [loading, setLoading] = useState(false)
 
   const getLeaderboard = async () => {
+    setLoading(true)
+
     try {
       const response = await leaderboardApi.getTeam()
 
@@ -114,6 +117,8 @@ const Leaderboard: FC = () => {
       }
     } catch (e) {
       console.error(e)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -134,6 +139,7 @@ const Leaderboard: FC = () => {
             columns={columns}
             dataSource={leaderboardData}
             pagination={false}
+            loading={loading}
             scroll={{ y: 350 }}
             showSorterTooltip={{ target: "sorter-icon" }}
             style={tableStyle}
