@@ -118,13 +118,11 @@ export const CanvasComponent = () => {
         if (intersects) {
           setState(prev => ({ ...prev, gameOver: true }))
 
-          if (userInfo) {
-            addLeader({
-              score: score,
-              name: userInfo.display_name || userInfo.login,
-              id: userInfo.id,
-            })
-          }
+          addLeader({
+            score: score === 0 ? 0 : null,
+            name: userInfo?.display_name || userInfo?.login || null,
+            id: userInfo?.id || null,
+          })
         }
       }
     })

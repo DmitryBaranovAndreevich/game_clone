@@ -68,17 +68,32 @@ const columns: TableProps<TFormatedLeaderboardItem>["columns"] = [
 ]
 
 const formateData = (data: TLeaderboardItem[]): TFormatedLeaderboardItem[] => {
-  const formatedData = data.map((item, index): TFormatedLeaderboardItem => {
-    const { id, name, score } = item.data
+  const formatedData = data
+    .filter(item => {
+      if (
+        item.data.id === null ||
+        item.data.id === undefined ||
+        item.data.name === null ||
+        item.data.name === undefined ||
+        item.data.score === null ||
+        item.data.score === undefined
+      ) {
+        return null
+      } else {
+        return item
+      }
+    })
+    .map((item, index): TFormatedLeaderboardItem => {
+      const { id, name, score } = item.data
 
-    return {
-      key: `${name}_${id}`,
-      id,
-      place: index + 1,
-      name,
-      score,
-    }
-  })
+      return {
+        key: `${name}_${id}`,
+        id,
+        place: index + 1,
+        name,
+        score,
+      }
+    })
 
   return formatedData
 }

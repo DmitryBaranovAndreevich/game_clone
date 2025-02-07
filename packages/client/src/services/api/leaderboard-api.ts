@@ -7,9 +7,9 @@ export const RATING_FIELD_NAME = "Dough_Matter_Rating"
 export const TEAM_NAME = "Dough_Matter"
 
 export type TAddLeaderData = {
-  score: number
-  name: string
-  id: number
+  score: number | null
+  name: string | null
+  id: number | null
 }
 export type TLeaderboardRequest = {
   ratingFieldName: string
