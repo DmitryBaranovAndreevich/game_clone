@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useEffect, useState } from "react"
+import { CSSProperties, FC } from "react"
 import { Flex } from "antd"
 import { PauseButton } from "../pauseButton"
 import { FullscreenButton } from "../fullScreenButton"

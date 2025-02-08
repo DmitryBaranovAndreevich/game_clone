@@ -2,56 +2,61 @@
 
 ![Dough Matter Logo](packages/client/src/assets/images/image.png)
 
-В далёкой галактике случилась катастрофа — Безумный Крекер превратил все звёзды в гигантские печеньки! Эти сладкие угрозы теперь угрожают уничтожить всю вселенную. Вы — пилот боевого космического корабля и единственная надежда на спасение галактики. Ваша миссия — уничтожить космические печеньки, пока они не поглотили весь космос! 
+В далёкой галактике случилась катастрофа — Безумный Крекер превратил все звёзды в гигантские печеньки! Эти сладкие угрозы теперь угрожают уничтожить всю вселенную. Вы — пилот боевого космического корабля и единственная надежда на спасение галактики. Ваша миссия — уничтожить космические печеньки, пока они не поглотили весь космос!
 
 ## Технологии
 
-* TypeScript 
-* JavaScript
-* React
-* React-Router
-* Redux
-* Canvas API
-* Fullscreen API
-* Ant Design
+- TypeScript
+- JavaScript
+- React
+- React-Router
+- Redux
+- Canvas API
+- Fullscreen API
+- Ant Design
 
 ## Как запускать?
 
-1. Убедитесь что у вас установлен `node` и `docker`
-2. Выполните команду `yarn bootstrap`
-3. Выполните команду `yarn dev`
-3. Выполните команду `yarn dev --scope=client` чтобы запустить только клиент
-4. Выполните команду `yarn dev --scope=server` чтобы запустить только server
-
+#ssr
+==>
+1. cd ./packages/client/
+2. yarn link
+3. cd ../server
+4. yarn link client
+   ==> выполните эти действия 1 раз и проверьте , что в server/node_modules появилась ссылка на папку client
+5. Убедитесь что у вас установлен `node` и `docker`
+6. Выполните команду `yarn bootstrap`
+7. Выполните команду `yarn dev --scope=server` чтобы запустить приложение в dev режиме
 
 ### Тесты
 
 Для клиента используется [`react-testing-library`](https://testing-library.com/docs/react-testing-library/intro/)
 
-```yarn test```
+`yarn test`
 
 ### Линтинг
 
-```yarn lint```
+`yarn lint`
 
 ### Форматирование prettier
 
-```yarn format```
+`yarn format`
 
 ### Production build
 
-```yarn build```
+1. выполнить на клиенте yarn build & yarn build:ssr
+2. выполнить на сервере yarn build
 
 И чтобы посмотреть что получилось
 
-`yarn preview --scope client`
-`yarn preview --scope server`
-
+node dis/index
 
 ## Production окружение в докере
+
 Перед первым запуском выполните `node init.js`
 
 `docker compose up` - запустит три сервиса
+
 1. nginx, раздающий клиентскую статику (client)
 2. node, ваш сервер (server)
 3. postgres, вашу базу данных (postgres)
@@ -62,3 +67,5 @@
 ## [Документация](docs/README.md)
 
 ## [Видео](https://disk.yandex.ru/i/KLyYik_f16CtpQ)
+
+## ssr

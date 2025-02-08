@@ -50,12 +50,17 @@ const formatTime = (time: number) => {
   return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`
 }
 
+const cash: Record<string, HTMLImageElement> = {}
+
 const drawShip = (
   ctx: CanvasRenderingContext2D,
   shipPosition: { x: number; y: number },
 ) => {
-  const shipImage = new Image()
-  shipImage.src = rocket
+  const shipImage = rocket in cash ? cash[rocket] : new Image()
+  if (!(rocket in cash)) {
+    cash[rocket] = shipImage
+    shipImage.src = rocket
+  }
 
   ctx.drawImage(
     shipImage,
@@ -70,9 +75,11 @@ const drawBullet = (
   ctx: CanvasRenderingContext2D,
   bullets: { x: number; y: number }[],
 ) => {
-  const bulletImage = new Image()
-  bulletImage.src = bullet
-
+  const bulletImage = bullet in cash ? cash[bullet] : new Image()
+  if (!(bullet in cash)) {
+    cash[bullet] = bulletImage
+    bulletImage.src = bullet
+  }
   bullets.forEach(bullet => {
     ctx.drawImage(
       bulletImage,
@@ -88,9 +95,11 @@ const drawCracker = (
   ctx: CanvasRenderingContext2D,
   cookies: { x: number; y: number; health: number }[],
 ) => {
-  const crackerImage = new Image()
-  crackerImage.src = cracker
-
+  const crackerImage = cracker in cash ? cash[cracker] : new Image()
+  if (!(cracker in cash)) {
+    cash[cracker] = crackerImage
+    crackerImage.src = cracker
+  }
   cookies.forEach(cookie => {
     ctx.drawImage(
       crackerImage,

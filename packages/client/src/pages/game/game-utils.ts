@@ -35,8 +35,8 @@ export const INIT_GAME_STATE = {
     starMovementInterval: null,
   },
   canvasSize: {
-    width: window.innerWidth || 800,
-    height: window.innerHeight || 600,
+    width: typeof window !== "undefined" ? window.innerWidth : 800,
+    height: typeof window !== "undefined" ? window.innerHeight : 600,
   },
   initialTime: 0,
   currentLevel: 1,
