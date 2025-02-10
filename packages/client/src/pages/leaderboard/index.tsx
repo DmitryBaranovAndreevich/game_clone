@@ -1,8 +1,12 @@
-import { FC, useEffect, useState } from "react"
+import { FC, useEffect } from "react"
 import { Flex, Image, Layout, Table, TableProps } from "antd"
 import Sidebar from "../../components/sidebar"
 import { withAuth } from "../../components"
-import { LeaderboardApi } from "../../services/api/leaderboard-api"
+import {
+  fetchLeaderboardInfo,
+  TFormatedLeaderboardItem,
+} from "../../store/slices/leaderboard"
+import { useAppDispatch, useAppSelector } from "../../store"
 
 const layoutStyle = {
   height: "100vh",
@@ -22,22 +26,6 @@ const imageStyle = {
   maxWidth: "458px",
   width: "100%",
   marginBottom: "100px",
-}
-
-export type TLeaderboardItem = {
-  data: {
-    score: number
-    name: string
-    id: number
-  }
-}
-
-export type TFormatedLeaderboardItem = {
-  key: string
-  id: number
-  place: number
-  name: string
-  score: number
 }
 
 const columns: TableProps<TFormatedLeaderboardItem>["columns"] = [
@@ -67,63 +55,12 @@ const columns: TableProps<TFormatedLeaderboardItem>["columns"] = [
   },
 ]
 
-const formateData = (data: TLeaderboardItem[]): TFormatedLeaderboardItem[] => {
-  const formatedData = data
-    .filter(item => {
-      if (
-        item.data.id === null ||
-        item.data.id === undefined ||
-        item.data.name === null ||
-        item.data.name === undefined ||
-        item.data.score === null ||
-        item.data.score === undefined
-      ) {
-        return null
-      } else {
-        return item
-      }
-    })
-    .map((item, index): TFormatedLeaderboardItem => {
-      const { id, name, score } = item.data
-
-      return {
-        key: `${name}_${id}`,
-        id,
-        place: index + 1,
-        name,
-        score,
-      }
-    })
-
-  return formatedData
-}
-
-const leaderboardApi = new LeaderboardApi()
-
 const Leaderboard: FC = () => {
-  const [leaderboardData, setLeaderboardData] = useState<
-    TFormatedLeaderboardItem[] | []
-  >([])
-  const [loading, setLoading] = useState(false)
-
-  const getLeaderboard = async () => {
-    setLoading(true)
-
-    try {
-      const response = await leaderboardApi.getTeam()
-
-      if (response) {
-        setLeaderboardData(formateData(response))
-      }
-    } catch (e) {
-      console.error(e)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const dispatch = useAppDispatch()
+  const { info, status } = useAppSelector(state => state.leaderboard)
 
   useEffect(() => {
-    getLeaderboard()
+    dispatch(fetchLeaderboardInfo())
   }, [])
 
   return (
@@ -137,9 +74,9 @@ const Leaderboard: FC = () => {
           />
           <Table<TFormatedLeaderboardItem>
             columns={columns}
-            dataSource={leaderboardData}
+            dataSource={info || []}
             pagination={false}
-            loading={loading}
+            loading={status === "pending"}
             scroll={{ y: 350 }}
             showSorterTooltip={{ target: "sorter-icon" }}
             style={tableStyle}

@@ -2,18 +2,12 @@ import { useEffect, useRef } from "react"
 import { useGameContextContext } from "../../useGameContext"
 import { drawGame } from "./canvas-component-utils"
 import { COOKIE_SIZE, SHIP_HEIGHT, SHIP_WIDTH } from "../../game-constants"
-import {
-  LeaderboardApi,
-  TAddLeaderData,
-} from "../../../../services/api/leaderboard-api"
-import { useAppSelector } from "../../../../store"
-import { App } from "antd"
+import { useAppDispatch, useAppSelector } from "../../../../store"
+import { addLeaderboardItem } from "../../../../store/slices/leaderboard"
 
-const leaderboardApi = new LeaderboardApi()
 let id: number | undefined
 
 export const CanvasComponent = () => {
-  const { notification } = App.useApp()
   const { info: userInfo } = useAppSelector(state => state.user)
   const { state, setState } = useGameContextContext()
   const {
@@ -27,15 +21,7 @@ export const CanvasComponent = () => {
   } = state
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  const addLeader = async (data: TAddLeaderData) => {
-    try {
-      await leaderboardApi.addLeader(data)
-    } catch (e) {
-      if (e instanceof Error) {
-        notification.error({ message: e.message, placement: "bottomRight" })
-      }
-    }
-  }
+  const dispatch = useAppDispatch()
 
   // Обновление размеров холста при изменении размера окна
   useEffect(() => {
@@ -118,11 +104,13 @@ export const CanvasComponent = () => {
         if (intersects) {
           setState(prev => ({ ...prev, gameOver: true }))
 
-          addLeader({
-            score: score === 0 ? 0 : null,
-            name: userInfo?.display_name || userInfo?.login || null,
-            id: userInfo?.id || null,
-          })
+          dispatch(
+            addLeaderboardItem({
+              score: score === 0 ? 0 : null,
+              name: userInfo?.display_name || userInfo?.login || null,
+              id: userInfo?.id || null,
+            }),
+          )
         }
       }
     })
