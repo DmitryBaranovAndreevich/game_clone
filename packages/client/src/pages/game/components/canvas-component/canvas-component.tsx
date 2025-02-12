@@ -4,6 +4,7 @@ import { drawGame } from "./canvas-component-utils"
 import { COOKIE_SIZE, SHIP_HEIGHT, SHIP_WIDTH } from "../../game-constants"
 import { useAppDispatch, useAppSelector } from "../../../../store"
 import { addLeaderboardItem } from "../../../../store/slices/leaderboard"
+import { useEffectWithAbort } from "../../../../utils/useEffectWithAbort"
 
 let id: number | undefined
 
@@ -24,16 +25,12 @@ export const CanvasComponent = () => {
   const dispatch = useAppDispatch()
 
   // Обновление размеров холста при изменении размера окна
-  useEffect(() => {
-    const handleResize = () => {
-      setState(prev => ({
-        ...prev,
-        canvasSize: { width: window.innerWidth, height: window.innerHeight },
-      }))
-    }
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+  useEffectWithAbort(window, "resize", () => {
+    setState(prev => ({
+      ...prev,
+      canvasSize: { width: window.innerWidth, height: window.innerHeight },
+    }))
+  })
 
   useEffect(() => {
     if (canvasRef.current) {
