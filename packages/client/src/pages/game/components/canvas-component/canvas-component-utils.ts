@@ -125,7 +125,7 @@ const drawCracker = (
 
 const drawScore = (
   ctx: CanvasRenderingContext2D,
-  score: number,
+  levelScore: number,
   requiredScore: number,
 ) => {
   ctx.save() // Сохраняем состояние контекста
@@ -133,7 +133,7 @@ const drawScore = (
   ctx.font = "40px Michroma"
   ctx.textAlign = "left" // Явно задаём выравнивание текста
   ctx.textBaseline = "top" // Явно задаём базовую линию текста
-  ctx.fillText(`Score: ${score} / ${requiredScore}`, 45, 30)
+  ctx.fillText(`Score: ${levelScore} / ${requiredScore}`, 45, 30)
   ctx.restore() // Восстанавливаем состояние контекста
 }
 
@@ -166,7 +166,7 @@ const drawTime = (
 }
 
 export const drawGame = (state: TGameStore) => {
-  const { ctx: canvas, canvasSize, elapsedTime, gameOver, score } = state
+  const { ctx: canvas, canvasSize, elapsedTime, gameOver, levelScore } = state
   const ctx = canvas?.getContext("2d")
   if (!ctx) {
     return
@@ -182,7 +182,7 @@ export const drawGame = (state: TGameStore) => {
 
   drawLevel(ctx, state.currentLevel, canvasSize.width)
 
-  drawScore(ctx, score, state.requiredHits)
+  drawScore(ctx, levelScore, state.requiredHits)
 
   drawTime(ctx, elapsedTime, canvasSize.width)
   // Конец игры

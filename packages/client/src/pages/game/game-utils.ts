@@ -22,6 +22,7 @@ export type TGameStore = {
   stars: { x: number; y: number; size: number; brightness: number }[]
   cookies: { x: number; y: number; health: number }[]
   score: number
+  levelScore: number
   isModalGameOverOpen: boolean
 }
 
@@ -50,6 +51,7 @@ export const INIT_GAME_STATE = {
   cookies: [],
   stars: [],
   score: 0,
+  levelScore: 0,
   isModalGameOverOpen: false,
 }
 
