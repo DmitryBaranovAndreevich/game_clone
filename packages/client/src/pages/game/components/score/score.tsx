@@ -37,7 +37,11 @@ export const Score = () => {
         // Если здоровье <= 0, удаляем печеньку
         if (updatedCookies[hitIndex].health <= 0) {
           updatedCookies.splice(hitIndex, 1)
-          setState(prev => ({ ...prev, score: prev.score + 1 })) // Увеличиваем счёт
+          setState(prev => ({
+            ...prev,
+            score: prev.score + 1,
+            levelScore: prev.levelScore + 1,
+          })) // Увеличиваем счёт
         }
 
         return false // Удаляем пулю

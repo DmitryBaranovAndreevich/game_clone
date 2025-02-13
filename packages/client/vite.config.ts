@@ -23,7 +23,7 @@ export default defineConfig({
         {
           entryFileNames: opt => {
             if (/^service-worker.*/.test(opt.name)) {
-              return "sw.js"
+              return "assets/sw.js"
             }
             return `assets/[name]-[hash].js`
           },

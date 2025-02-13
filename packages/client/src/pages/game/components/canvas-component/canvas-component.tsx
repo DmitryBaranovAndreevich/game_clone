@@ -2,10 +2,13 @@ import { useEffect, useRef } from "react"
 import { useGameContextContext } from "../../useGameContext"
 import { drawGame } from "./canvas-component-utils"
 import { COOKIE_SIZE, SHIP_HEIGHT, SHIP_WIDTH } from "../../game-constants"
+import { useAppDispatch, useAppSelector } from "../../../../store"
+import { addLeaderboardItem } from "../../../../store/slices/leaderboard"
 
 let id: number | undefined
 
 export const CanvasComponent = () => {
+  const { info: userInfo } = useAppSelector(state => state.user)
   const { state, setState } = useGameContextContext()
   const {
     gameOver,
@@ -17,6 +20,8 @@ export const CanvasComponent = () => {
     score,
   } = state
   const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  const dispatch = useAppDispatch()
 
   // Обновление размеров холста при изменении размера окна
   useEffect(() => {
@@ -55,16 +60,16 @@ export const CanvasComponent = () => {
   }, [gameOver, canvasSize, elapsedTime, shipPosition, bullets, cookies, score])
 
   useEffect(() => {
-    if (state.score >= state.requiredHits) {
+    if (state.levelScore >= state.requiredHits) {
       // Условия завершения уровня
       setState(prev => ({
         ...prev,
-        score: 0, // Сбрасываем счётчик попаданий
+        levelScore: 0, // Сбрасываем счётчик попаданий
         currentLevel: prev.currentLevel + 1, // Увеличиваем уровень
         requiredHits: prev.requiredHits + 5, // Увеличиваем необходимое количество попаданий
       }))
     }
-  }, [state.score, state.requiredHits])
+  }, [state.levelScore, state.requiredHits])
 
   useEffect(() => {
     // Проверка столкновения с первой печенькой
@@ -98,6 +103,14 @@ export const CanvasComponent = () => {
 
         if (intersects) {
           setState(prev => ({ ...prev, gameOver: true }))
+
+          dispatch(
+            addLeaderboardItem({
+              score: score === 0 ? 0 : null,
+              name: userInfo?.display_name || userInfo?.login || null,
+              id: userInfo?.id || null,
+            }),
+          )
         }
       }
     })

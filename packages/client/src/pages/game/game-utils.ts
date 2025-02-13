@@ -22,6 +22,7 @@ export type TGameStore = {
   stars: { x: number; y: number; size: number; brightness: number }[]
   cookies: { x: number; y: number; health: number }[]
   score: number
+  levelScore: number
   isModalGameOverOpen: boolean
 }
 
@@ -35,8 +36,8 @@ export const INIT_GAME_STATE = {
     starMovementInterval: null,
   },
   canvasSize: {
-    width: window.innerWidth || 800,
-    height: window.innerHeight || 600,
+    width: typeof window !== "undefined" ? window.innerWidth : 800,
+    height: typeof window !== "undefined" ? window.innerHeight : 600,
   },
   initialTime: 0,
   currentLevel: 1,
@@ -50,6 +51,7 @@ export const INIT_GAME_STATE = {
   cookies: [],
   stars: [],
   score: 0,
+  levelScore: 0,
   isModalGameOverOpen: false,
 }
 
