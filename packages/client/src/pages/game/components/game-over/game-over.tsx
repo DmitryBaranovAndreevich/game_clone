@@ -4,8 +4,10 @@ import { INIT_GAME_STATE } from "../../game-utils"
 
 import { Modal, Button, Typography, Flex } from "antd"
 import styles from "./game-over.module.css"
+import { generatePath, useNavigate } from "react-router-dom"
 
 export const GameOver = () => {
+  const navigateTo = useNavigate()
   const { state, setState } = useGameContextContext()
   const { isModalGameOverOpen, gameOver, score } = state
 
@@ -23,6 +25,8 @@ export const GameOver = () => {
       ...prev,
       isModalGameOverOpen: false,
     }))
+
+    navigateTo(generatePath("/"))
   }
   const restartGame = () => {
     setState(prev => ({
@@ -50,6 +54,7 @@ export const GameOver = () => {
     <Modal
       open={isModalGameOverOpen}
       footer={null}
+      closeIcon={null}
       centered
       onOk={closeModal}
       onCancel={closeModal}>
@@ -63,9 +68,16 @@ export const GameOver = () => {
           <span>Best Score</span>
           <span>{score}</span>
         </Flex>
-
-        <Button className={styles.button} onClick={restartGame}>
-          New Game
+        <Typography.Title
+          level={3}
+          className={styles.customText}
+          onClick={restartGame}>
+          CLICK TO
+          <br />
+          START NEW GAME
+        </Typography.Title>
+        <Button className={styles.button} onClick={closeModal}>
+          Start Page
         </Button>
       </Flex>
     </Modal>

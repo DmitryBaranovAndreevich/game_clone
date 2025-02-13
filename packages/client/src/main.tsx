@@ -5,9 +5,10 @@ import "./index.css"
 import { BrowserRouter } from "react-router-dom"
 
 registerServiceWorker()
+
 ReactDOM.hydrateRoot(
   document.getElementById("root") as HTMLElement,
   <BrowserRouter>
     <App />
-  </BrowserRouter>,
+  </BrowserRouter>
 )
