@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useRef } from "react"
 import { useGameContextContext } from "../../useGameContext"
 import {
   BULLET_HEIGHT,
@@ -8,6 +8,10 @@ import {
   SHIP_WIDTH,
   STEP,
 } from "../../game-constants"
+import {
+  TEvent,
+  useEffectWithAbort,
+} from "../../../../utils/useEffectWithAbort"
 
 export const ShipComponent = () => {
   const { state, setState } = useGameContextContext()
@@ -71,13 +75,15 @@ export const ShipComponent = () => {
     }))
   }
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+  useEffectWithAbort(
+    window,
+    "keydown",
+    (e: TEvent) => {
       if (gameOver || isPaused) {
         return
       } // Игнорировать ввод, если игра окончена
 
-      switch (e.key) {
+      switch ((e as KeyboardEvent).key) {
         case "ArrowLeft":
           moveShip("left")
           break
@@ -96,12 +102,9 @@ export const ShipComponent = () => {
         default:
           break
       }
-    }
+    },
+    [gameOver, isPaused, canvasSize.width, canvasSize.height, shipPosition],
+  )
 
-    window.addEventListener("keydown", handleKeyDown)
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown)
-    }
-  }, [gameOver, isPaused, canvasSize.width, canvasSize.height, shipPosition])
   return null
 }
