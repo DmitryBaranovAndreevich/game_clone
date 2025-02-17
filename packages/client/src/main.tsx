@@ -9,8 +9,7 @@ import { makeStore } from "./store"
 registerServiceWorker()
 
 // 🟢 Получаем предзагруженное состояние Redux из глобального объекта
-// @ts-ignore
-const preloadedState = (window as never).APP_INITIAL_STATE || "{}"
+const preloadedState = window.APP_INITIAL_STATE || "{}"
 
 // 🔵 Десериализуем состояние (с проверкой на безопасность)
 const store = makeStore(preloadedState)

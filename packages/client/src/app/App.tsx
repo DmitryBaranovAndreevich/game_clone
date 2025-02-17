@@ -9,8 +9,7 @@ import { makeStore } from "../store"
 export const cache = createCache()
 
 function App() {
-  // @ts-ignore
-  const preloadedState = (window as never).APP_INITIAL_STATE || "{}"
+  const preloadedState = window.APP_INITIAL_STATE || "{}"
   const store = makeStore(preloadedState)
 
   return (
