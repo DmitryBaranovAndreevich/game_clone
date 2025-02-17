@@ -9,13 +9,16 @@ const rootReducer = combineReducers({
   leaderboard: leaderboardReducer,
 })
 
-const store = configureStore({
-  reducer: rootReducer,
-})
+export const makeStore = (preloadedState = {}) =>
+  configureStore({
+    reducer: rootReducer,
+    preloadedState,
+  })
 
 export type RootState = ReturnType<typeof rootReducer>
+export type AppStore = ReturnType<typeof makeStore>
+export type AppDispatch = AppStore["dispatch"]
 
-export const useAppDispatch = () => useDispatch<typeof store.dispatch>()
+// 🔵 Хуки для безопасного использования Redux в компонентах
+export const useAppDispatch = () => useDispatch<AppDispatch>()
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
-
-export default store
