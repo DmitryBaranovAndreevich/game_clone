@@ -1,5 +1,6 @@
-import { FC, useEffect, useState } from "react"
+import { FC, useState } from "react"
 import { FullscreenExitOutlined, FullscreenOutlined } from "@ant-design/icons"
+import { useEffectWithAbort } from "../../../../utils/useEffectWithAbort"
 
 const iconStyle = {
   fontSize: "36px",
@@ -25,16 +26,10 @@ export const FullscreenButton: FC = () => {
   }
 
   // Слежение за изменением полноэкранного режима
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      setFullScreen(Boolean(document.fullscreenElement))
-    }
+  useEffectWithAbort(document, "fullscreenchange", () => {
+    setFullScreen(Boolean(document.fullscreenElement))
+  })
 
-    document.addEventListener("fullscreenchange", handleFullscreenChange)
-    return () => {
-      document.removeEventListener("fullscreenchange", handleFullscreenChange)
-    }
-  }, [])
   return (
     <>
       {isFullscreen ? (

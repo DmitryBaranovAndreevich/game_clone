@@ -21,7 +21,8 @@
     "react-dom": "^18.2.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.1.0",
-    "redux": "^5.0.1"
+    "redux": "^5.0.1",
+    "serialize-javascript": "^6.0.2"
   },
   "devDependencies": {
     "@testing-library/react": "^13.3.0",

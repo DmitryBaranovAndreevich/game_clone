@@ -5,6 +5,7 @@ import { createServer as createViteServer, ViteDevServer } from "vite"
 import express from "express"
 import fs from "node:fs"
 import path from "node:path"
+import serialize from "serialize-javascript"
 
 const isDev = () => process.env.NODE_ENV === "development"
 
@@ -45,7 +46,9 @@ async function startServer() {
         template = await vite!.transformIndexHtml(url, template)
       }
 
-      let render: (url: string) => Promise<string>
+      let render: (
+        url: string,
+      ) => Promise<{ html: string; initialState: unknown }>
       let renderStyles: () => Promise<string>
 
       if (!isDev()) {
@@ -61,18 +64,22 @@ async function startServer() {
         renderStyles = devBundle.renderStyles
       }
 
-      const appHtml = await render(url)
+      const { html: appHtml, initialState } = await render(url)
       const css = await renderStyles()
 
-      const preHtml = template.replace(`<!--styles-outlet-->`, () => css)
-      const html = preHtml.replace(`<!--ssr-outlet-->`, () => appHtml)
+      const preHtml = template.replace(`<!--styles-outlet-->`, css)
+      const html = preHtml
+        .replace(`<!--ssr-outlet-->`, appHtml)
+        .replace(
+          `<!--ssr-initial-state-->`,
+          `<script>window.APP_INITIAL_STATE = ${serialize(initialState, { isJSON: true })}</script>`,
+        )
 
       res.status(200).set({ "Content-Type": "text/html" }).end(html)
     } catch (e) {
       if (isDev()) {
         vite!.ssrFixStacktrace(e as Error)
       }
-
       next(e)
     }
   })
