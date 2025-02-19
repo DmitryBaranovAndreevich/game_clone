@@ -1,5 +1,6 @@
 import { App, Button, Flex, Form, Input, Typography } from "antd"
 import { loginApiInstance } from "../../login-api"
+import { AuthApi } from "../../../../services/api/auth-api"
 import { useRedirect } from "./useRedirect"
 import { generatePath, useNavigate } from "react-router-dom"
 import styles from "./login-form.module.css"
@@ -13,6 +14,7 @@ export const LoginForm = () => {
   const { notification } = App.useApp()
   const navigateTo = useNavigate()
   const redirect = useRedirect()
+  const authApi = new AuthApi()
   const [form] = Form.useForm<{ password: string; login: string }>()
   const onLogin = async (value: { password: string; login: string }) => {
     try {
@@ -27,6 +29,15 @@ export const LoginForm = () => {
     }
   }
 
+  const onLoginOAuth = async () => {
+    try {
+      await authApi.getServiceIdOAuth()
+    } catch (e) {
+      if (e instanceof Error) {
+        notification.error({ message: e.message, placement: "bottomRight" })
+      }
+    }
+  }
   const onSignUpClick = () => {
     navigateTo(generatePath(REGISTER_PAGE))
   }
@@ -57,6 +68,9 @@ export const LoginForm = () => {
         <Flex vertical gap={"middle"} className={styles.buttonContainer}>
           <Button type={"primary"} htmlType={"submit"}>
             Sign in
+          </Button>
+          <Button type={"primary"} onClick={onLoginOAuth}>
+            Sign in with Yandex
           </Button>
           <Button onClick={onSignUpClick}>Sign up</Button>
         </Flex>
