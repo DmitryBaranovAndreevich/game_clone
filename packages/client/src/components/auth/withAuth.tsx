@@ -25,27 +25,33 @@ export const withAuth =
 
       if (!userInfo) {
         // если в пути найден праметр code - получаемый от аутентифиуации яндекса
-        // + флаг отправления запроса необходимый из-за перерендеринга компонентов
-        if (authCode && !isRequestSent.current) {
-          isRequestSent.current = true
-          authApi
-            .oauthSignIn(authCode)
-            .then(() => {
-              dispatch(fetchUserInfo())
-                .then(unwrapResult)
-                .then(() => {
-                  navigateTo(generatePath("/"))
-                })
-                .catch(() => {
-                  isRequestSent.current = false
-                  navigateTo(generatePath(LOGIN_PAGE_PATH), {
-                    state: { from: location },
+        if (authCode) {
+          // + флаг отправления запроса необходимый из-за перерендеринга компонентов
+          if (!isRequestSent.current) {
+            isRequestSent.current = true
+            authApi
+              .oauthSignIn(authCode)
+              .then(() => {
+                dispatch(fetchUserInfo())
+                  .then(unwrapResult)
+                  .then(() => {
+                    navigateTo(generatePath("/"))
                   })
+                  .catch(() => {
+                    isRequestSent.current = false
+                    navigateTo(generatePath(LOGIN_PAGE_PATH), {
+                      state: { from: location },
+                    })
+                  })
+              })
+              .catch(error => {
+                isRequestSent.current = false
+                console.error("Ошибка при обмене кода на токен:", error)
+                navigateTo(generatePath(LOGIN_PAGE_PATH), {
+                  state: { from: location },
                 })
-            })
-            .catch(error => {
-              console.error("Ошибка при обмене кода на токен:", error)
-            })
+              })
+          }
         } else {
           dispatch(fetchUserInfo())
             .then(unwrapResult)
