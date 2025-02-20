@@ -3,10 +3,12 @@ import { configureStore } from "@reduxjs/toolkit"
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux"
 import userReducer from "./slices/user"
 import leaderboardReducer from "./slices/leaderboard"
+import themeReducer from "./slices/theme"
 
 const rootReducer = combineReducers({
   user: userReducer,
   leaderboard: leaderboardReducer,
+  theme: themeReducer,
 })
 
 export const makeStore = (preloadedState = {}) =>

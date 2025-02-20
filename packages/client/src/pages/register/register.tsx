@@ -6,6 +6,7 @@ import { RegisterAPI } from "./register-api"
 import { generatePath, useNavigate } from "react-router-dom"
 import { onlyWithOutAuth } from "../../components"
 import styles from "./register.module.css"
+import ThemeSwitch from "../../components/theme-switch"
 
 type TRegisterForm = TRegisterRequestParams & { confirmPassword: string }
 const registerApi = new RegisterAPI()
@@ -50,6 +51,7 @@ const Register = () => {
         <Col xs={12} sm={12} md={9} lg={9}>
           <RegisterControls />
         </Col>
+        <ThemeSwitch className={styles.switch} />
       </Row>
     </Form>
   )
