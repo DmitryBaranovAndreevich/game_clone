@@ -8,7 +8,7 @@ export type TLoginUserRequest = {
 
 class LoginAPI extends BaseRestService {
   login(user: TLoginUserRequest) {
-    return this.post({ url: "/auth/signin", data: user })
+    return this.post({ url: "/signin", data: user })
   }
 }
 

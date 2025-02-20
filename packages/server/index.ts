@@ -6,12 +6,55 @@ import express from "express"
 import fs from "node:fs"
 import path from "node:path"
 import serialize from "serialize-javascript"
+import cookieParser from "cookie-parser"
+import { celebrate, Joi } from "celebrate"
+import { createUser, getUser, login } from "./src/controllers"
+import sequelize from "./src/sequelize"
+import { auth } from "./src/middlewares"
+import { errorHandler } from "./src/helpers"
+import topicRouter from "./src/routes/topic"
+import commentRouter from "./src/routes/comments"
 
 const isDev = () => process.env.NODE_ENV === "development"
 
 async function startServer() {
   const app = express()
+  app.use(cookieParser())
   app.use(cors())
+  app.use(express.json())
+  try {
+    await sequelize.sync({ force: true })
+    console.log("Соединение с БД было успешно установлено")
+  } catch (e) {
+    console.log("Невозможно выполнить подключение к БД: ", e)
+  }
+
+  app.post(
+    "/signin",
+    celebrate({
+      body: Joi.object().keys({
+        login: Joi.string().required(),
+        password: Joi.string().required().min(8),
+      }),
+    }),
+    login,
+  )
+
+  app.post(
+    "/signup",
+    celebrate({
+      body: Joi.object().keys({
+        second_name: Joi.string().required().min(3).max(20),
+        first_name: Joi.string().required().min(3).max(20),
+        phone: Joi.string().min(10).max(15),
+        email: Joi.string().required().email(),
+        login: Joi.string().required(),
+        password: Joi.string().required().min(8).max(40),
+      }),
+    }),
+    createUser,
+  )
+
   const port = Number(process.env.SERVER_PORT) || 3001
   const srcPath = path.dirname(require.resolve("client"))
   let vite: ViteDevServer | undefined
@@ -29,7 +72,7 @@ async function startServer() {
     app.use("/assets", express.static(path.resolve(distPath, "assets")))
   }
 
-  app.use("*", async (req, res, next) => {
+  app.get("/", async (req, res, next) => {
     const url = req.originalUrl
 
     try {
@@ -83,6 +126,13 @@ async function startServer() {
       next(e)
     }
   })
+
+  app.use(auth)
+  app.get("/user", getUser)
+  app.use("/topic", topicRouter)
+  app.use("/comments", commentRouter)
+
+  app.use(errorHandler)
 
   app.listen(port, () => {
     console.log(`  ➜ 🎸 Server is listening on port: ${port}`)
