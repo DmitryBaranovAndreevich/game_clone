@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { Topic, Comment } from "../sequelize/sequelize"
+import { Topic, Comment, Answer } from "../sequelize/sequelize"
 import { InCorrectDataError } from "../errors"
 
 export const createTopic = (
@@ -40,14 +40,24 @@ export const getAllTopics = (
         throw new Error("NotValidData")
       }
 
-      Promise.all(
-        topic.map(t =>
-          Comment.findAll({ where: { parentTopic: t.dataValues.id } }),
+      Promise.all([
+        Promise.all(
+          topic.map(t =>
+            Comment.findAll({ where: { parentTopic: t.dataValues.id } }),
+          ),
         ),
-      ).then(allComments => {
+        Promise.all(
+          topic.map(t =>
+            Answer.findAll({ where: { parentTopic: t.dataValues.id } }),
+          ),
+        ),
+      ]).then(([allComments, allAnswers]) => {
         const allTopics = topic.map((t, i) => {
           const { createdAt, ...rest } = t.dataValues
-          return { ...rest, comments: allComments[i].length }
+          return {
+            ...rest,
+            comments: allComments[i].length + allAnswers[i].length,
+          }
         })
         res.send(allTopics)
       })

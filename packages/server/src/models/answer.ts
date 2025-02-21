@@ -1,13 +1,13 @@
 import { DataTypes, Model, Sequelize } from "sequelize"
-import { TComment } from "../types"
+import { TAnswer } from "../types"
 
 export default (sequelize: Sequelize) => {
   return sequelize.define<
     Model<
-      { id: string; updatedAt?: string; createdAt?: string } & TComment,
-      TComment
+      { id: string; updatedAt?: string; createdAt?: string } & TAnswer,
+      TAnswer
     >
-  >("comments", {
+  >("answers", {
     id: {
       type: DataTypes.INTEGER(),
       primaryKey: true,
@@ -18,6 +18,14 @@ export default (sequelize: Sequelize) => {
     },
     parentTopic: {
       type: DataTypes.INTEGER(),
+    },
+    parentComment: {
+      type: DataTypes.INTEGER(),
+      allowNull: true,
+    },
+    parentAnswer: {
+      type: DataTypes.INTEGER(),
+      allowNull: true,
     },
     content: {
       type: DataTypes.STRING(),

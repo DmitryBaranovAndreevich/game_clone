@@ -4,14 +4,12 @@ import styles from "./topic-page.module.css"
 import { withAuth } from "../../../../components"
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { topicApiInstance } from "../../forum-api"
+import { TMessage, topicApiInstance } from "../../forum-api"
 
 const TopicPage = () => {
   const { topicId } = useParams()
   const [text, setText] = useState<string>()
-  const [messages, setMessages] = useState<
-    { name: string; type: string; content: string }[]
-  >([])
+  const [messages, setMessages] = useState<TMessage[]>([])
 
   useEffect(() => {
     if (!topicId) {
@@ -20,13 +18,7 @@ const TopicPage = () => {
     topicApiInstance
       .getAllComments(topicId)
       .then(res => {
-        setMessages(
-          res.map(el => ({
-            name: el.owner,
-            type: "post",
-            content: el.content,
-          })),
-        )
+        setMessages(res)
       })
       .catch(e => console.log(e))
   }, [topicId])
@@ -42,13 +34,7 @@ const TopicPage = () => {
         return topicApiInstance.getAllComments(topicId)
       })
       .then(res => {
-        setMessages(
-          res.map(el => ({
-            name: el.owner,
-            type: "post",
-            content: el.content,
-          })),
-        )
+        setMessages(res)
       })
       .catch(e => console.log(e))
   }
@@ -62,7 +48,12 @@ const TopicPage = () => {
         gap={24}
         className={styles.scrollContainer}>
         {messages.map((message, index) => (
-          <PostMessage key={index} message={message} />
+          <PostMessage
+            key={index}
+            message={message}
+            setMessages={setMessages}
+            messageId={message.id}
+          />
         ))}
       </Flex>
       <Flex className={styles.bottomActions}>

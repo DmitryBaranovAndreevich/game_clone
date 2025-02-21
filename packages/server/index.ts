@@ -1,5 +1,6 @@
 import dotenv from "dotenv"
 import cors from "cors"
+import helmet from "helmet"
 dotenv.config()
 import { createServer as createViteServer, ViteDevServer } from "vite"
 import express from "express"
@@ -14,6 +15,7 @@ import { auth } from "./src/middlewares"
 import { errorHandler } from "./src/helpers"
 import topicRouter from "./src/routes/topic"
 import commentRouter from "./src/routes/comments"
+import answerRouter from "./src/routes/answer"
 
 const isDev = () => process.env.NODE_ENV === "development"
 
@@ -127,10 +129,12 @@ async function startServer() {
     }
   })
 
+  app.use(helmet())
   app.use(auth)
   app.get("/user", getUser)
   app.use("/topic", topicRouter)
   app.use("/comments", commentRouter)
+  app.use("/answers", answerRouter)
 
   app.use(errorHandler)
 
