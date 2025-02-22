@@ -8,7 +8,6 @@ export const createComment = (
   res: Response,
   next: NextFunction,
 ) => {
-  //@ts-ignore
   const user = req.user
   if (!(req.body && "topic" in req.body && "content" in req.body)) {
     throw new InCorrectDataError()
@@ -64,6 +63,7 @@ export const getAllComments = (
           required: true,
         },
       ],
+      order: [["createdAt", "DESC"]],
     }),
   ])
     .then(([comment, answers]) => {
@@ -130,7 +130,6 @@ export const getAllComments = (
 }
 
 export const addLike = (req: Request, res: Response, next: NextFunction) => {
-  //@ts-ignore
   const user = req.user
   const { cardId } = req.params
   Comment.findOne({ where: { id: cardId } })
@@ -150,7 +149,6 @@ export const addLike = (req: Request, res: Response, next: NextFunction) => {
 }
 
 export const deleteLike = (req: Request, res: Response, next: NextFunction) => {
-  //@ts-ignore
   const user = req.user
   const { cardId } = req.params
   Comment.findOne({ where: { id: cardId } })

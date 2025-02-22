@@ -72,7 +72,6 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
 }
 
 export const getUser = (req: Request, res: Response, next: NextFunction) => {
-  //@ts-ignore
   const user = req.user
   return User.findOne({ where: { id: user } })
     .then(user => {

@@ -18,8 +18,9 @@ export const auth = (req: Request, _res: Response, next: NextFunction) => {
     throw new InCorrectPassword()
   }
 
-  //@ts-ignore
-  req.user = payload._id
+  if (typeof payload === "object" && "_id" in payload) {
+    req.user = payload._id
+  }
 
   next()
 }

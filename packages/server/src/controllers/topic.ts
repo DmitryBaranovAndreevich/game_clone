@@ -7,7 +7,6 @@ export const createTopic = (
   res: Response,
   next: NextFunction,
 ) => {
-  //@ts-ignore
   const user = req.user
   if (!(req.body && "title" in req.body && "content" in req.body)) {
     throw new InCorrectDataError()

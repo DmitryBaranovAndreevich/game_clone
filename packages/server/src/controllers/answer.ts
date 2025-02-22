@@ -7,9 +7,7 @@ export const createAnswer = (
   res: Response,
   next: NextFunction,
 ) => {
-  //@ts-ignore
   const user = req.user
-  console.log("sd")
   if (
     !(
       req.body &&
@@ -41,7 +39,6 @@ export const createAnswer = (
 }
 
 export const addLike = (req: Request, res: Response, next: NextFunction) => {
-  //@ts-ignore
   const user = req.user
   const { cardId } = req.params
   Answer.findOne({ where: { id: cardId } })
@@ -61,7 +58,6 @@ export const addLike = (req: Request, res: Response, next: NextFunction) => {
 }
 
 export const deleteLike = (req: Request, res: Response, next: NextFunction) => {
-  //@ts-ignore
   const user = req.user
   const { cardId } = req.params
   Answer.findOne({ where: { id: cardId } })

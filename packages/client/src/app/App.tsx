@@ -9,7 +9,8 @@ import { makeStore } from "../store"
 export const cache = createCache()
 
 function App() {
-  const preloadedState = window.APP_INITIAL_STATE || "{}"
+  const preloadedState =
+    typeof window === "undefined" ? {} : window.APP_INITIAL_STATE
   const store = makeStore(preloadedState)
 
   return (
