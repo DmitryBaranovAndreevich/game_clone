@@ -17,7 +17,7 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
   return User.findOne({ where: { login } })
     .then(user => {
       if (!user) {
-        throw new NotFoundError("Нет пользователя с таким email")
+        throw new NotFoundError("Логин или пароль не верные")
       }
       return bcrypt
         .compare(password, user.dataValues.password)

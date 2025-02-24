@@ -61,5 +61,5 @@ export const getAllTopics = (
         res.send(allTopics)
       })
     })
-    .catch(e => next(e))
+    .catch(next)
 }
