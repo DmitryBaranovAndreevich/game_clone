@@ -8,7 +8,7 @@ export type TUser = {
   display_name: string | null
   phone: string
   login: string
-  avatar: string | null
+  avatar?: string | null
   email: string
 }
 
@@ -30,7 +30,7 @@ const apiInstance = new BaseRestService(BASE_URL)
 
 export class UserApi {
   getUser(): Promise<TUser | null> {
-    return apiInstance.get({ url: "/auth/user" })
+    return apiInstance.get({ url: "/user" })
   }
   updateProfile(data: TUpdateProfileRequest): Promise<TUser | null> {
     return apiInstance.put({ url: "/user/profile", data: data })

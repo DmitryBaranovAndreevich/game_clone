@@ -107,4 +107,23 @@ export class BaseRestService {
     }
     return this._fetchData<T>({ url: fullUrl, options })
   }
+
+  public delete<T>({
+    url,
+    data = {},
+    headers = {},
+    credentials = "include",
+  }: TRequestType): Promise<T> {
+    const fullUrl = new URL(`${this.baseUrl}${url}`)
+    fullUrl.search =
+      data instanceof FormData
+        ? new URLSearchParams({}).toString()
+        : new URLSearchParams(data).toString()
+    const options = {
+      method: "DELETE",
+      headers,
+      credentials,
+    }
+    return this._fetchData<T>({ url: fullUrl, options })
+  }
 }

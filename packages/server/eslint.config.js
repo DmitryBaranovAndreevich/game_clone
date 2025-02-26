@@ -11,7 +11,7 @@ module.exports = tsLint.config(
     },
   },
   {
-    ignores: ["node_modules", "dist", "**.*js"],
+    ignores: ["node_modules", "dist", "**.*js", "**.d.ts"],
   },
   ...tsLint.configs.recommended,
   {
@@ -32,6 +32,7 @@ module.exports = tsLint.config(
       ...eslintConfigPrettier.rules,
       curly: "error",
       "@typescript-eslint/ban-ts-comment": "off",
+      "@typescript-eslint/no-unused-vars": "off",
     },
   },
 )
