@@ -26,7 +26,7 @@
    ==> выполните эти действия 1 раз и проверьте , что в server/node_modules появилась ссылка на папку client
 5. Убедитесь что у вас установлен `node` и `docker`
 6. Выполните команду `yarn bootstrap`
-7. Выполните команду `yarn dev --scope=server` чтобы запустить приложение в dev режиме
+8. docker-compose up -d из директории server и потом  yarn dev
 
 ### Тесты
 

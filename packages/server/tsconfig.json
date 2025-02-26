@@ -24,5 +24,7 @@
       "*": ["types/*"]
     },
     "outDir": "dist"
-  }
+  },
+  "include": ["server.d.ts", "src", "index.ts", "db.ts", "__tests__"],
+  "files": ["server.d.ts"],
 }

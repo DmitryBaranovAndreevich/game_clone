@@ -4,18 +4,25 @@ import Topic from "../../components/topic"
 import { Link } from "react-router-dom"
 import Sidebar from "../../../../components/sidebar"
 import { withAuth } from "../../../../components"
-
-const topics = [
-  { theme: "Theme 1", replies: 222 },
-  { theme: "Theme 2", replies: 233 },
-  { theme: "Theme 3", replies: 344 },
-  { theme: "Theme 4", replies: 455 },
-  { theme: "Theme 5", replies: 566 },
-  { theme: "Theme 6", replies: 666 },
-  { theme: "Theme 7", replies: 788 },
-]
+import { useEffect, useState } from "react"
+import { topicApiInstance } from "../../forum-api"
 
 const Forum = () => {
+  const [topics, setTopics] = useState<
+    {
+      theme: string
+      replies: number
+      id: string
+    }[]
+  >([])
+
+  useEffect(() => {
+    topicApiInstance.getAllTopics().then(res => {
+      setTopics(
+        res.map(t => ({ theme: t.title, replies: t.comments, id: t.id })),
+      )
+    })
+  }, [])
   return (
     <Layout>
       <Layout.Content>
@@ -33,7 +40,7 @@ const Forum = () => {
             dataSource={topics}
             renderItem={topic => (
               <List.Item>
-                <Link to="/forum/:TopicId">
+                <Link to={`/forum/${topic.id}`}>
                   <Topic topic={topic} />
                 </Link>
               </List.Item>
