@@ -1,4 +1,4 @@
-import { Button, Card, Flex, Input, Popover, Typography } from "antd"
+import { Avatar, Button, Card, Flex, Input, Popover, Typography } from "antd"
 import { LikeOutlined, LikeFilled } from "@ant-design/icons"
 import styles from "./topic-message.module.css"
 import { useParams } from "react-router-dom"
@@ -6,6 +6,7 @@ import { useState } from "react"
 import { TMessage, topicApiInstance } from "../../forum-api"
 import { useAppSelector } from "../../../../store"
 import { getUserId } from "../../../../store/selectors"
+import { BASE_URL } from "../../../../constants"
 
 const TopicMessage: React.FC<{
   message: TMessage
@@ -77,9 +78,11 @@ const TopicMessage: React.FC<{
   }
   return (
     <Card className={`${styles[message.type]}`}>
-      {/* <Avatar size={40} className={styles.avatar}>
-        {message.ow}
-      </Avatar> */}
+      <Avatar
+        size={40}
+        className={styles.avatar}
+        src={`${BASE_URL}/resources${message.user.avatar}`}
+      />
       <Typography.Text>{message.user.login}</Typography.Text>
       <p>{message.content}</p>
       <Popover

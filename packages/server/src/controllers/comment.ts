@@ -36,7 +36,7 @@ type TFullAnswer = {
   createdAt?: string
   comments?: TFullAnswer[]
   type?: string
-  user?: { login?: string }
+  user?: { login?: string; avatar?: string | null }
 } & TAnswer
 
 export const getAllComments = (
@@ -81,7 +81,10 @@ export const getAllComments = (
             ...el.dataValues,
             user:
               "user" in el.dataValues
-                ? { login: (el.dataValues.user as IUser).login }
+                ? {
+                    login: (el.dataValues.user as IUser).login,
+                    avatar: (el.dataValues.user as IUser).avatar,
+                  }
                 : {},
           }))
 
@@ -119,7 +122,13 @@ export const getAllComments = (
         const { updatedAt, parentTopic, ...rest } = t.dataValues
         return {
           ...rest,
-          user: "user" in rest ? { login: (rest.user as IUser).login } : {},
+          user:
+            "user" in rest
+              ? {
+                  login: (rest.user as IUser).login,
+                  avatar: (rest.user as IUser).avatar,
+                }
+              : {},
           type: "post",
           comments: rootArr,
         }

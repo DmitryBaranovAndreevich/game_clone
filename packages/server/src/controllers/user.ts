@@ -45,7 +45,7 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
   bcrypt
     .hash(password, 10)
     .then((hash: string) => {
-      return User.create({ ...any, password: hash })
+      return User.create({ ...any, password: hash, avatar: null })
     })
     .then(user => {
       const { password, updatedAt, createdAt, ...rest } = user.dataValues
@@ -78,6 +78,27 @@ export const getUser = (req: Request, res: Response, next: NextFunction) => {
       if (!user) {
         throw new NotFoundError("Пользователь не найден")
       }
+      const { createdAt, updatedAt, password, ...rest } = user.dataValues
+      res.send(rest)
+    })
+    .catch(next)
+}
+
+export const updateUser = (req: Request, res: Response, next: NextFunction) => {
+  const user = req.user
+  return User.findOne({ where: { id: user } })
+    .then(user => {
+      if (!user) {
+        throw new NotFoundError("Пользователь не найден")
+      }
+
+      if (req.file) {
+        user.set({ avatar: `/${req.file.filename}` })
+      }
+
+      return user.save()
+    })
+    .then(user => {
       const { createdAt, updatedAt, password, ...rest } = user.dataValues
       res.send(rest)
     })
