@@ -9,7 +9,7 @@ import path from "node:path"
 import serialize from "serialize-javascript"
 import cookieParser from "cookie-parser"
 import { celebrate, Joi } from "celebrate"
-import { createUser, getUser, login, updateUser } from "./src/controllers"
+import { createUser, login, logOut } from "./src/controllers"
 import sequelize from "./src/sequelize"
 import { auth } from "./src/middlewares"
 import { errorHandler } from "./src/helpers"
@@ -17,15 +17,15 @@ import topicRouter from "./src/routes/topic"
 import commentRouter from "./src/routes/comments"
 import answerRouter from "./src/routes/answer"
 import themeRouter from "./src/routes/theme"
-import multer from "multer"
+import userRouter from "./src/routes/user"
 
 const isDev = () => process.env.NODE_ENV === "development"
-const multerMiddleware = multer({ dest: "./resources" })
 
 async function startServer() {
   const app = express()
   app.use(cookieParser())
   app.use(cors())
+  app.use(express.json())
   try {
     await sequelize.sync({ force: true })
     console.log("Соединение с БД было успешно установлено")
@@ -35,7 +35,6 @@ async function startServer() {
 
   app.post(
     "/signin",
-    express.json(),
     celebrate({
       body: Joi.object().keys({
         login: Joi.string().required(),
@@ -47,7 +46,6 @@ async function startServer() {
 
   app.post(
     "/signup",
-    express.json(),
     celebrate({
       body: Joi.object().keys({
         second_name: Joi.string().required().min(3).max(20),
@@ -60,6 +58,8 @@ async function startServer() {
     }),
     createUser,
   )
+
+  app.post("/logout", logOut)
   app.use("/resources", express.static(path.resolve("./resources")))
   const port = Number(process.env.SERVER_PORT) || 3001
   const srcPath = path.dirname(require.resolve("client"))
@@ -135,16 +135,7 @@ async function startServer() {
 
   app.use(helmet())
   app.use(auth)
-  app.put(
-    "/user/profile/avatar",
-    //@ts-ignore
-    //проблема с типами multer, открыты несколько issues  https://github.com/DefinitelyTyped/DefinitelyTyped/issues/43897
-    //стабильного решения пока нет
-    multerMiddleware.single("avatar"),
-    updateUser,
-  )
-  app.use(express.json())
-  app.get("/user", getUser)
+  app.use("/user", userRouter)
   app.use("/topic", topicRouter)
   app.use("/comments", commentRouter)
   app.use("/answers", answerRouter)

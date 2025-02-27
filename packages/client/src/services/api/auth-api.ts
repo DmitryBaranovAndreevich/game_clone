@@ -5,6 +5,6 @@ const apiInstance = new BaseRestService(BASE_URL)
 
 export class AuthApi {
   logout() {
-    return apiInstance.post({ url: "/auth/logout" })
+    return apiInstance.post({ url: "/logout" })
   }
 }
