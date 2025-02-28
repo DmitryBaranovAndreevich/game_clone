@@ -8,7 +8,7 @@ import { onlyWithOutAuth } from "../../components"
 import styles from "./register.module.css"
 import ThemeSwitch from "../../components/theme-switch"
 import { useAppDispatch } from "../../store"
-import { setUserInfo } from "../../store/slices/user"
+import { setUserInfo, setUserStatusSuccess } from "../../store/slices/user"
 
 type TRegisterForm = TRegisterRequestParams & { confirmPassword: string }
 const registerApi = new RegisterAPI()
@@ -29,8 +29,10 @@ const Register = () => {
         return
       }
       const registerResponse = await registerApi.create({ password, ...rest })
-      dispatch(setUserInfo(registerResponse))
       if (registerResponse) {
+        dispatch(setUserInfo(registerResponse))
+        dispatch(setUserStatusSuccess())
+
         navigateTo(generatePath("/"))
       }
     } catch (e) {

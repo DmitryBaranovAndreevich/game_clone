@@ -66,7 +66,7 @@ const PURPLE_THEME = {
 }
 
 export const AntdConfigProvider = ({ children }: { children: ReactNode }) => {
-  const theme = useAppSelector(state => state.theme)
+  const { info: theme } = useAppSelector(state => state.theme)
   const actualTheme = theme === "purple" ? PURPLE_THEME : DEFAULT_THEME
 
   return (
