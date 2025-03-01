@@ -17,3 +17,9 @@
   bottom: -120px;
   left: -170px;
 }
+
+.switch {
+  position: fixed;
+  bottom: 10px;
+  right: 0;
+}

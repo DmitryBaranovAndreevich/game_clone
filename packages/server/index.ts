@@ -2,7 +2,8 @@ import dotenv from "dotenv"
 import cors from "cors"
 import helmet from "helmet"
 dotenv.config()
-// import { createServer as createViteServer, ViteDevServer } from "vite"
+// @ts-ignore
+import { createServer as createViteServer, ViteDevServer } from "vite"
 import express from "express"
 import fs from "node:fs"
 import path from "node:path"
@@ -16,8 +17,7 @@ import { errorHandler } from "./src/helpers"
 import topicRouter from "./src/routes/topic"
 import commentRouter from "./src/routes/comments"
 import answerRouter from "./src/routes/answer"
-// @ts-ignore
-import { createServer, ViteDevServer } from "vite"
+import themeRouter from "./src/routes/theme"
 
 const isDev = () => process.env.NODE_ENV === "development"
 
@@ -63,7 +63,7 @@ async function startServer() {
   const srcPath = path.dirname(require.resolve("client"))
   let vite: ViteDevServer | undefined
   if (isDev()) {
-    vite = await createServer({
+    vite = await createViteServer({
       server: { middlewareMode: true },
       root: srcPath,
       appType: "custom",
@@ -137,6 +137,7 @@ async function startServer() {
   app.use("/topic", topicRouter)
   app.use("/comments", commentRouter)
   app.use("/answers", answerRouter)
+  app.use("/theme", themeRouter)
 
   app.use(errorHandler)
 

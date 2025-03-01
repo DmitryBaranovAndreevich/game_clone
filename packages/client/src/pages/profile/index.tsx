@@ -8,9 +8,8 @@ import { withAuth } from "../../components"
 
 const layoutStyle = {
   height: "100vh",
-  width: "100vw",
-  padding: "50px 0",
-  overflow: "hidden",
+  width: "calc(100vw - 80px)",
+  padding: "10px 0",
 }
 
 const Profile: FC = () => {

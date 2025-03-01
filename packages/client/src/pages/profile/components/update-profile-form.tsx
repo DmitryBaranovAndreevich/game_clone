@@ -108,8 +108,8 @@ const UpdateProfileForm: FC<TComponentProps> = ({
         <Col xs={12} sm={12} md={9} lg={9}>
           <Flex
             vertical
-            style={{ maxWidth: "350px", width: "100%" }}
-            gap="large">
+            gap="middle"
+            style={{ maxWidth: "350px", width: "100%" }}>
             <Form.Item
               initialValue={userInfo?.first_name || ""}
               style={{ margin: "0" }}
@@ -117,7 +117,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
               label={"Name"}
               key={"first_name"}
               name={"first_name"}>
-              <Input disabled size="large" type="text" placeholder="Name" />
+              <Input type="text" placeholder="Name" />
             </Form.Item>
             <Form.Item
               initialValue={userInfo?.second_name || ""}
@@ -126,7 +126,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
               label={"Lastname"}
               key={"second_name"}
               name={"second_name"}>
-              <Input disabled size="large" type="text" placeholder="Lastname" />
+              <Input type="text" placeholder="Lastname" />
             </Form.Item>
             <Form.Item
               initialValue={userInfo?.display_name || ""}
@@ -135,12 +135,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
               label={"Display name"}
               key={"display_name"}
               name={"display_name"}>
-              <Input
-                disabled
-                size="large"
-                type="text"
-                placeholder="Display name"
-              />
+              <Input type="text" placeholder="Display name" />
             </Form.Item>
             <Form.Item
               initialValue={userInfo?.login || ""}
@@ -149,7 +144,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
               label={"Login"}
               key={"login"}
               name={"login"}>
-              <Input disabled size="large" type="text" placeholder="Login" />
+              <Input type="text" placeholder="Login" />
             </Form.Item>
             <Form.Item
               initialValue={userInfo?.email || ""}
@@ -158,7 +153,7 @@ const UpdateProfileForm: FC<TComponentProps> = ({
               label={"Email"}
               key={"email"}
               name={"email"}>
-              <Input disabled size="large" type="text" placeholder="Email" />
+              <Input type="text" placeholder="Email" />
             </Form.Item>
             <Form.Item
               initialValue={userInfo?.phone || ""}
@@ -167,19 +162,15 @@ const UpdateProfileForm: FC<TComponentProps> = ({
               label={"Phone"}
               key={"phone"}
               name={"phone"}>
-              <Input disabled size="large" type="text" placeholder="Phone" />
+              <Input type="text" placeholder="Phone" />
             </Form.Item>
             <Button
-              disabled
-              size="large"
               type={"primary"}
               htmlType="submit"
               style={{ maxWidth: "350px", width: "100%" }}>
               Save
             </Button>
             <Button
-              disabled
-              size="large"
               htmlType="button"
               onClick={updateProfileCancelHandler}
               style={{ maxWidth: "350px", width: "100%" }}>
@@ -191,12 +182,12 @@ const UpdateProfileForm: FC<TComponentProps> = ({
           <Flex
             vertical
             align="center"
+            gap="middle"
             style={{
               maxWidth: "350px",
               width: "100%",
               paddingRight: "80px",
-            }}
-            gap="large">
+            }}>
             <Avatar
               size={150}
               icon={<UserOutlined />}
@@ -211,7 +202,6 @@ const UpdateProfileForm: FC<TComponentProps> = ({
               }
             />
             <Button
-              size="large"
               htmlType="button"
               onClick={() => {
                 setIsPasswordModalOpen(true)
@@ -220,7 +210,6 @@ const UpdateProfileForm: FC<TComponentProps> = ({
               Change password
             </Button>
             <Button
-              size="large"
               htmlType="button"
               onClick={logoutHandler}
               style={{ maxWidth: "350px", width: "100%" }}>
