@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react"
+import { FC } from "react"
 import { generatePath, useNavigate } from "react-router-dom"
 import { App, Avatar, Button, Col, Flex, Form, Input, Row } from "antd"
 import { UserOutlined } from "@ant-design/icons"
@@ -34,17 +34,6 @@ const UpdateProfileForm: FC<TComponentProps> = ({
   const dispatch = useAppDispatch()
   const navigateTo = useNavigate()
   const [updateProfileForm] = Form.useForm<TUpdateProfileRequest>()
-
-  useEffect(() => {
-    updateProfileForm.setFieldsValue({
-      first_name: userInfo?.first_name || "",
-      second_name: userInfo?.second_name || "",
-      display_name: userInfo?.display_name || "",
-      login: userInfo?.login || "",
-      email: userInfo?.email || "",
-      phone: userInfo?.phone || "",
-    })
-  }, [updateProfileForm, userInfo])
 
   const updateProfileHandler = async (values: TUpdateProfileRequest) => {
     try {
@@ -86,6 +75,14 @@ const UpdateProfileForm: FC<TComponentProps> = ({
 
   return (
     <Form
+      initialValues={{
+        first_name: userInfo?.first_name || "",
+        second_name: userInfo?.second_name || "",
+        display_name: userInfo?.display_name || "",
+        login: userInfo?.login || "",
+        email: userInfo?.email || "",
+        phone: userInfo?.phone || "",
+      }}
       name="updateProfileForm"
       form={updateProfileForm}
       layout={"vertical"}
@@ -111,66 +108,62 @@ const UpdateProfileForm: FC<TComponentProps> = ({
             gap="middle"
             style={{ maxWidth: "350px", width: "100%" }}>
             <Form.Item
-              initialValue={userInfo?.first_name || ""}
               style={{ margin: "0" }}
               rules={[userNameFormRules, requiredFieldRule]}
               label={"Name"}
               key={"first_name"}
               name={"first_name"}>
-              <Input type="text" placeholder="Name" />
+              <Input size="large" type="text" placeholder="Name" />
             </Form.Item>
             <Form.Item
-              initialValue={userInfo?.second_name || ""}
               style={{ margin: "0" }}
               rules={[userNameFormRules, requiredFieldRule]}
               label={"Lastname"}
               key={"second_name"}
               name={"second_name"}>
-              <Input type="text" placeholder="Lastname" />
+              <Input size="large" type="text" placeholder="Lastname" />
             </Form.Item>
             <Form.Item
-              initialValue={userInfo?.display_name || ""}
               style={{ margin: "0" }}
               rules={[userNameFormRules, requiredFieldRule]}
               label={"Display name"}
               key={"display_name"}
               name={"display_name"}>
-              <Input type="text" placeholder="Display name" />
+              <Input size="large" type="text" placeholder="Display name" />
             </Form.Item>
             <Form.Item
-              initialValue={userInfo?.login || ""}
               style={{ margin: "0" }}
               rules={[requiredFieldRule, userLoginFormRules]}
               label={"Login"}
               key={"login"}
               name={"login"}>
-              <Input type="text" placeholder="Login" />
+              <Input size="large" type="text" placeholder="Login" />
             </Form.Item>
             <Form.Item
-              initialValue={userInfo?.email || ""}
               style={{ margin: "0" }}
               rules={[requiredFieldRule, emailFormRule]}
               label={"Email"}
               key={"email"}
               name={"email"}>
-              <Input type="text" placeholder="Email" />
+              <Input size="large" type="text" placeholder="Email" />
             </Form.Item>
             <Form.Item
-              initialValue={userInfo?.phone || ""}
               style={{ margin: "0" }}
               rules={[phoneFormRule, requiredFieldRule]}
               label={"Phone"}
               key={"phone"}
               name={"phone"}>
-              <Input type="text" placeholder="Phone" />
+              <Input size="large" type="text" placeholder="Phone" />
             </Form.Item>
             <Button
+              size="large"
               type={"primary"}
               htmlType="submit"
               style={{ maxWidth: "350px", width: "100%" }}>
               Save
             </Button>
             <Button
+              size="large"
               htmlType="button"
               onClick={updateProfileCancelHandler}
               style={{ maxWidth: "350px", width: "100%" }}>

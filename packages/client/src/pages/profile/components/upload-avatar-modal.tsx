@@ -3,6 +3,7 @@ import { Flex, GetProp, Modal, Upload, UploadProps } from "antd"
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
 import { fetchUserInfo } from "../../../store/slices/user"
 import { useAppDispatch } from "../../../store"
+import { BASE_URL } from "../../../constants"
 
 type TComponentProps = {
   isAvatarModalOpen: boolean
@@ -69,7 +70,7 @@ const UploadAvatarModal: FC<TComponentProps> = ({
           showUploadList={false}
           method="put"
           withCredentials
-          action="https://ya-praktikum.tech/api/v2/user/profile/avatar"
+          action={`${BASE_URL}/user/profile/avatar`}
           onChange={uploadAvatarHandler}>
           {imageUrl ? (
             <img
