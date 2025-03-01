@@ -30,6 +30,7 @@
     "reflect-metadata": "^0.2.2",
     "sequelize": "^6.37.5",
     "sequelize-typescript": "^2.1.6",
+    "vite": "^5.4.1",
     "serialize-javascript": "^6.0.2"
   },
   "devDependencies": {
@@ -48,10 +49,11 @@
     "globals": "^15.11.0",
     "jest": "^28",
     "nodemon": "^2.0.19",
-    "prettier": "^2.7.1",
+    "prettier": "^3.3.3",
     "ts-jest": "^28.0.8",
     "ts-node": "^10.9.1",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.3",
+    "vite": "^5.4.14"
   },
   "license": "MIT"
 }

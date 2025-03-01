@@ -2,8 +2,8 @@
   "compilerOptions": {
     "composite": true,
     "target": "es2019",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "Node16",  // Изменено на Node16
+    "moduleResolution": "node16",  // Изменено на node16
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": true,

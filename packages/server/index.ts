@@ -2,6 +2,7 @@ import dotenv from "dotenv"
 import cors from "cors"
 import helmet from "helmet"
 dotenv.config()
+// @ts-ignore
 import { createServer as createViteServer, ViteDevServer } from "vite"
 import express from "express"
 import fs from "node:fs"
