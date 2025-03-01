@@ -28,7 +28,8 @@
     "serialize-javascript": "^6.0.2",
     "reflect-metadata": "^0.2.2",
     "sequelize": "^6.37.5",
-    "sequelize-typescript": "^2.1.6"
+    "sequelize-typescript": "^2.1.6",
+    "vite": "^5.4.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
