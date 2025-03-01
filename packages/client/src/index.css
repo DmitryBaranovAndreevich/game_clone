@@ -1,7 +1,8 @@
 :root {
   --colorBgBase: #000;
   --colorTextBase: #fff;
-  --colorPrimary: #1668dc;
+  --colorPrimaryDefault: #1668dc;
+  --colorPrimaryPurple: #8000ff;
 }
 
 @font-face {

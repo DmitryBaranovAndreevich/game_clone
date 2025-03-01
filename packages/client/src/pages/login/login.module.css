@@ -10,3 +10,9 @@
 .bgImage {
   margin: 0 0 0 auto;
 }
+
+.switch {
+  position: fixed;
+  bottom: 10px;
+  right: 0;
+}

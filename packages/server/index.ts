@@ -16,6 +16,7 @@ import { errorHandler } from "./src/helpers"
 import topicRouter from "./src/routes/topic"
 import commentRouter from "./src/routes/comments"
 import answerRouter from "./src/routes/answer"
+import themeRouter from "./src/routes/theme"
 
 const isDev = () => process.env.NODE_ENV === "development"
 
@@ -135,6 +136,7 @@ async function startServer() {
   app.use("/topic", topicRouter)
   app.use("/comments", commentRouter)
   app.use("/answers", answerRouter)
+  app.use("/theme", themeRouter)
 
   app.use(errorHandler)
 

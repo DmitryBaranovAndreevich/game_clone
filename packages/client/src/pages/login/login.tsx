@@ -3,6 +3,7 @@ import { CrazyCrackerIcon } from "../../assets/images/image/image-black-bg"
 import { LoginForm } from "./components"
 import { onlyWithOutAuth } from "../../components"
 import styles from "./login.module.css"
+import ThemeSwitch from "../../components/theme-switch"
 
 const Login = () => {
   return (
@@ -17,6 +18,7 @@ const Login = () => {
       <Col xs={24} sm={12} md={8} lg={8}>
         <LoginForm />
       </Col>
+      <ThemeSwitch className={styles.switch} />
     </Row>
   )
 }
