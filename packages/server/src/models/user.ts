@@ -30,5 +30,9 @@ export default (sequelize: Sequelize) => {
     password: {
       type: DataTypes.STRING(),
     },
+    avatar: {
+      type: DataTypes.STRING(),
+      allowNull: true,
+    },
   })
 }

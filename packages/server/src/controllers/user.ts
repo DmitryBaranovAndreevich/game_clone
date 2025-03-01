@@ -12,6 +12,8 @@ import { User } from "../sequelize"
 
 const { JWT_SECRET = "dev-key" } = process.env
 
+const JWT = "jwt"
+
 export const login = (req: Request, res: Response, next: NextFunction) => {
   const { login, password } = req.body
   return User.findOne({ where: { login } })
@@ -29,11 +31,15 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
             expiresIn: "7d",
           })
           res
-            .cookie("jwt", token, { maxAge: 3600000 * 24 * 7, httpOnly: true })
+            .cookie(JWT, token, { maxAge: 3600000 * 24 * 7, httpOnly: true })
             .end()
         })
     })
     .catch(next)
+}
+
+export const logOut = (_req: Request, res: Response) => {
+  return res.clearCookie(JWT).end()
 }
 
 export const createUser = (req: Request, res: Response, next: NextFunction) => {
@@ -45,7 +51,7 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
   bcrypt
     .hash(password, 10)
     .then((hash: string) => {
-      return User.create({ ...any, password: hash })
+      return User.create({ ...any, password: hash, avatar: null })
     })
     .then(user => {
       const { password, updatedAt, createdAt, ...rest } = user.dataValues
@@ -80,6 +86,86 @@ export const getUser = (req: Request, res: Response, next: NextFunction) => {
       }
       const { createdAt, updatedAt, password, ...rest } = user.dataValues
       res.send(rest)
+    })
+    .catch(next)
+}
+
+export const updateUser = (req: Request, res: Response, next: NextFunction) => {
+  const user = req.user
+  return User.findOne({ where: { id: user } })
+    .then(user => {
+      if (!user) {
+        throw new NotFoundError("Пользователь не найден")
+      }
+
+      user.set({ ...req.body })
+
+      return user.save()
+    })
+    .then(user => {
+      const { createdAt, updatedAt, password, ...rest } = user.dataValues
+      res.send(rest)
+    })
+    .catch(next)
+}
+
+export const updateAvatarUser = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const user = req.user
+  return User.findOne({ where: { id: user } })
+    .then(user => {
+      if (!user) {
+        throw new NotFoundError("Пользователь не найден")
+      }
+
+      if (req.file) {
+        user.set({ avatar: `/${req.file.filename}` })
+      }
+
+      return user.save()
+    })
+    .then(user => {
+      const { createdAt, updatedAt, password, ...rest } = user.dataValues
+      res.send(rest)
+    })
+    .catch(next)
+}
+
+export const updateUserPassword = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const user = req.user
+  return User.findOne({ where: { id: user } })
+    .then(user => {
+      if (!user) {
+        throw new NotFoundError("Пользователь не найден")
+      }
+
+      return bcrypt
+        .compare(req.body.oldPassword, user.dataValues.password)
+        .then(matched => {
+          if (!matched) {
+            throw new InCorrectPassword()
+          }
+
+          bcrypt
+            .hash(req.body.newPassword, 10)
+            .then((hash: string) => {
+              user.set({ password: hash })
+
+              return user.save()
+            })
+            .then(user => {
+              const { createdAt, updatedAt, password, ...rest } =
+                user.dataValues
+              res.send(rest)
+            })
+        })
     })
     .catch(next)
 }
