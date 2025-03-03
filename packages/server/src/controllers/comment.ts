@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express"
-import { Answer, Comment, User } from "../sequelize/sequelize"
-import { InCorrectDataError, NotFoundError } from "../errors"
-import { IUser, TAnswer } from "../types"
+import { Answer, Comment, User, Reaction } from "../sequelize/sequelize"
+import { InCorrectDataError } from "../errors"
+import { IUser, TAnswer, ReactionRecord, ProcessedReaction } from "../types"
 
 export const createComment = (
   req: Request,
@@ -17,7 +17,6 @@ export const createComment = (
     owner: Number(user),
     parentTopic: Number(req.body.topic),
     content: req.body.content,
-    likes: [],
   })
     .then(topic => {
       if (!topic) {
@@ -37,6 +36,7 @@ type TFullAnswer = {
   comments?: TFullAnswer[]
   type?: string
   user?: { login?: string }
+  reactions: ProcessedReaction[]
 } & TAnswer
 
 export const getAllComments = (
@@ -44,6 +44,7 @@ export const getAllComments = (
   res: Response,
   next: NextFunction,
 ) => {
+  const user = req.user
   const { topicId } = req.params
   Promise.all([
     Comment.findAll({
@@ -52,6 +53,11 @@ export const getAllComments = (
         {
           model: User,
           required: true,
+        },
+        {
+          model: Reaction,
+          required: false,
+          as: "commentReactions",
         },
       ],
       order: [["createdAt", "DESC"]],
@@ -62,6 +68,11 @@ export const getAllComments = (
           model: User,
           required: true,
         },
+        {
+          model: Reaction,
+          required: false,
+          as: "answerReactions",
+        },
       ],
       order: [["createdAt", "DESC"]],
     }),
@@ -69,6 +80,27 @@ export const getAllComments = (
     .then(([comment, answers]) => {
       if (!comment) {
         throw new Error("NotValidData")
+      }
+
+      // reaction proccesing
+      const processReactions = (reactions: ReactionRecord[]) => {
+        const groupedReactions: Record<string, ProcessedReaction> = {}
+        reactions.forEach(reaction => {
+          const emoji = reaction.reaction
+          if (!groupedReactions[emoji]) {
+            groupedReactions[emoji] = {
+              emoji,
+              amount: 0,
+              isUserReacted: false,
+            }
+          }
+          groupedReactions[emoji].amount++
+          if (reaction.owner === Number(user)) {
+            groupedReactions[emoji].isUserReacted = true
+          }
+        })
+
+        return Object.values(groupedReactions)
       }
 
       const allComments = comment.map(t => {
@@ -83,6 +115,9 @@ export const getAllComments = (
               "user" in el.dataValues
                 ? { login: (el.dataValues.user as IUser).login }
                 : {},
+            // call process reactions
+            reactions: processReactions(el.dataValues.answerReactions || []),
+            commentReactions: undefined,
           }))
 
         const topicTree = allCommentTopic.reduce(
@@ -102,7 +137,7 @@ export const getAllComments = (
           ...allCommentTopic.map(el => ({
             ...el,
             comments: [] as TFullAnswer[],
-            type: "post",
+            type: "answer",
           })),
         ]
 
@@ -112,7 +147,7 @@ export const getAllComments = (
           if (current) {
             const newEl = [...(topicTree[String(current.id)] || [])]
             current["comments"] = newEl
-            current["type"] = "comment"
+            current["type"] = "answer"
             stack.push(...newEl)
           }
         }
@@ -120,49 +155,13 @@ export const getAllComments = (
         return {
           ...rest,
           user: "user" in rest ? { login: (rest.user as IUser).login } : {},
-          type: "post",
+          type: "comment",
           comments: rootArr,
+          reactions: processReactions(t.dataValues.commentReactions || []),
+          answerReations: undefined,
         }
       })
       res.send(allComments)
     })
     .catch(e => next(e))
-}
-
-export const addLike = (req: Request, res: Response, next: NextFunction) => {
-  const user = req.user
-  const { cardId } = req.params
-  Comment.findOne({ where: { id: cardId } })
-    .then(comment => {
-      if (!comment) {
-        throw new NotFoundError("Нет коммента с таким id")
-      }
-      const likes = comment.dataValues.likes
-      comment.set({ likes: [...likes, Number(user)] })
-
-      return comment.save()
-    })
-    .then(comment => {
-      res.send(comment.dataValues)
-    })
-    .catch(next)
-}
-
-export const deleteLike = (req: Request, res: Response, next: NextFunction) => {
-  const user = req.user
-  const { cardId } = req.params
-  Comment.findOne({ where: { id: cardId } })
-    .then(comment => {
-      if (!comment) {
-        throw new NotFoundError("Нет коммента с таким id")
-      }
-      const likes = comment.dataValues.likes
-      comment.set({ likes: likes.filter(like => like !== Number(user)) })
-
-      return comment.save()
-    })
-    .then(comment => {
-      res.send(comment.dataValues)
-    })
-    .catch(next)
 }

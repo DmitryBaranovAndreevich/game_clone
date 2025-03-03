@@ -1,13 +1,8 @@
-import { DataTypes, Model, Sequelize } from "sequelize"
-import { TAnswer } from "../types"
+import { DataTypes, Sequelize } from "sequelize"
+import { AnswerInstance } from "../types"
 
 export default (sequelize: Sequelize) => {
-  return sequelize.define<
-    Model<
-      { id: string; updatedAt?: string; createdAt?: string } & TAnswer,
-      TAnswer
-    >
-  >("answers", {
+  return sequelize.define<AnswerInstance>("answers", {
     id: {
       type: DataTypes.INTEGER(),
       primaryKey: true,
@@ -29,10 +24,6 @@ export default (sequelize: Sequelize) => {
     },
     content: {
       type: DataTypes.STRING(),
-    },
-    likes: {
-      type: DataTypes.ARRAY(DataTypes.INTEGER),
-      defaultValue: [],
     },
   })
 }

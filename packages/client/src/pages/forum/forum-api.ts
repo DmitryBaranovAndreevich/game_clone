@@ -14,8 +14,19 @@ export type TMessage = {
   user: { login: string }
   title: string
   content: string
-  type: string
-  likes: number[]
+  type: "topic" | "answer" | "comment"
+  reactions: ProcessedReaction[]
+}
+
+export type TReaction = {
+  emoji: string
+  type: "topic" | "answer" | "comment"
+  typeId: number
+}
+export type ProcessedReaction = {
+  emoji: string
+  amount: number
+  isUserReacted: boolean
 }
 
 class TopicAPI extends BaseRestService {
@@ -53,20 +64,15 @@ class TopicAPI extends BaseRestService {
     return this.post<{ res: string }>({ url: `/answers`, data: answer })
   }
 
-  addCommentLike(id: string) {
-    return this.put<{ res: string }>({ url: `/comments/${id}/likes` })
+  addReaction(reaction: TReaction) {
+    return this.post<{ res: string }>({ url: `/reaction`, data: reaction })
   }
-
-  addAnswerLike(id: string) {
-    return this.put<{ res: string }>({ url: `/answers/${id}/likes` })
-  }
-
-  deleteCommentLike(id: string) {
-    return this.delete<{ res: string }>({ url: `/comments/${id}/likes` })
-  }
-
-  deleteAnswerLike(id: string) {
-    return this.delete<{ res: string }>({ url: `/answers/${id}/likes` })
+  deleteReaction(r: TReaction) {
+    const test = `/reaction?reaction=${encodeURIComponent(r.emoji)}&type=${r.type}&typeId=${r.typeId}`
+    console.log(test)
+    return this.delete<{ res: string }>({
+      url: `/reaction/${encodeURIComponent(r.emoji)}/${r.type}/${r.typeId}`,
+    })
   }
 }
 
