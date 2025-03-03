@@ -4,9 +4,11 @@ import {
   TrophyOutlined,
   UserOutlined,
 } from "@ant-design/icons"
-import { Flex, Layout, Switch } from "antd"
 import { Link } from "react-router-dom"
+import Switch from "../theme-switch"
 import { withAuth } from "../auth"
+import { FC } from "react"
+import { Flex, Layout } from "antd"
 
 const layoutStyle = {
   margin: "0",
@@ -14,7 +16,6 @@ const layoutStyle = {
 
 const sidebarStyle = {
   backgroundColor: "#000",
-  padding: "10px 0",
   width: "80px",
   height: "100%",
   gap: "36px",
@@ -24,16 +25,10 @@ const iconStyle = {
   fontSize: "36px",
 }
 
-const switchStyle = {
-  transform: "rotate(270deg)",
-  transformOrigin: "center",
-  background: "#1668dc",
-}
-
-const Sidebar = () => {
+const Sidebar: FC = () => {
   return (
     <Layout.Sider id="sidebar" width="80px" style={layoutStyle}>
-      <Flex style={sidebarStyle} vertical align="center" justify="center">
+      <Flex vertical align="center" justify="center" style={sidebarStyle}>
         <Link id="start-link" to="/">
           <RocketOutlined style={iconStyle} />
         </Link>
@@ -46,7 +41,7 @@ const Sidebar = () => {
         <Link id="forum-link" to="/forum">
           <CommentOutlined style={iconStyle} />
         </Link>
-        <Switch defaultChecked style={switchStyle} />
+        <Switch />
       </Flex>
     </Layout.Sider>
   )

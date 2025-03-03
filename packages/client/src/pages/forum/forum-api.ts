@@ -11,7 +11,7 @@ export type TMessage = {
   id: string
   updatedAt?: string
   owner: string
-  user: { login: string }
+  user: { login: string; avatar: string | null }
   title: string
   content: string
   type: "topic" | "answer" | "comment"
