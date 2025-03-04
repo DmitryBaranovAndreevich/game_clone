@@ -66,6 +66,6 @@ node dis/index
 
 ## [Документация](docs/README.md)
 
-## [Видео](https://disk.yandex.ru/i/KLyYik_f16CtpQ)
+## [Видео](https://disk.yandex.ru/i/-EaLT-6sdRyHmQ)
 
 ## ssr
