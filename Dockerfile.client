@@ -8,6 +8,7 @@ WORKDIR /app
 FROM base as builder
 
 COPY package.json yarn.lock ./
+COPY nginx.conf /etc/nginx/nginx.conf
 RUN yarn install --no-cache
 
 COPY . .
