@@ -1,11 +1,9 @@
 import { Avatar, Button, Card, Flex, Input, Popover, Typography } from "antd"
-import { LikeOutlined, LikeFilled } from "@ant-design/icons"
 import styles from "./topic-message.module.css"
 import { useParams } from "react-router-dom"
 import { useState } from "react"
 import { TMessage, topicApiInstance } from "../../forum-api"
-import { useAppSelector } from "../../../../store"
-import { getUserId } from "../../../../store/selectors"
+import Reaction from "../reaction"
 import { BASE_URL } from "../../../../constants"
 
 const TopicMessage: React.FC<{
@@ -14,7 +12,7 @@ const TopicMessage: React.FC<{
   messageId: string
 }> = ({ message, setMessages, messageId }) => {
   const { topicId } = useParams()
-  const userId = useAppSelector(getUserId)
+
   const [open, setOpen] = useState(false)
   const [text, setText] = useState<string>()
   const handleAddMessage = () => {
@@ -26,7 +24,7 @@ const TopicMessage: React.FC<{
         topic: topicId,
         content: text,
         comment: messageId,
-        answer: message.type === "post" ? null : message.id,
+        answer: message.type === "comment" ? null : message.id,
       })
       .then(() => {
         setText("")
@@ -38,46 +36,8 @@ const TopicMessage: React.FC<{
       })
       .catch(e => console.log(e))
   }
-
-  const isLike = userId && message.likes.includes(userId)
-
-  const onAddLike = async () => {
-    try {
-      if (message.type === "post") {
-        await topicApiInstance.addCommentLike(message.id)
-      } else {
-        await topicApiInstance.addAnswerLike(message.id)
-      }
-
-      if (!topicId) {
-        return
-      }
-      const messages = await topicApiInstance.getAllComments(topicId)
-      setMessages(messages)
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  const onDeleteLike = async () => {
-    try {
-      if (message.type === "post") {
-        await topicApiInstance.deleteCommentLike(message.id)
-      } else {
-        await topicApiInstance.deleteAnswerLike(message.id)
-      }
-
-      if (!topicId) {
-        return
-      }
-      const messages = await topicApiInstance.getAllComments(topicId)
-      setMessages(messages)
-    } catch (e) {
-      console.log(e)
-    }
-  }
   return (
-    <Card className={`${styles[message.type]}`}>
+    <Card className={`${(styles[message.type], styles.message)}`}>
       <Avatar
         size={40}
         className={styles.avatar}
@@ -94,24 +54,21 @@ const TopicMessage: React.FC<{
               onChange={e => setText(e.target.value)}
               value={text}
             />
-            <Button onClick={handleAddMessage}>Add comment</Button>
+            <Button onClick={handleAddMessage}>Add answer</Button>
           </Flex>
         }
         title="Title"
         trigger="click">
         <Flex gap={"large"}>
+          <Reaction message={message} setMessages={setMessages} />
           <Button
+            style={{ marginLeft: "auto" }}
             type={"primary"}
             size={"small"}
             ghost
             onClick={() => setOpen(!open)}>
-            Ответить
+            Add answer
           </Button>
-          {isLike ? (
-            <LikeFilled onClick={onDeleteLike} />
-          ) : (
-            <LikeOutlined onClick={onAddLike} />
-          )}
         </Flex>
       </Popover>
       {message.comments &&

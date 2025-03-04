@@ -13,7 +13,6 @@ describe("Timer component", () => {
   beforeEach(() => {
     jest.useFakeTimers()
     mockSetState = jest.fn()
-
     ;(useGameContextContext as jest.Mock).mockReturnValue({
       state: {
         gameOver: false,

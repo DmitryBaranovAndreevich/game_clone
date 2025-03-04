@@ -2,8 +2,8 @@
   margin-right: 24px;
 }
 
-.post {
-  border: 1px solid white;
+.message {
+  width: 100%;
 }
 
 .scrollContainer {
@@ -14,4 +14,11 @@
 
 .bottomActions {
   width: 60%;
+}
+
+.activeReation {
+  border:
+    1px,
+    solid grey;
+  padding: 5px;
 }

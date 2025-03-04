@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { celebrate, Joi } from "celebrate"
-import { addLike, createAnswer, deleteLike } from "../controllers/answer"
+import { createAnswer } from "../controllers/answer"
 
 const router = Router()
 
@@ -15,26 +15,6 @@ router.post(
     }),
   }),
   createAnswer,
-)
-
-router.put(
-  "/:cardId/likes",
-  celebrate({
-    params: Joi.object().keys({
-      cardId: Joi.string().alphanum().required(),
-    }),
-  }),
-  addLike,
-)
-
-router.delete(
-  "/:cardId/likes",
-  celebrate({
-    params: Joi.object().keys({
-      cardId: Joi.string().alphanum().required(),
-    }),
-  }),
-  deleteLike,
 )
 
 export default router

@@ -1,13 +1,15 @@
-import { Typography, Flex, Button, Input } from "antd"
+import { Typography, Flex, Button, Input, Card } from "antd"
 import PostMessage from "../../components/topic-message"
 import styles from "./topic-page.module.css"
 import { withAuth } from "../../../../components"
-import { useParams } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { TMessage, topicApiInstance } from "../../forum-api"
 
 const TopicPage = () => {
   const { topicId } = useParams()
+  const location = useLocation()
+  const { topicData } = location.state || {}
   const [text, setText] = useState<string>()
   const [messages, setMessages] = useState<TMessage[]>([])
 
@@ -41,12 +43,15 @@ const TopicPage = () => {
 
   return (
     <Flex vertical align={"center"} gap={24}>
-      <Typography.Title level={5}>VERY IMPORTANR POST</Typography.Title>
+      <Typography.Title level={5}>{topicData.title}</Typography.Title>
       <Flex
         vertical
         align={"center"}
         gap={24}
         className={styles.scrollContainer}>
+        {/* Topic */}
+        <Card className={styles.topic}> {topicData.content}</Card>
+        {/* all kinds of responses: answers, comments*/}
         {messages.map((message, index) => (
           <PostMessage
             key={index}

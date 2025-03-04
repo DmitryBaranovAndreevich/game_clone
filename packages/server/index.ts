@@ -17,6 +17,7 @@ import { errorHandler } from "./src/helpers"
 import topicRouter from "./src/routes/topic"
 import commentRouter from "./src/routes/comments"
 import answerRouter from "./src/routes/answer"
+import reactionRouter from "./src/routes/reaction"
 import themeRouter from "./src/routes/theme"
 import userRouter from "./src/routes/user"
 
@@ -140,6 +141,7 @@ async function startServer() {
   app.use("/topic", topicRouter)
   app.use("/comments", commentRouter)
   app.use("/answers", answerRouter)
+  app.use("/reaction", reactionRouter)
   app.use("/theme", themeRouter)
 
   app.use(errorHandler)

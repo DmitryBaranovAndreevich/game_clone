@@ -1,13 +1,8 @@
-import { DataTypes, Model, Sequelize } from "sequelize"
-import { TComment } from "../types"
+import { DataTypes, Sequelize } from "sequelize"
+import { CommentInstance } from "../types"
 
 export default (sequelize: Sequelize) => {
-  return sequelize.define<
-    Model<
-      { id: string; updatedAt?: string; createdAt?: string } & TComment,
-      TComment
-    >
-  >("comments", {
+  return sequelize.define<CommentInstance>("comments", {
     id: {
       type: DataTypes.INTEGER(),
       primaryKey: true,
@@ -21,10 +16,6 @@ export default (sequelize: Sequelize) => {
     },
     content: {
       type: DataTypes.STRING(),
-    },
-    likes: {
-      type: DataTypes.ARRAY(DataTypes.INTEGER),
-      defaultValue: [],
     },
   })
 }

@@ -10,7 +10,8 @@ import { topicApiInstance } from "../../forum-api"
 const Forum = () => {
   const [topics, setTopics] = useState<
     {
-      theme: string
+      title: string
+      content: string
       replies: number
       id: string
     }[]
@@ -19,7 +20,12 @@ const Forum = () => {
   useEffect(() => {
     topicApiInstance.getAllTopics().then(res => {
       setTopics(
-        res.map(t => ({ theme: t.title, replies: t.comments, id: t.id })),
+        res.map(t => ({
+          title: t.title,
+          content: t.content,
+          replies: t.comments,
+          id: t.id,
+        })),
       )
     })
   }, [])
@@ -40,7 +46,7 @@ const Forum = () => {
             dataSource={topics}
             renderItem={topic => (
               <List.Item>
-                <Link to={`/forum/${topic.id}`}>
+                <Link to={`/forum/${topic.id}`} state={{ topicData: topic }}>
                   <Topic topic={topic} />
                 </Link>
               </List.Item>
