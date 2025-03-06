@@ -4,4 +4,4 @@ services:
     image: postgres:latest
     env_file: .env.dev
     ports:
-      - ${POSTGRES_PORT}
+      - "5432"

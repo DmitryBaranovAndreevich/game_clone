@@ -6,6 +6,7 @@ import {
   updateUser,
   updateUserPassword,
 } from "../controllers"
+//@ts-ignore
 import multer from "multer"
 const multerMiddleware = multer({ dest: "./resources" })
 

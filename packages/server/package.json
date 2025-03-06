@@ -12,7 +12,6 @@
     "test": "jest ."
   },
   "dependencies": {
-    "@types/multer": "^1.4.12",
     "@types/serialize-javascript": "^5.0.4",
     "bcryptjs": "^3.0.1",
     "celebrate": "^15.0.3",
