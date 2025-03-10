@@ -64,9 +64,9 @@ async function startServer() {
   app.post("/logout", logOut)
   app.use("/resources", express.static(path.resolve("./resources")))
   const port = Number(process.env.SERVER_PORT) || 3001
-  const srcPath = path.dirname(require.resolve("client"))
   let vite: ViteDevServer | undefined
   if (isDev()) {
+    const srcPath = path.dirname(require.resolve("client"))
     vite = await createViteServer({
       server: { middlewareMode: true },
       root: srcPath,
@@ -76,7 +76,7 @@ async function startServer() {
   }
 
   if (!isDev()) {
-    const distPath = path.dirname(require.resolve("client/dist/index.html"))
+    const distPath = path.dirname(require.resolve("../client/dist/index.html"))
     app.use("/assets", express.static(path.resolve(distPath, "assets")))
   }
 
@@ -87,12 +87,15 @@ async function startServer() {
       let template: string
 
       if (!isDev()) {
-        const distPath = path.dirname(require.resolve("client/dist/index.html"))
+        const distPath = path.dirname(
+          require.resolve("../client/dist/index.html"),
+        )
         template = fs.readFileSync(
           path.resolve(distPath, "index.html"),
           "utf-8",
         )
       } else {
+        const srcPath = path.dirname(require.resolve("client"))
         template = fs.readFileSync(path.resolve(srcPath, "index.html"), "utf-8")
         template = await vite!.transformIndexHtml(url, template)
       }
@@ -103,11 +106,12 @@ async function startServer() {
       let renderStyles: () => Promise<string>
 
       if (!isDev()) {
-        const ssrClientPath = require.resolve("client/ssr-dist/client.cjs")
+        const ssrClientPath = require.resolve("../client/ssr-dist/client.cjs")
         const bundle = await import(ssrClientPath)
         render = bundle.render
         renderStyles = bundle.renderStyles
       } else {
+        const srcPath = path.dirname(require.resolve("client"))
         const devBundle = await vite!.ssrLoadModule(
           path.resolve(srcPath, "src/ssr.tsx"),
         )

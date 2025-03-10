@@ -1,7 +1,7 @@
 import { SequelizeOptions } from "sequelize-typescript"
 
 const {
-  SEQUELIZE_PORT = 5433,
+  SEQUELIZE_PORT = 5432,
   SEQUELIZE_HOST = "localhost",
   POSTGRES_DB = "dough_matter",
   POSTGRES_USER = "postgres",
