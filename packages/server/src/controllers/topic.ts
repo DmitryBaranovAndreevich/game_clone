@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 import { Topic, Comment, Answer } from "../sequelize/sequelize"
 import { InCorrectDataError } from "../errors"
+import escape from "escape-html"
 
 export const createTopic = (
   req: Request,
@@ -13,8 +14,8 @@ export const createTopic = (
   }
 
   return Topic.create({
-    title: req.body.title,
-    content: req.body.content,
+    title: escape(req.body.title),
+    content: escape(req.body.content),
     owner: Number(user),
   })
     .then(topic => {

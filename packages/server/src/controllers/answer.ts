@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 import { InCorrectDataError } from "../errors"
 import { Answer } from "../sequelize/sequelize"
+import escape from "escape-html"
 
 export const createAnswer = (
   req: Request,
@@ -22,7 +23,7 @@ export const createAnswer = (
   Answer.create({
     owner: Number(user),
     parentTopic: Number(req.body.topic),
-    content: req.body.content,
+    content: escape(req.body.content),
     parentComment: req.body.comment,
     parentAnswer: req.body.answer,
   })
