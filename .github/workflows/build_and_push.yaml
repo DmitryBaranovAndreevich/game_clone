@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - develop
+      - prod
 
 jobs:
   build-and-push:
