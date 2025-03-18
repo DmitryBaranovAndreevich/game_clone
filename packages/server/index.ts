@@ -24,9 +24,13 @@ import userRouter from "./src/routes/user"
 const isDev = () => process.env.NODE_ENV === "development"
 
 async function startServer() {
+  const corsOptions = {
+    origin: "http://84.201.153.103:3001",
+    credentials: true,
+  }
   const app = express()
   app.use(cookieParser())
-  app.use(cors())
+  app.use(cors(corsOptions))
   app.use(express.json())
   try {
     await sequelize.sync({ force: true })
