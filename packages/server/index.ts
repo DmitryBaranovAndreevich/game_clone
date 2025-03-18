@@ -21,7 +21,7 @@ import reactionRouter from "./src/routes/reaction"
 import themeRouter from "./src/routes/theme"
 import userRouter from "./src/routes/user"
 
-const isDev = () => process.env.NODE_ENV === "development"
+export const isDev = () => process.env.NODE_ENV === "development"
 
 async function startServer() {
   const corsOptions = {
