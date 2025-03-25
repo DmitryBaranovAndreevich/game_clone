@@ -25,7 +25,10 @@ export const isDev = () => process.env.NODE_ENV === "development"
 
 async function startServer() {
   const corsOptions = {
-    origin: "http://84.201.153.103:3001",
+    origin: [
+      "http://84.201.153.103:3001",
+      "http://dough-matter-45.ya-praktikum.tech:3001",
+    ],
     credentials: true,
   }
   const app = express()
