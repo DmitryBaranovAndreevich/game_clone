@@ -34,6 +34,7 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
             .cookie(JWT, token, {
               maxAge: 3600000 * 24 * 7,
               httpOnly: true,
+              secure: false,
             })
             .end()
         })
@@ -68,6 +69,7 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
         .cookie(JWT, token, {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
+          secure: false,
         })
         .send(rest)
     })
