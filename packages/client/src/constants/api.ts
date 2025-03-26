@@ -1,1 +1,1 @@
-export const BASE_URL = "http://84.201.153.103:3001"
+export const BASE_URL = "http://dough-matter-45.ya-praktikum.tech:3001"
