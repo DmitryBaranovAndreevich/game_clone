@@ -66,7 +66,11 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
         expiresIn: "7d",
       })
       res
-        .cookie("jwt", token, { maxAge: 3600000 * 24 * 7, httpOnly: true })
+        .cookie(JWT, token, {
+          maxAge: 3600000 * 24 * 7,
+          httpOnly: true,
+          sameSite: "none",
+        })
         .send(rest)
     })
     .catch((err: { message: string; code: number }) => {
