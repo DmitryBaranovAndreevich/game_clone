@@ -2,7 +2,7 @@ import { SequelizeOptions } from "sequelize-typescript"
 
 const {
   SEQUELIZE_PORT = 5432,
-  SEQUELIZE_HOST = "localhost",
+  SEQUELIZE_HOST = "84.201.153.103",
   POSTGRES_DB = "dough_matter",
   POSTGRES_USER = "postgres",
   POSTGRES_PASSWORD = "1234",

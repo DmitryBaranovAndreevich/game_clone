@@ -1,10 +1,10 @@
 name: Push to GitHub Container Registry
 
 on:
-  pull_request:
   push:
     branches:
       - develop
+      - prod
 
 jobs:
   build-and-push:
