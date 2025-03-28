@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import { Answer, Comment, User, Reaction } from "../sequelize/sequelize"
 import { InCorrectDataError } from "../errors"
 import { IUser, TAnswer, ReactionRecord, ProcessedReaction } from "../types"
+import escape from "escape-html"
 
 export const createComment = (
   req: Request,
@@ -16,7 +17,7 @@ export const createComment = (
   Comment.create({
     owner: Number(user),
     parentTopic: Number(req.body.topic),
-    content: req.body.content,
+    content: escape(req.body.content),
   })
     .then(topic => {
       if (!topic) {

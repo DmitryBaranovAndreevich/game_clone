@@ -9,6 +9,7 @@ import {
 } from "../errors"
 import { IUser } from "../types"
 import { User } from "../sequelize"
+import escape from "escape-html"
 
 const { JWT_SECRET = "dev-key" } = process.env
 
@@ -51,11 +52,20 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
     throw new InCorrectDataError()
   }
 
-  const { password, ...any } = req.body as IUser
+  const { password, phone, second_name, first_name, login, email } =
+    req.body as IUser
   bcrypt
     .hash(password, 10)
     .then((hash: string) => {
-      return User.create({ ...any, password: hash, avatar: null })
+      return User.create({
+        phone: escape(phone),
+        second_name: escape(second_name),
+        first_name: escape(first_name),
+        login: escape(login),
+        email: escape(email),
+        password: hash,
+        avatar: null,
+      })
     })
     .then(user => {
       const { password, updatedAt, createdAt, ...rest } = user.dataValues
@@ -106,7 +116,14 @@ export const updateUser = (req: Request, res: Response, next: NextFunction) => {
         throw new NotFoundError("Пользователь не найден")
       }
 
-      user.set({ ...req.body })
+      user.set(
+        Object.fromEntries(
+          Object.entries(req.body).map(([key, value]) => [
+            key,
+            escape(value as string),
+          ]),
+        ),
+      )
 
       return user.save()
     })
